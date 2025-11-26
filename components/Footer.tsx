@@ -9,20 +9,20 @@ import { locales, type Locale } from '@/lib/i18n';
 import { getRoute } from '@/lib/routes';
 import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin } from 'lucide-react';
 
+function NavLink({ href, currentLocale, children, className }: { href: string; currentLocale: Locale; children: React.ReactNode; className?: string }) {
+  const fullHref = href === '/' ? `/${currentLocale}` : `/${currentLocale}${href}`;
+  return (
+    <Link href={fullHref} className={className}>
+      {children}
+    </Link>
+  );
+}
+
 export function Footer() {
   const t = useTranslations('nav');
   const { config } = useConfig();
   const pathname = usePathname();
   const currentLocale = (pathname?.split('/')[1] || 'tr') as Locale;
-
-  const NavLink = ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) => {
-    const fullHref = href === '/' ? `/${currentLocale}` : `/${currentLocale}${href}`;
-    return (
-      <Link href={fullHref} className={className}>
-        {children}
-      </Link>
-    );
-  };
 
   return (
     <footer className="border-t bg-gradient-to-b from-background to-muted/30 relative overflow-hidden">
@@ -62,19 +62,19 @@ export function Footer() {
           <div>
             <h4 className="text-xs sm:text-sm font-semibold mb-3 sm:mb-4">Menü</h4>
             <nav className="flex flex-col space-y-2 sm:space-y-3">
-              <NavLink href={getRoute('home', currentLocale)} className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors">
+              <NavLink href={getRoute('home', currentLocale)} currentLocale={currentLocale} className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors">
                 {t('home')}
               </NavLink>
-              <NavLink href={getRoute('about', currentLocale)} className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors">
+              <NavLink href={getRoute('about', currentLocale)} currentLocale={currentLocale} className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors">
                 {t('about')}
               </NavLink>
-              <NavLink href={getRoute('specialties', currentLocale)} className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors">
+              <NavLink href={getRoute('specialties', currentLocale)} currentLocale={currentLocale} className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors">
                 {t('specialties')}
               </NavLink>
-              <NavLink href={getRoute('gallery', currentLocale)} className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors">
+              <NavLink href={getRoute('gallery', currentLocale)} currentLocale={currentLocale} className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors">
                 {t('gallery')}
               </NavLink>
-              <NavLink href={getRoute('contact', currentLocale)} className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors">
+              <NavLink href={getRoute('contact', currentLocale)} currentLocale={currentLocale} className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors">
                 {t('contact')}
               </NavLink>
             </nav>

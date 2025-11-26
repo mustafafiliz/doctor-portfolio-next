@@ -59,11 +59,11 @@ export default async function AboutPage({
           </p>
 
           <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-4 sm:mb-6">
-            Türkiye'nin en büyük göz hastanelerinde, genel oftalmoloji, katarakt cerrahisi ve glokom 
+            Türkiye&apos;nin en büyük göz hastanelerinde, genel oftalmoloji, katarakt cerrahisi ve glokom 
             cerrahisi alanlarında 25 yılı aşkın süredir çalışmaktayım. Ulusal ve uluslararası seçkin 
-            dergilerde basılmış 150'nin üzerinde makalem, editörleri arasında yer aldığım bir glokom 
-            kitabı, 12 adet kitap bölümüm ve ulusal ve uluslararası kongrelerde sunulmuş 150'nin üzerinde 
-            bildirimim bulunmaktadır. Ayrıca uzun süredir "Glokom Katarakt Dergisi" editör yardımcılığı 
+            dergilerde basılmış 150&apos;nin üzerinde makalem, editörleri arasında yer aldığım bir glokom 
+            kitabı, 12 adet kitap bölümüm ve ulusal ve uluslararası kongrelerde sunulmuş 150&apos;nin üzerinde 
+            bildirimim bulunmaktadır. Ayrıca uzun süredir &quot;Glokom Katarakt Dergisi&quot; editör yardımcılığı 
             görevini yürütmekteyim.
           </p>
 

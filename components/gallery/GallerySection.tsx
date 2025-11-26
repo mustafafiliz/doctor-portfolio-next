@@ -162,6 +162,7 @@ export function GallerySection() {
 
   useEffect(() => {
     // Initialize Fancybox
+    // @ts-expect-error - Fancybox options type definitions may not be complete
     Fancybox.bind('[data-fancybox]', {
       Toolbar: {
         display: {
