@@ -1,0 +1,112 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "specialties": "Specialties",
+    "gallery": "Gallery",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "blog": "Blog"
+  },
+  "home": {
+    "title": "Prof. Dr. Kadriye Ufuk Elgin",
+    "subtitle": "Ophthalmologist",
+    "summary": "I completed my primary education at Kırıkkale Tınaz Primary School, secondary education at TED Foundation Ankara College, and high school education at Ankara Science High School. I completed my medical school undergraduate education at Hacettepe University Faculty of Medicine between 1985-1991, and then completed my specialization training in the Department of Ophthalmology at Hacettepe University Faculty of Medicine, where I entered as the 3rd in the Medical Specialization Exam (TUS) in 1996.",
+    "readMore": "Read More",
+    "specialties": "Specialties",
+    "testimonials": "Patient Reviews",
+    "contactUs": "Contact Us",
+    "hero": {
+      "title": "Prof. Dr. Kadriye Ufuk Elgin",
+      "subtitle": "Ophthalmologist",
+      "description": "Professional service for your eye health with 25+ years of experience",
+      "cta": "Book Appointment",
+      "learnMore": "About"
+    }
+  },
+  "about": {
+    "title": "About",
+    "education": "Education",
+    "experience": "Experience",
+    "publications": "Publications",
+    "certifications": "Certifications"
+  },
+  "specialties": {
+    "title": "Specialties",
+    "subtitle": "Areas We Serve",
+    "glaucoma": {
+      "title": "Glaucoma Treatment",
+      "description": "Glaucoma is damage to the optic nerve caused by increased intraocular pressure."
+    },
+    "cataract": {
+      "title": "Cataract Surgery",
+      "description": "Cataract is a disease that causes vision loss due to loss of transparency of the eye lens."
+    },
+    "infections": {
+      "title": "Eye Infections",
+      "description": "Eye infections can be caused by bacteria, viruses or fungi and require appropriate treatment."
+    },
+    "premiumLenses": {
+      "title": "Premium Intraocular Lenses (Smart Lenses)",
+      "description": "Lenses that solve age-related near vision problems and provide clear vision at far, medium and near distances."
+    },
+    "trauma": {
+      "title": "Eye Trauma",
+      "description": "Eye trauma requires emergency intervention and timely treatment is very important."
+    },
+    "conjunctiva": {
+      "title": "Conjunctiva Surgery",
+      "description": "Surgical treatment of conjunctival diseases."
+    },
+    "refractive": {
+      "title": "Refractive Lens",
+      "description": "Refractive lens surgery to get rid of glasses and contact lens dependency."
+    }
+  },
+  "gallery": {
+    "title": "Gallery",
+    "photos": "Visual Gallery",
+    "videos": "Video Collection"
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Get in Touch",
+    "form": {
+      "name": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "subject": "Subject",
+      "message": "Your Message",
+      "send": "Send",
+      "sending": "Sending...",
+      "success": "Your message has been sent successfully!",
+      "error": "An error occurred. Please try again."
+    },
+    "info": {
+      "address": "Address",
+      "phone": "Phone",
+      "mobile": "Mobile",
+      "email": "Email",
+      "workingHours": "Working Hours"
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "What You're Wondering"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Latest Posts",
+    "readMore": "Read More",
+    "published": "Published Date"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "close": "Close",
+    "next": "Next",
+    "previous": "Previous"
+  }
+}
+

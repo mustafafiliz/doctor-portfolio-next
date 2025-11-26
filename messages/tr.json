@@ -1,0 +1,112 @@
+{
+  "nav": {
+    "home": "Ana Sayfa",
+    "about": "Hakkımda",
+    "specialties": "Uzmanlıklar",
+    "gallery": "Galeri",
+    "contact": "İletişim",
+    "faq": "Sık Sorulan Sorular",
+    "blog": "Blog"
+  },
+  "home": {
+    "title": "Prof. Dr. Kadriye Ufuk Elgin",
+    "subtitle": "Göz Hastalıkları Uzmanı",
+    "summary": "İlköğretimi Kırıkkale Tınaz ilköğretim okulunda, orta öğretimi TED vakfı Ankara Kolejinde, lise öğretimi ise Ankara Fen Lisesinde tamamladım. Tıp Fakültesi lisans eğitimimi 1985-1991 yılları arasında Hacettepe Üniversitesi Tıp Fakültesinde gerçekleştirdikten sonra, tıpta uzmanlık eğitimimi ise tıpta uzmanlık sınavı (TUS) 3.sü olarak girdiğim Hacettepe Üniversitesi Tıp Fakültesi Göz Anabilim dalında 1996 yılında tamamladım.",
+    "readMore": "Devamını Oku",
+    "specialties": "Uzmanlıklar",
+    "testimonials": "Hasta Yorumları",
+    "contactUs": "Bize Ulaşın",
+    "hero": {
+      "title": "Prof. Dr. Kadriye Ufuk Elgin",
+      "subtitle": "Göz Hastalıkları Uzmanı",
+      "description": "25+ yıllık deneyim ile göz sağlığınız için profesyonel hizmet",
+      "cta": "Randevu Al",
+      "learnMore": "Hakkımda"
+    }
+  },
+  "about": {
+    "title": "Hakkımda",
+    "education": "Eğitim",
+    "experience": "Deneyim",
+    "publications": "Yayınlar",
+    "certifications": "Sertifikalar"
+  },
+  "specialties": {
+    "title": "Uzmanlıklar",
+    "subtitle": "Hizmet Verdiğimiz Alanlar",
+    "glaucoma": {
+      "title": "Göz Tansiyonu (Glokom) Tedavisi",
+      "description": "Glokom, göz içi basıncının yükselmesi sonucu görme sinirinde hasar oluşmasıdır."
+    },
+    "cataract": {
+      "title": "Katarakt Cerrahisi",
+      "description": "Katarakt, göz merceğinin saydamlığını yitirmesi sonucu görme kaybına neden olan bir hastalıktır."
+    },
+    "infections": {
+      "title": "Göz Enfeksiyonları",
+      "description": "Göz enfeksiyonları bakteri, virüs veya mantar kaynaklı olabilir ve uygun tedavi gerektirir."
+    },
+    "premiumLenses": {
+      "title": "Premium Göz İçi Lensler (Akıllı Lensler)",
+      "description": "Yaşa bağlı yakın görme sorunlarını çözen ve uzak, orta ve yakın mesafelerde net görüş sağlayan lensler."
+    },
+    "trauma": {
+      "title": "Göz Travmaları",
+      "description": "Göz travmaları acil müdahale gerektiren durumlardır ve zamanında tedavi çok önemlidir."
+    },
+    "conjunctiva": {
+      "title": "Konjonktiva Cerrahisi",
+      "description": "Konjonktiva hastalıklarının cerrahi tedavisi."
+    },
+    "refractive": {
+      "title": "Refraktif Lens",
+      "description": "Gözlük ve kontakt lens bağımlılığından kurtulmak için refraktif lens cerrahisi."
+    }
+  },
+  "gallery": {
+    "title": "Galeri",
+    "photos": "Görsel Galeri",
+    "videos": "Video Koleksiyonu"
+  },
+  "contact": {
+    "title": "İletişim",
+    "subtitle": "Bize Ulaşın",
+    "form": {
+      "name": "Ad Soyad",
+      "email": "E-posta",
+      "phone": "Telefon",
+      "subject": "Konu",
+      "message": "Mesajınız",
+      "send": "Gönder",
+      "sending": "Gönderiliyor...",
+      "success": "Mesajınız başarıyla gönderildi!",
+      "error": "Bir hata oluştu. Lütfen tekrar deneyin."
+    },
+    "info": {
+      "address": "Adres",
+      "phone": "Telefon",
+      "mobile": "Cep Telefonu",
+      "email": "E-posta",
+      "workingHours": "Çalışma Saatleri"
+    }
+  },
+  "faq": {
+    "title": "Sık Sorulan Sorular",
+    "subtitle": "Merak Ettikleriniz"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Son Yazılar",
+    "readMore": "Devamını Oku",
+    "published": "Yayınlanma Tarihi"
+  },
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "success": "Başarılı",
+    "close": "Kapat",
+    "next": "Sonraki",
+    "previous": "Önceki"
+  }
+}
+

@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Doktor Portföy Web Sitesi
 
-## Getting Started
+Prof. Dr. Kadriye Ufuk Elgin için geliştirilmiş modern, çok dilli doktor portföy web sitesi.
 
-First, run the development server:
+## Özellikler
+
+- ✅ Next.js 16 (App Router) ile geliştirilmiş
+- ✅ TypeScript desteği
+- ✅ Tailwind CSS ile stil yönetimi
+- ✅ shadcn/ui component kütüphanesi
+- ✅ Çok dilli destek (Türkçe/İngilizce) - next-intl
+- ✅ Dinamik config API yönetimi
+- ✅ SEO optimizasyonu
+- ✅ Responsive tasarım
+- ✅ WhatsApp entegrasyonu
+
+## Sayfalar
+
+- **Ana Sayfa**: Hero carousel, özet, uzmanlıklar ve hasta yorumları
+- **Hakkımda**: Doktor hakkında detaylı bilgiler
+- **Uzmanlıklar**: Göz hastalıkları ve tedavi alanları
+- **Galeri**: Foto ve video galeri
+- **İletişim**: İletişim formu ve bilgileri
+- **SSS**: Sık sorulan sorular
+- **Blog**: Blog yazıları
+
+## Kurulum
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Config API
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Site renkleri, meta bilgileri ve iletişim bilgileri `/api/config` endpoint'inden yönetilebilir.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Config dosyası: `lib/config.ts`
 
-## Learn More
+## Dil Dosyaları
 
-To learn more about Next.js, take a look at the following resources:
+Dil dosyaları `messages/` klasöründe:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `tr.json` - Türkçe
+- `en.json` - İngilizce
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Dinamik Renk Yönetimi
 
-## Deploy on Vercel
+shadcn/ui componentlerinin renkleri config API'den gelen değerlere göre dinamik olarak ayarlanır. Renkler CSS değişkenleri üzerinden yönetilir.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Geliştirme
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+# Development server
+npm run dev
+
+# Production build
+npm run build
+
+# Production server
+npm start
+```
+
+## Lisans
+
+Özel proje - Tüm hakları saklıdır.
