@@ -130,7 +130,7 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full">
+      <header className="sticky top-0 z-50 w-full border-y border-white">
         {/* Minimalist background - only on desktop */}
         <div className="absolute inset-0 bg-background/95 backdrop-blur-sm border-b border-border/30 lg:bg-gradient-to-r lg:from-background lg:via-background/95 lg:to-background lg:backdrop-blur-2xl lg:border-border/50" />
 
@@ -144,8 +144,8 @@ export function Header() {
         />
         <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer" />
 
-        <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <div className="flex h-16 sm:h-20 lg:h-24 items-center justify-between">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10 h-14 sm:h-16 lg:h-18">
+          <div className="flex h-full items-center justify-between">
             {/* Logo Section */}
             <Link href={`/${currentLocale}`} className="flex items-center">
               <Image
@@ -159,7 +159,7 @@ export function Header() {
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-1 xl:gap-2 bg-gradient-to-r from-muted/40 via-muted/30 to-muted/40 backdrop-blur-xl rounded-sm px-2 xl:px-3 py-2 border border-border/50 shadow-xl shadow-primary/5">
+            <nav className="hidden lg:flex items-center gap-1 xl:gap-2 h-full">
               {navItems.map((item) => {
                 const route = getRoute(item.key, currentLocale);
                 const active = isActive(route);
@@ -167,34 +167,25 @@ export function Header() {
                 // Uzmanlıklar için dropdown
                 if (item.hasDropdown && item.key === "specialties") {
                   return (
-                    <div key={item.key} className="relative" ref={dropdownRef}>
+                    <div
+                      key={item.key}
+                      className="relative h-full"
+                      ref={dropdownRef}
+                    >
                       <button
                         onClick={() => {
                           setSpecialtiesOpen(!specialtiesOpen);
                           setActiveCategory(null);
                         }}
-                        className={`relative px-3 xl:px-5 py-2 xl:py-2.5 rounded-sm text-xs xl:text-sm font-semibold transition-all duration-300 overflow-hidden group flex items-center gap-1 ${
+                        className={`relative px-4 xl:px-5 h-full flex items-center gap-1 text-sm xl:text-base font-semibold transition-all duration-300 ${
                           active || specialtiesOpen
-                            ? "text-primary-foreground"
+                            ? "bg-primary text-white"
                             : "text-muted-foreground hover:text-foreground"
                         }`}
                       >
-                        {/* Active/Open background gradient */}
-                        {(active || specialtiesOpen) && (
-                          <>
-                            <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-accent rounded-sm" />
-                            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 blur-xl opacity-50" />
-                          </>
-                        )}
-
-                        {/* Hover effect */}
-                        {!active && !specialtiesOpen && (
-                          <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0 rounded-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        )}
-
-                        <span className="relative z-10">{item.label}</span>
+                        <span>{item.label}</span>
                         <ChevronDown
-                          className={`relative z-10 h-3 w-3 transition-transform duration-200 ${
+                          className={`h-3 w-3 transition-transform duration-200 ${
                             specialtiesOpen ? "rotate-180" : ""
                           }`}
                         />
@@ -261,32 +252,13 @@ export function Header() {
                   <NavLink
                     key={item.key}
                     route={route}
-                    className={`relative px-3 xl:px-5 py-2 xl:py-2.5 rounded-sm text-xs xl:text-sm font-semibold transition-all duration-300 overflow-hidden group ${
+                    className={`relative px-4 xl:px-5 h-full flex items-center text-sm xl:text-base font-semibold transition-all duration-300 ${
                       active
-                        ? "text-primary-foreground"
+                        ? "bg-primary text-white"
                         : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
-                    {/* Active background gradient */}
-                    {active && (
-                      <>
-                        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-accent rounded-sm" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 blur-xl opacity-50" />
-                      </>
-                    )}
-
-                    {/* Hover effect */}
-                    {!active && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0 rounded-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    )}
-
-                    {/* Text */}
-                    <span className="relative z-10 flex items-center gap-2">
-                      {item.label}
-                      {active && (
-                        <div className="h-1.5 w-1.5 rounded-sm bg-primary-foreground/80 animate-pulse" />
-                      )}
-                    </span>
+                    {item.label}
                   </NavLink>
                 );
               })}
