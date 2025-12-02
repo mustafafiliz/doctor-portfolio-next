@@ -27,7 +27,7 @@ export function HeroCarousel() {
               style={{ aspectRatio: "290/362" }}
             >
               <Image
-                src="/images/me.webp"
+                src="/images/me.jpg"
                 alt="Prof. Dr. Kadriye Ufuk Elgin"
                 fill
                 className="object-contain object-left"

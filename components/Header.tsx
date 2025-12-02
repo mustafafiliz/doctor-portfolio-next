@@ -37,7 +37,6 @@ export function Header() {
     { key: "specialties" as const, label: t("specialties") },
     { key: "gallery" as const, label: t("gallery") },
     { key: "contact" as const, label: t("contact") },
-    { key: "faq" as const, label: t("faq") },
     { key: "blog" as const, label: t("blog") }
   ];
 
@@ -77,82 +76,88 @@ export function Header() {
         <div className="absolute inset-0 bg-background/95 backdrop-blur-sm border-b border-border/30 lg:bg-gradient-to-r lg:from-background lg:via-background/95 lg:to-background lg:backdrop-blur-2xl lg:border-border/50" />
 
         {/* Desktop only animated effects */}
-        <div className="hidden lg:block absolute inset-0 opacity-30 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 animate-gradient" style={{ backgroundSize: "200% 200%", animation: "gradient 8s ease infinite" }} />
+        <div
+          className="hidden lg:block absolute inset-0 opacity-30 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 animate-gradient"
+          style={{
+            backgroundSize: "200% 200%",
+            animation: "gradient 8s ease infinite"
+          }}
+        />
         <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer" />
 
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        <div className="flex h-16 sm:h-20 lg:h-24 items-center justify-between">
-          {/* Logo Section */}
-          <Link href={`/${currentLocale}`} className="flex items-center">
-            <Image
-              src="/images/logo.webp"
-              alt="Prof. Dr. Kadriye Ufuk Elgin Logo"
-              width={160}
-              height={44}
-              className="h-9 sm:h-10 lg:h-12 w-auto object-contain"
-              priority
-            />
-          </Link>
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <div className="flex h-16 sm:h-20 lg:h-24 items-center justify-between">
+            {/* Logo Section */}
+            <Link href={`/${currentLocale}`} className="flex items-center">
+              <Image
+                src="/images/logo.webp"
+                alt="Prof. Dr. Kadriye Ufuk Elgin Logo"
+                width={160}
+                height={44}
+                className="h-9 sm:h-10 lg:h-12 w-auto object-contain"
+                priority
+              />
+            </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 bg-gradient-to-r from-muted/40 via-muted/30 to-muted/40 backdrop-blur-xl rounded-full px-2 xl:px-3 py-2 border border-border/50 shadow-xl shadow-primary/5">
-            {navItems.map((item) => {
-              const route = getRoute(item.key, currentLocale);
-              const active = isActive(route);
-              return (
-                <NavLink
-                  key={item.key}
-                  route={route}
-                  className={`relative px-3 xl:px-5 py-2 xl:py-2.5 rounded-full text-xs xl:text-sm font-semibold transition-all duration-300 overflow-hidden group ${
-                    active
-                      ? "text-primary-foreground"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {/* Active background gradient */}
-                  {active && (
-                    <>
-                      <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-accent rounded-full" />
-                      <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 blur-xl opacity-50" />
-                    </>
-                  )}
-
-                  {/* Hover effect */}
-                  {!active && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  )}
-
-                  {/* Text */}
-                  <span className="relative z-10 flex items-center gap-2">
-                    {item.label}
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center gap-1 xl:gap-2 bg-gradient-to-r from-muted/40 via-muted/30 to-muted/40 backdrop-blur-xl rounded-full px-2 xl:px-3 py-2 border border-border/50 shadow-xl shadow-primary/5">
+              {navItems.map((item) => {
+                const route = getRoute(item.key, currentLocale);
+                const active = isActive(route);
+                return (
+                  <NavLink
+                    key={item.key}
+                    route={route}
+                    className={`relative px-3 xl:px-5 py-2 xl:py-2.5 rounded-full text-xs xl:text-sm font-semibold transition-all duration-300 overflow-hidden group ${
+                      active
+                        ? "text-primary-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {/* Active background gradient */}
                     {active && (
-                      <div className="h-1.5 w-1.5 rounded-full bg-primary-foreground/80 animate-pulse" />
+                      <>
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-accent rounded-full" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 blur-xl opacity-50" />
+                      </>
                     )}
-                  </span>
-                </NavLink>
-              );
-            })}
-          </nav>
 
-          {/* Right Section */}
-          <div className="flex items-center gap-2">
-            <LanguageSwitcher />
-            <Button
-              variant="ghost"
-              size="icon"
-              className="lg:hidden h-9 w-9"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Menu"
-            >
-              {mobileMenuOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-            </Button>
+                    {/* Hover effect */}
+                    {!active && (
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    )}
+
+                    {/* Text */}
+                    <span className="relative z-10 flex items-center gap-2">
+                      {item.label}
+                      {active && (
+                        <div className="h-1.5 w-1.5 rounded-full bg-primary-foreground/80 animate-pulse" />
+                      )}
+                    </span>
+                  </NavLink>
+                );
+              })}
+            </nav>
+
+            {/* Right Section */}
+            <div className="flex items-center gap-2">
+              <LanguageSwitcher />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="lg:hidden h-9 w-9"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label="Menu"
+              >
+                {mobileMenuOpen ? (
+                  <X className="h-5 w-5" />
+                ) : (
+                  <Menu className="h-5 w-5" />
+                )}
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
       </header>
 
       {/* Mobile Drawer Overlay */}
@@ -165,9 +170,7 @@ export function Header() {
           />
 
           {/* Drawer */}
-          <div
-            className="fixed top-0 right-0 h-full w-full bg-background border-l border-border/30 shadow-2xl z-50 lg:hidden transform transition-transform duration-300 ease-out translate-x-0"
-          >
+          <div className="fixed top-0 right-0 h-full w-full bg-background border-l border-border/30 shadow-2xl z-50 lg:hidden transform transition-transform duration-300 ease-out translate-x-0">
             {/* Drawer Header */}
             <div className="flex items-center justify-between p-4 border-b border-border/30">
               <Link
