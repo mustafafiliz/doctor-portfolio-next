@@ -74,7 +74,7 @@ export function HomeFAQSection() {
         <div className="text-center">
           <Link
             href={`/${currentLocale}${getRoute('faq', currentLocale)}`}
-            className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-primary via-primary/90 to-accent text-primary-foreground text-sm sm:text-base font-semibold shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 hover:scale-105"
+            className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-sm bg-gradient-to-r from-primary via-primary/90 to-accent text-primary-foreground text-sm sm:text-base font-semibold shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 hover:scale-105"
           >
             Tümünü Gör
             <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />

@@ -73,7 +73,7 @@ export function SpecialtiesList() {
             <div 
               key={specialty.id} 
               id={specialty.id} 
-              className="group bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 block flex flex-col h-full"
+              className="group bg-white rounded-sm shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 block flex flex-col h-full"
             >
               {/* Image */}
               <div className="relative overflow-hidden">

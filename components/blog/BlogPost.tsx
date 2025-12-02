@@ -121,7 +121,7 @@ export function BlogPost({ slug, locale }: { slug: string; locale?: Locale }) {
         
         {/* Featured Image */}
         <div className="mb-8">
-          <div className="relative w-full h-64 md:h-96 rounded-lg shadow-lg overflow-hidden bg-muted">
+          <div className="relative w-full h-64 md:h-96 rounded-sm shadow-lg overflow-hidden bg-muted">
             {post.image ? (
               <Image
                 src={post.image}

@@ -85,8 +85,8 @@ export function Header() {
         />
         <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer" />
 
-        <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <div className="flex h-16 sm:h-20 lg:h-24 items-center justify-between">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 relative z-10">
+          <div className="flex h-16 sm:h-20 lg:h-24 items-center justify-between max-w-[1920px] mx-auto">
             {/* Logo Section */}
             <Link href={`/${currentLocale}`} className="flex items-center">
               <Image
@@ -100,7 +100,7 @@ export function Header() {
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-1 xl:gap-2 bg-gradient-to-r from-muted/40 via-muted/30 to-muted/40 backdrop-blur-xl rounded-full px-2 xl:px-3 py-2 border border-border/50 shadow-xl shadow-primary/5">
+            <nav className="hidden lg:flex items-center gap-1 xl:gap-2 bg-gradient-to-r from-muted/40 via-muted/30 to-muted/40 backdrop-blur-xl rounded-sm px-2 xl:px-3 py-2 border border-border/50 shadow-xl shadow-primary/5">
               {navItems.map((item) => {
                 const route = getRoute(item.key, currentLocale);
                 const active = isActive(route);
@@ -108,7 +108,7 @@ export function Header() {
                   <NavLink
                     key={item.key}
                     route={route}
-                    className={`relative px-3 xl:px-5 py-2 xl:py-2.5 rounded-full text-xs xl:text-sm font-semibold transition-all duration-300 overflow-hidden group ${
+                    className={`relative px-3 xl:px-5 py-2 xl:py-2.5 rounded-sm text-xs xl:text-sm font-semibold transition-all duration-300 overflow-hidden group ${
                       active
                         ? "text-primary-foreground"
                         : "text-muted-foreground hover:text-foreground"
@@ -117,21 +117,21 @@ export function Header() {
                     {/* Active background gradient */}
                     {active && (
                       <>
-                        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-accent rounded-full" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-accent rounded-sm" />
                         <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 blur-xl opacity-50" />
                       </>
                     )}
 
                     {/* Hover effect */}
                     {!active && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0 rounded-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     )}
 
                     {/* Text */}
                     <span className="relative z-10 flex items-center gap-2">
                       {item.label}
                       {active && (
-                        <div className="h-1.5 w-1.5 rounded-full bg-primary-foreground/80 animate-pulse" />
+                        <div className="h-1.5 w-1.5 rounded-sm bg-primary-foreground/80 animate-pulse" />
                       )}
                     </span>
                   </NavLink>
@@ -207,7 +207,7 @@ export function Header() {
                     <NavLink
                       key={item.key}
                       route={route}
-                      className={`relative px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200 ${
+                      className={`relative px-4 py-3 rounded-sm text-base font-medium transition-colors duration-200 ${
                         active
                           ? "text-primary bg-primary/10"
                           : "text-foreground hover:bg-muted/30"
@@ -215,7 +215,7 @@ export function Header() {
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {active && (
-                        <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary rounded-r-full" />
+                        <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary rounded-r-sm" />
                       )}
                       <span className="block">{item.label}</span>
                     </NavLink>
@@ -309,7 +309,7 @@ function LanguageSwitcher() {
   };
 
   return (
-    <div className="hidden lg:flex items-center gap-1 bg-gradient-to-r from-muted/50 via-muted/40 to-muted/50 backdrop-blur-xl rounded-full p-1 border border-border/50 shadow-lg shadow-primary/5">
+    <div className="hidden lg:flex items-center gap-1 bg-gradient-to-r from-muted/50 via-muted/40 to-muted/50 backdrop-blur-xl rounded-sm p-1 border border-border/50 shadow-lg shadow-primary/5">
       {locales.map((locale) => {
         const isActive = currentLocale === locale;
         return (
@@ -318,7 +318,7 @@ function LanguageSwitcher() {
             variant="ghost"
             size="sm"
             onClick={() => switchLocale(locale)}
-            className={`relative px-4 py-2 text-xs font-bold rounded-full transition-all duration-300 overflow-hidden ${
+            className={`relative px-4 py-2 text-xs font-bold rounded-sm transition-all duration-300 overflow-hidden ${
               isActive
                 ? "text-primary-foreground shadow-md shadow-primary/30"
                 : "text-muted-foreground hover:text-foreground"
@@ -326,7 +326,7 @@ function LanguageSwitcher() {
           >
             {isActive && (
               <>
-                <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-accent rounded-full" />
+                <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-accent rounded-sm" />
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/30 via-accent/30 to-primary/30 blur-md opacity-50" />
               </>
             )}

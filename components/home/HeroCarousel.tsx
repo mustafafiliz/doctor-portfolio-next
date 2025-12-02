@@ -23,7 +23,7 @@ export function HeroCarousel() {
           {/* Image Section - Left */}
           <div className="relative w-full order-2 lg:order-1">
             <div
-              className="relative w-full ml-0 rounded-lg overflow-hidden"
+              className="relative w-full ml-0 rounded-sm overflow-hidden"
               style={{ aspectRatio: "290/362" }}
             >
               <Image
@@ -38,24 +38,24 @@ export function HeroCarousel() {
             </div>
 
             {/* Floating decorative elements */}
-            <div className="absolute -top-4 -right-4 w-20 h-20 sm:w-24 sm:h-24 bg-primary/10 rounded-full blur-2xl animate-float hidden md:block" />
-            <div className="absolute -bottom-4 -left-4 w-24 h-24 sm:w-32 sm:h-32 bg-accent/10 rounded-full blur-2xl animate-float-delayed hidden md:block" />
+            <div className="absolute -top-4 -right-4 w-20 h-20 sm:w-24 sm:h-24 bg-primary/10 rounded-sm blur-2xl animate-float hidden md:block" />
+            <div className="absolute -bottom-4 -left-4 w-24 h-24 sm:w-32 sm:h-32 bg-accent/10 rounded-sm blur-2xl animate-float-delayed hidden md:block" />
           </div>
 
           {/* Content Section - Right */}
           <div className="order-1 lg:order-2 space-y-4 sm:space-y-6 lg:space-y-8">
             {/* Title */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-tight">
               <span className="block animate-fade-in-up">
                 {t("hero.title")}
               </span>
-              <span className="block text-2xl sm:text-3xl md:text-4xl mt-2 sm:mt-3 font-light text-primary">
+              <span className="block text-base sm:text-lg md:text-xl lg:text-2xl mt-2 sm:mt-3 font-semibold text-primary">
                 {t("hero.subtitle")}
               </span>
             </h1>
 
             {/* Summary */}
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed animate-fade-in-up delay-200">
+            <p className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed animate-fade-in-up delay-200">
               {t("summary")}
             </p>
 

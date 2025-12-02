@@ -192,7 +192,7 @@ export function GallerySection() {
         href={photo.src}
         data-fancybox="gallery"
         data-caption={photo.alt}
-        className={`group relative overflow-hidden rounded-xl bg-muted cursor-pointer hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] ${className} ${isTall ? 'w-full' : ''}`}
+        className={`group relative overflow-hidden rounded-sm bg-muted cursor-pointer hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] ${className} ${isTall ? 'w-full' : ''}`}
       >
         <Image
           src={photo.thumbnail}
@@ -206,7 +206,7 @@ export function GallerySection() {
           <p className="text-xs font-semibold drop-shadow-lg">{photo.alt}</p>
         </div>
         <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="w-7 h-7 bg-white/90 rounded-full flex items-center justify-center backdrop-blur-sm">
+          <div className="w-7 h-7 bg-white/90 rounded-sm flex items-center justify-center backdrop-blur-sm">
             <svg className="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
@@ -225,10 +225,10 @@ export function GallerySection() {
       </div>
 
       <Tabs defaultValue="photos" className="w-full" onValueChange={setActiveTab}>
-        <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-6 sm:mb-8 h-12 sm:h-14 bg-gradient-to-r from-muted/50 via-muted/30 to-muted/50 backdrop-blur-xl rounded-2xl p-1 sm:p-1.5 border border-border/50 shadow-xl">
+        <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-6 sm:mb-8 h-12 sm:h-14 bg-gradient-to-r from-muted/50 via-muted/30 to-muted/50 backdrop-blur-xl rounded-sm p-1 sm:p-1.5 border border-border/50 shadow-xl">
           <TabsTrigger 
             value="photos" 
-            className={`rounded-xl text-sm sm:text-base font-semibold transition-all duration-300 ${
+            className={`rounded-sm text-sm sm:text-base font-semibold transition-all duration-300 ${
               activeTab === 'photos' 
                 ? 'bg-gradient-to-r from-primary via-primary/90 to-accent text-primary-foreground shadow-lg shadow-primary/30' 
                 : 'text-muted-foreground hover:text-foreground'
@@ -238,7 +238,7 @@ export function GallerySection() {
           </TabsTrigger>
           <TabsTrigger 
             value="videos"
-            className={`rounded-xl text-sm sm:text-base font-semibold transition-all duration-300 ${
+            className={`rounded-sm text-sm sm:text-base font-semibold transition-all duration-300 ${
               activeTab === 'videos' 
                 ? 'bg-gradient-to-r from-primary via-primary/90 to-accent text-primary-foreground shadow-lg shadow-primary/30' 
                 : 'text-muted-foreground hover:text-foreground'
@@ -264,7 +264,7 @@ export function GallerySection() {
                 href={video.src}
                 data-fancybox="videos"
                 data-caption={video.title}
-                className="group relative aspect-video overflow-hidden rounded-xl bg-muted cursor-pointer hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]"
+                className="group relative aspect-video overflow-hidden rounded-sm bg-muted cursor-pointer hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]"
               >
                 <Image
                   src={video.thumbnail}
@@ -274,7 +274,7 @@ export function GallerySection() {
                   unoptimized
                 />
                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/50 transition-colors duration-300">
-                  <div className="w-20 h-20 rounded-full bg-white/95 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-xl">
+                  <div className="w-20 h-20 rounded-sm bg-white/95 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-xl">
                     <svg
                       className="w-10 h-10 text-primary ml-1"
                       fill="currentColor"

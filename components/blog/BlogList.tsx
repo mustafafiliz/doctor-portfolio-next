@@ -65,7 +65,7 @@ export function BlogList() {
             <Link 
               key={post.id} 
               href={`/${currentLocale}${getRoute('blog', currentLocale)}/${post.slug}`}
-              className="group bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 block flex flex-col h-full"
+              className="group bg-white rounded-sm shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 block flex flex-col h-full"
             >
               <div className="relative overflow-hidden">
                 <div className="w-full h-52 relative bg-muted overflow-hidden">

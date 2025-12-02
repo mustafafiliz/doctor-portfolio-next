@@ -18,7 +18,7 @@ export function Toaster() {
       {toasts.map((toast) => (
         <div
           key={toast.id}
-          className={`flex items-center gap-4 rounded-lg border p-4 shadow-lg ${
+          className={`flex items-center gap-4 rounded-sm border p-4 shadow-lg ${
             toast.variant === 'destructive'
               ? 'bg-destructive text-destructive-foreground'
               : 'bg-background text-foreground'

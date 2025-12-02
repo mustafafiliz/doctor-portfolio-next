@@ -53,7 +53,7 @@ export function ContactForm() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-background via-muted/30 to-background rounded-2xl p-6 sm:p-8 shadow-xl border border-border/50 backdrop-blur-xl">
+    <div className="bg-gradient-to-br from-background via-muted/30 to-background rounded-sm p-6 sm:p-8 shadow-xl border border-border/50 backdrop-blur-xl">
       <div className="mb-5 sm:mb-6">
         <h2 className="text-2xl sm:text-3xl font-bold mb-2 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
           İletişim Formu

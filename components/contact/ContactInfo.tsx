@@ -63,7 +63,7 @@ export function ContactInfo() {
         const Icon = item.icon;
         const content = (
           <div className="flex items-start space-x-3 sm:space-x-4 group">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-primary/20 via-accent/20 to-primary/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-sm bg-gradient-to-br from-primary/20 via-accent/20 to-primary/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
               <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
             </div>
             <div className="flex-1 min-w-0">
@@ -90,7 +90,7 @@ export function ContactInfo() {
               rel={
                 item.link.startsWith("http") ? "noopener noreferrer" : undefined
               }
-              className="block p-4 sm:p-5 rounded-xl bg-gradient-to-br from-background via-muted/30 to-background border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10"
+              className="block p-4 sm:p-5 rounded-sm bg-gradient-to-br from-background via-muted/30 to-background border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10"
             >
               {content}
             </Link>
@@ -100,7 +100,7 @@ export function ContactInfo() {
         return (
           <div
             key={index}
-            className="p-4 sm:p-5 rounded-xl bg-gradient-to-br from-background via-muted/30 to-background border border-border/50"
+            className="p-4 sm:p-5 rounded-sm bg-gradient-to-br from-background via-muted/30 to-background border border-border/50"
           >
             {content}
           </div>

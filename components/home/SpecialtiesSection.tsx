@@ -95,7 +95,7 @@ export function SpecialtiesSection() {
               return (
                 <CarouselItem key={specialty.id} className="pl-2 sm:pl-4 basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
                   <Link href={`/${currentLocale}${getRoute('specialties', currentLocale)}#${specialty.id}`}>
-                    <div className="group bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 block flex flex-col h-full">
+                    <div className="group bg-white rounded-sm shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 block flex flex-col h-full">
                       {/* Image */}
                       <div className="relative overflow-hidden">
                         <div className="w-full h-52 relative bg-muted overflow-hidden">
@@ -136,7 +136,7 @@ export function SpecialtiesSection() {
         <Container className="mt-6 sm:mt-8 text-center">
           <Link
             href={`/${currentLocale}${getRoute('specialties', currentLocale)}`}
-            className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-primary via-primary/90 to-accent text-primary-foreground text-sm sm:text-base font-semibold shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 hover:scale-105"
+            className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-sm bg-gradient-to-r from-primary via-primary/90 to-accent text-primary-foreground text-sm sm:text-base font-semibold shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 hover:scale-105"
           >
             Tümünü Gör
             <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />

@@ -23,7 +23,7 @@ export function SummarySection() {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-sm bg-primary/10 mb-6">
               <Sparkles className="h-4 w-4" style={{ color: config.colors.primary }} />
               <span className="text-sm font-medium" style={{ color: config.colors.primary }}>
                 Profesyonel Hizmet
@@ -34,7 +34,7 @@ export function SummarySection() {
             </h2>
           </div>
           
-          <div className="bg-card/50 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-border/50 shadow-xl">
+          <div className="bg-card/50 backdrop-blur-sm rounded-sm p-8 md:p-12 border border-border/50 shadow-xl">
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-8 text-center">
               {t('summary')}
             </p>
@@ -43,7 +43,7 @@ export function SummarySection() {
               <Link href={`/${currentLocale}${getRoute('about', currentLocale)}`}>
                 <Button 
                   size="lg" 
-                  className="gap-2 rounded-full px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                  className="gap-2 rounded-sm px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
                   style={{ 
                     backgroundColor: config.colors.primary,
                     color: 'white'

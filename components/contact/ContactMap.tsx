@@ -10,7 +10,7 @@ export function ContactMap() {
   const mapUrl = `https://www.google.com/maps?q=${mapAddress}&output=embed`;
 
   return (
-    <div className="relative w-full h-full min-h-[300px] sm:min-h-[400px] md:min-h-[500px] rounded-xl overflow-hidden shadow-2xl border border-border/50 group">
+    <div className="relative w-full h-full min-h-[300px] sm:min-h-[400px] md:min-h-[500px] rounded-sm overflow-hidden shadow-2xl border border-border/50 group">
       <iframe
         src={mapUrl}
         width="100%"
@@ -24,7 +24,7 @@ export function ContactMap() {
       {/* Overlay gradient */}
       <div className="absolute inset-0 bg-gradient-to-t from-background/5 via-transparent to-transparent pointer-events-none" />
       {/* Border glow effect */}
-      <div className="absolute inset-0 rounded-xl border-2 border-primary/20 group-hover:border-primary/40 transition-colors duration-300 pointer-events-none" />
+      <div className="absolute inset-0 rounded-sm border-2 border-primary/20 group-hover:border-primary/40 transition-colors duration-300 pointer-events-none" />
     </div>
   );
 }
