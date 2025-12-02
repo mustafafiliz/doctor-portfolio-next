@@ -1,0 +1,151 @@
+{
+  "categories": [
+    {
+      "id": "glaucoma",
+      "title": "Glokom (Göz Tansiyonu)",
+      "slug": "glokom",
+      "description": "Glokom, göz içi basıncının yükselmesi sonucu görme sinirinde hasar oluşmasıdır."
+    },
+    {
+      "id": "cataract",
+      "title": "Katarakt",
+      "slug": "katarakt",
+      "description": "Katarakt, göz merceğinin saydamlığını yitirmesi sonucu görme kaybına neden olan bir hastalıktır."
+    },
+    {
+      "id": "retina",
+      "title": "Retina Hastalıkları",
+      "slug": "retina",
+      "description": "Retina hastalıkları, gözün arka kısmındaki ışığa duyarlı tabakanın etkilendiği durumlardır."
+    },
+    {
+      "id": "eye-diseases",
+      "title": "Göz Rahatsızlıkları",
+      "slug": "goz-rahatsizliklari",
+      "description": "Göz sağlığını etkileyen çeşitli rahatsızlıklar ve tedavi yöntemleri."
+    }
+  ],
+  "specialties": [
+    {
+      "slug": "glokom-nedir",
+      "categoryId": "glaucoma",
+      "title": "Glokom Nedir?",
+      "description": "Glokom, göz içi basıncının yükselmesi sonucu görme sinirinde hasar oluşmasıdır.",
+      "image": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=1200&h=600&fit=crop",
+      "content": "<h2>Glokom Nedir?</h2><p>Glokom, göz içi basıncının yükselmesi sonucu görme sinirinde hasar oluşmasıdır. Bu durum zamanla görme kaybına yol açabilir. Glokom, dünya genelinde körlüğün önde gelen nedenlerinden biridir.</p><h2>Glokom Belirtileri</h2><p>Glokomun erken evreleri genellikle belirtisiz seyreder. Bu nedenle düzenli göz muayeneleri çok önemlidir. İleri evrelerde şu belirtiler görülebilir:</p><ul><li>Çevresel görme kaybı</li><li>Tünel görüşü</li><li>Göz ağrısı ve baş ağrısı</li><li>Bulantı ve kusma</li><li>Işık çevresinde haleler görme</li></ul><h2>Risk Faktörleri</h2><p>Glokom için risk faktörleri arasında yaş, aile öyküsü, yüksek göz içi basıncı, miyopi, diyabet ve uzun süreli kortikosteroid kullanımı sayılabilir.</p>",
+      "relatedSlugs": ["glokom-tedavisi", "glokom-lazer-tedavisi"],
+      "order": 1
+    },
+    {
+      "slug": "glokom-tedavisi",
+      "categoryId": "glaucoma",
+      "title": "Glokom Tedavisi",
+      "description": "Glokom tedavisinde göz damlaları, lazer ve cerrahi yöntemler kullanılmaktadır.",
+      "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=1200&h=600&fit=crop",
+      "content": "<h2>Glokom Tedavi Yöntemleri</h2><p>Glokom tedavisinde amaç, göz içi basıncını düşürerek görme sinirindeki hasarı durdurmak veya yavaşlatmaktır.</p><h2>İlaç Tedavisi</h2><p>Glokom tedavisinde ilk tercih genellikle göz damlaları olur. Bu damlalar göz içi basıncını düşürmeye yardımcı olur. Düzenli kullanım çok önemlidir.</p><h2>Lazer Tedavisi</h2><p>İlaç tedavisinin yeterli olmadığı durumlarda lazer tedavisi uygulanabilir. SLT (Selektif Lazer Trabeküloplasti) en yaygın kullanılan lazer yöntemidir.</p><h2>Cerrahi Tedavi</h2><p>İlaç ve lazer tedavilerinin yeterli olmadığı durumlarda cerrahi müdahale gerekebilir. Trabekülektomi ve tüp şant ameliyatları en sık uygulanan cerrahi yöntemlerdir.</p>",
+      "relatedSlugs": ["glokom-nedir", "glokom-lazer-tedavisi"],
+      "order": 2
+    },
+    {
+      "slug": "glokom-lazer-tedavisi",
+      "categoryId": "glaucoma",
+      "title": "Glokom Lazer Tedavisi (SLT)",
+      "description": "SLT, glokom tedavisinde kullanılan etkili ve güvenli bir lazer yöntemidir.",
+      "image": "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=1200&h=600&fit=crop",
+      "content": "<h2>SLT Lazer Tedavisi Nedir?</h2><p>Selektif Lazer Trabeküloplasti (SLT), glokom tedavisinde kullanılan modern bir lazer yöntemidir. Göz içi sıvısının drenajını iyileştirerek göz içi basıncını düşürür.</p><h2>İşlem Nasıl Yapılır?</h2><p>SLT işlemi poliklinikte, lokal anestezi ile yapılır. İşlem yaklaşık 5-10 dakika sürer ve ağrısızdır. Hasta aynı gün evine dönebilir.</p><h2>Avantajları</h2><ul><li>Güvenli ve etkili</li><li>Tekrarlanabilir</li><li>Göz damlası kullanımını azaltabilir</li><li>Minimal yan etki</li></ul>",
+      "relatedSlugs": ["glokom-nedir", "glokom-tedavisi"],
+      "order": 3
+    },
+    {
+      "slug": "katarakt-nedir",
+      "categoryId": "cataract",
+      "title": "Katarakt Nedir?",
+      "description": "Katarakt, göz merceğinin saydamlığını yitirmesi sonucu görme kaybına neden olan bir hastalıktır.",
+      "image": "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=1200&h=600&fit=crop",
+      "content": "<h2>Katarakt Nedir?</h2><p>Katarakt, göz merceğinin saydamlığını yitirmesi sonucu görme kaybına neden olan bir hastalıktır. Genellikle yaşlanma ile birlikte ortaya çıkar ancak travma, diyabet veya bazı ilaçlar da katarakta neden olabilir.</p><h2>Katarakt Belirtileri</h2><ul><li>Bulanık veya sisli görme</li><li>Gece görüşünde zorluk</li><li>Işığa hassasiyet</li><li>Renklerin soluk görünmesi</li><li>Çift görme</li></ul><h2>Tedavi</h2><p>Kataraktın tek tedavisi cerrahidir. Modern katarakt cerrahisi çok gelişmiş ve güvenli bir işlemdir. Ameliyat sonrası hasta aynı gün evine dönebilir.</p>",
+      "relatedSlugs": ["katarakt-ameliyati", "akilli-lensler"],
+      "order": 1
+    },
+    {
+      "slug": "katarakt-ameliyati",
+      "categoryId": "cataract",
+      "title": "Katarakt Ameliyatı",
+      "description": "Katarakt ameliyatı, bulanık göz merceğinin çıkarılıp yerine yapay lens yerleştirilmesi işlemidir.",
+      "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=1200&h=600&fit=crop",
+      "content": "<h2>Katarakt Ameliyatı Nasıl Yapılır?</h2><p>Katarakt ameliyatı, fakoemülsifikasyon yöntemi ile yapılır. Bu yöntemde ultrasonik dalgalar kullanılarak bulanık mercek parçalanır ve emilir. Ardından yerine yapay göz içi lensi (IOL) yerleştirilir.</p><h2>Ameliyat Süreci</h2><ul><li>Ameliyat yaklaşık 15-20 dakika sürer</li><li>Lokal anestezi ile yapılır</li><li>Hasta aynı gün evine döner</li><li>İyileşme süreci hızlıdır</li></ul><h2>Ameliyat Sonrası</h2><p>Ameliyat sonrası birkaç gün göz damlası kullanılır. Çoğu hasta birkaç gün içinde normal aktivitelerine dönebilir. Tam iyileşme 4-6 hafta sürer.</p>",
+      "relatedSlugs": ["katarakt-nedir", "akilli-lensler"],
+      "order": 2
+    },
+    {
+      "slug": "akilli-lensler",
+      "categoryId": "cataract",
+      "title": "Akıllı Lensler (Premium IOL)",
+      "description": "Akıllı lensler, katarakt ameliyatında kullanılan ve hem uzak hem yakın görmeyi düzelten premium lenslerdir.",
+      "image": "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1200&h=600&fit=crop",
+      "content": "<h2>Akıllı Lensler Nedir?</h2><p>Akıllı lensler (Premium IOL), katarakt ameliyatında standart lenslerin yerine kullanılabilen gelişmiş göz içi lensleridir. Bu lensler hem uzak hem yakın görmeyi düzeltebilir.</p><h2>Lens Çeşitleri</h2><ul><li><strong>Multifokal Lensler:</strong> Uzak, orta ve yakın mesafelerde net görüş sağlar</li><li><strong>EDOF Lensler:</strong> Genişletilmiş odak derinliği sunar</li><li><strong>Torik Lensler:</strong> Astigmatı da düzeltir</li><li><strong>Trifocal Lensler:</strong> Üç farklı mesafede net görüş</li></ul><h2>Avantajları</h2><p>Akıllı lensler ile ameliyat sonrası gözlük bağımlılığı önemli ölçüde azalır veya tamamen ortadan kalkar.</p>",
+      "relatedSlugs": ["katarakt-nedir", "katarakt-ameliyati"],
+      "order": 3
+    },
+    {
+      "slug": "sari-nokta-hastaligi",
+      "categoryId": "retina",
+      "title": "Sarı Nokta Hastalığı (Maküla Dejenerasyonu)",
+      "description": "Sarı nokta hastalığı, retinanın merkezi bölgesinin hasar görmesi sonucu görme kaybına neden olur.",
+      "image": "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=1200&h=600&fit=crop",
+      "content": "<h2>Sarı Nokta Hastalığı Nedir?</h2><p>Sarı nokta hastalığı (Yaşa Bağlı Maküla Dejenerasyonu - YBMD), retinanın merkezi bölgesi olan makülada hasar oluşması sonucu merkezi görmenin bozulmasıdır.</p><h2>Tipleri</h2><ul><li><strong>Kuru Tip:</strong> Daha yaygın, yavaş ilerler</li><li><strong>Yaş Tip:</strong> Daha az yaygın ama daha agresif</li></ul><h2>Belirtiler</h2><ul><li>Merkezi görme kaybı</li><li>Düz çizgilerin eğri görünmesi</li><li>Okuma güçlüğü</li><li>Yüz tanıma zorluğu</li></ul>",
+      "relatedSlugs": ["diyabetik-retinopati", "retina-dekolmani"],
+      "order": 1
+    },
+    {
+      "slug": "diyabetik-retinopati",
+      "categoryId": "retina",
+      "title": "Diyabetik Retinopati",
+      "description": "Diyabetik retinopati, şeker hastalığının gözde yol açtığı damar hasarıdır.",
+      "image": "https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=1200&h=600&fit=crop",
+      "content": "<h2>Diyabetik Retinopati Nedir?</h2><p>Diyabetik retinopati, şeker hastalığının retina damarlarında yol açtığı hasardır. Diyabetin en önemli göz komplikasyonudur ve tedavi edilmezse körlüğe yol açabilir.</p><h2>Evreleri</h2><ul><li>Hafif nonproliferatif</li><li>Orta nonproliferatif</li><li>Şiddetli nonproliferatif</li><li>Proliferatif</li></ul><h2>Tedavi</h2><p>Tedavi seçenekleri arasında lazer tedavisi, göz içi iğne uygulamaları ve vitrektomi cerrahisi bulunur. En önemli tedavi ise kan şekerinin kontrol altında tutulmasıdır.</p>",
+      "relatedSlugs": ["sari-nokta-hastaligi", "retina-dekolmani"],
+      "order": 2
+    },
+    {
+      "slug": "retina-dekolmani",
+      "categoryId": "retina",
+      "title": "Retina Dekolmanı",
+      "description": "Retina dekolmanı, retinanın altındaki dokudan ayrılmasıdır ve acil tedavi gerektirir.",
+      "image": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&h=600&fit=crop",
+      "content": "<h2>Retina Dekolmanı Nedir?</h2><p>Retina dekolmanı, retinanın altındaki pigment epitelinden ayrılmasıdır. Bu durum acil tedavi gerektiren ciddi bir göz problemidir.</p><h2>Belirtiler</h2><ul><li>Ani şimşek çakması görme</li><li>Uçuşan cisimler (floaters)</li><li>Görme alanında perde inmesi</li><li>Ani görme kaybı</li></ul><h2>Tedavi</h2><p>Retina dekolmanı tedavisi cerrahidir. Pnömatik retinopeksi, skleral çökertme veya vitrektomi yöntemleri uygulanabilir. Erken tedavi görme kaybını önlemek için kritiktir.</p>",
+      "relatedSlugs": ["sari-nokta-hastaligi", "diyabetik-retinopati"],
+      "order": 3
+    },
+    {
+      "slug": "kuru-goz-tedavisi",
+      "categoryId": "eye-diseases",
+      "title": "Kuru Göz Tedavisi",
+      "description": "Kuru göz sendromu, gözyaşı üretiminin yetersiz olması veya gözyaşının hızlı buharlaşması sonucu oluşur.",
+      "image": "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=1200&h=600&fit=crop",
+      "content": "<h2>Kuru Göz Sendromu Nedir?</h2><p>Kuru göz sendromu, gözyaşı filminin yeterli olmaması veya kalitesinin bozulması sonucu gözlerin yeterince nemlenmemesidir.</p><h2>Belirtiler</h2><ul><li>Yanma ve batma hissi</li><li>Kızarıklık</li><li>Bulanık görme</li><li>Işığa hassasiyet</li><li>Göz yorgunluğu</li></ul><h2>Tedavi Seçenekleri</h2><ul><li>Suni gözyaşı damlaları</li><li>Gözyaşı kanalı tıkaçları</li><li>Isıtma ve masaj tedavisi</li><li>Omega-3 takviyeleri</li><li>Yaşam tarzı değişiklikleri</li></ul>",
+      "relatedSlugs": ["goz-enfeksiyonlari", "goz-alerjisi"],
+      "order": 1
+    },
+    {
+      "slug": "goz-enfeksiyonlari",
+      "categoryId": "eye-diseases",
+      "title": "Göz Enfeksiyonları",
+      "description": "Göz enfeksiyonları bakteri, virüs veya mantar kaynaklı olabilir ve uygun tedavi gerektirir.",
+      "image": "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=1200&h=600&fit=crop",
+      "content": "<h2>Göz Enfeksiyonları</h2><p>Göz enfeksiyonları, gözün farklı bölgelerini etkileyebilen bakteri, virüs veya mantar kaynaklı hastalıklardır.</p><h2>Yaygın Enfeksiyon Tipleri</h2><ul><li><strong>Konjonktivit:</strong> Göz akı iltihabı</li><li><strong>Blefarit:</strong> Göz kapağı iltihabı</li><li><strong>Keratit:</strong> Kornea iltihabı</li><li><strong>Arpacık:</strong> Göz kapağında iltihaplı şişlik</li></ul><h2>Tedavi</h2><p>Tedavi enfeksiyonun türüne göre değişir. Antibiyotik, antiviral veya antifungal ilaçlar kullanılabilir. Erken tedavi komplikasyonları önler.</p>",
+      "relatedSlugs": ["kuru-goz-tedavisi", "goz-alerjisi"],
+      "order": 2
+    },
+    {
+      "slug": "goz-alerjisi",
+      "categoryId": "eye-diseases",
+      "title": "Göz Alerjisi",
+      "description": "Göz alerjisi, alerjenlerle temas sonucu gözlerde kaşıntı, kızarıklık ve sulanma ile karakterizedir.",
+      "image": "https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=1200&h=600&fit=crop",
+      "content": "<h2>Göz Alerjisi Nedir?</h2><p>Göz alerjisi (alerjik konjonktivit), polen, toz, hayvan tüyü gibi alerjenlerle temas sonucu oluşan bir reaksiyondur.</p><h2>Belirtiler</h2><ul><li>Şiddetli kaşıntı</li><li>Kızarıklık</li><li>Sulanma</li><li>Şişlik</li><li>Yanma hissi</li></ul><h2>Tedavi ve Korunma</h2><ul><li>Alerjenlerden kaçınma</li><li>Antihistaminik göz damlaları</li><li>Soğuk kompres</li><li>Suni gözyaşı damlaları</li><li>Gerekirse sistemik antihistaminikler</li></ul>",
+      "relatedSlugs": ["kuru-goz-tedavisi", "goz-enfeksiyonlari"],
+      "order": 3
+    }
+  ]
+}
+

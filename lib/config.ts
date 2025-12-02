@@ -29,9 +29,9 @@ export interface SiteConfig {
 // Default config - This can be replaced with an API call
 export const defaultConfig: SiteConfig = {
   colors: {
-    primary: "#0ea5e9", // Sky blue
+    primary: "#144793", // Dark blue
     secondary: "#64748b", // Slate
-    accent: "#06b6d4" // Cyan
+    accent: "#1e5ba8" // Lighter blue accent
   },
   meta: {
     siteName: "Prof. Dr. Kadriye Ufuk Elgin",
