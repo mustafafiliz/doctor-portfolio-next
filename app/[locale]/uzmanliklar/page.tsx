@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { SpecialtiesList } from '@/components/specialties/SpecialtiesList';
 import { getDictionary } from '../dictionaries';
 import { locales, type Locale } from '@/lib/i18n';
+import { Suspense } from 'react';
 
 export async function generateMetadata({
   params,
@@ -27,6 +28,10 @@ export async function generateMetadata({
 }
 
 export default async function SpecialtiesPage() {
-  return <SpecialtiesList />;
+  return (
+    <Suspense fallback={<div className="container mx-auto px-4 py-12">Yükleniyor...</div>}>
+      <SpecialtiesList />
+    </Suspense>
+  );
 }
 
