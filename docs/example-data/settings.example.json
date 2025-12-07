@@ -1,0 +1,89 @@
+{
+  "success": true,
+  "data": {
+    "_id": "6579a1b2c3d4e5f6a7b8c9d0",
+    "site": {
+      "name": "Prof. Dr. Kadriye Ufuk Elgin",
+      "tagline": "Göz Hastalıkları Uzmanı",
+      "logo": "/images/logo.webp",
+      "favicon": "/favicon.ico"
+    },
+    "colors": {
+      "primary": "#144793",
+      "accent": "#1e5ba8",
+      "secondary": "#f8fafc"
+    },
+    "contact": {
+      "email": "info@drufukelgin.com",
+      "phone": "+90 212 555 00 00",
+      "whatsapp": "+90 532 555 00 00",
+      "address": "Nişantaşı, Abdi İpekçi Caddesi No:123, Şişli/İstanbul",
+      "addressDetail": "Kat: 3, Daire: 5"
+    },
+    "workingHours": [
+      {
+        "day": "Pazartesi",
+        "hours": "09:00 - 18:00",
+        "isOpen": true
+      },
+      {
+        "day": "Salı",
+        "hours": "09:00 - 18:00",
+        "isOpen": true
+      },
+      {
+        "day": "Çarşamba",
+        "hours": "09:00 - 18:00",
+        "isOpen": true
+      },
+      {
+        "day": "Perşembe",
+        "hours": "09:00 - 18:00",
+        "isOpen": true
+      },
+      {
+        "day": "Cuma",
+        "hours": "09:00 - 18:00",
+        "isOpen": true
+      },
+      {
+        "day": "Cumartesi",
+        "hours": "10:00 - 14:00",
+        "isOpen": true
+      },
+      {
+        "day": "Pazar",
+        "hours": "Kapalı",
+        "isOpen": false
+      }
+    ],
+    "social": {
+      "facebook": "https://facebook.com/drufukelgin",
+      "instagram": "https://instagram.com/drufukelgin",
+      "twitter": "https://twitter.com/drufukelgin",
+      "linkedin": "https://linkedin.com/in/drufukelgin",
+      "youtube": "https://youtube.com/@drufukelgin"
+    },
+    "maps": {
+      "embedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.1234567890123!2d28.987654321098765!3d41.043210987654321!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDAyJzM1LjYiTiAyOMKwNTknMTUuNiJF!5e0!3m2!1str!2str!4v1234567890123",
+      "latitude": "41.0432",
+      "longitude": "28.9877"
+    },
+    "seo": {
+      "metaTitle": "Prof. Dr. Kadriye Ufuk Elgin | Göz Hastalıkları Uzmanı İstanbul",
+      "metaDescription": "İstanbul'da göz hastalıkları uzmanı Prof. Dr. Kadriye Ufuk Elgin. Katarakt, glokom, retina hastalıkları tedavisi. Randevu için hemen arayın.",
+      "keywords": "göz doktoru, göz hastalıkları uzmanı, katarakt ameliyatı, glokom tedavisi, retina hastalıkları, istanbul göz doktoru, nişantaşı göz doktoru",
+      "ogImage": "/images/og-image.jpg"
+    },
+    "hero": {
+      "title": "Prof. Dr. Kadriye Ufuk Elgin",
+      "subtitle": "Göz Hastalıkları Uzmanı",
+      "description": "25 yılı aşkın deneyim ile göz sağlığınız için yanınızdayız.",
+      "image": "/images/me.jpg",
+      "ctaText": "Randevu Al",
+      "ctaLink": "/iletisim"
+    },
+    "updatedAt": "2024-01-20T15:30:00.000Z"
+  }
+}
+

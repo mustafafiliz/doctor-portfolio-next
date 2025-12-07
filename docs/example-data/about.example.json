@@ -1,0 +1,80 @@
+{
+  "success": true,
+  "data": {
+    "_id": "6579f1a2b3c4d5e6f7a8b9c0",
+    "title": "Prof. Dr. Kadriye Ufuk Elgin",
+    "subtitle": "Göz Hastalıkları Uzmanı",
+    "image": "/uploads/profile/doctor-profile.jpg",
+    "bio": "<p>Prof. Dr. Kadriye Ufuk Elgin, göz hastalıkları alanında 25 yılı aşkın deneyime sahip, alanında uzman bir hekimdir.</p><p>İstanbul Üniversitesi Tıp Fakültesi'nden mezun olduktan sonra, aynı üniversitede göz hastalıkları uzmanlığını tamamlamıştır. Glokom, katarakt cerrahisi ve retina hastalıkları konularında özelleşmiştir.</p><p>Ulusal ve uluslararası birçok bilimsel yayını bulunan Prof. Dr. Elgin, çeşitli tıbbi derneklerin aktif üyesidir. Hastalarına en güncel tedavi yöntemlerini sunmak için sürekli kendini geliştirmekte ve uluslararası kongrelere katılmaktadır.</p>",
+    "education": [
+      {
+        "_id": "6579f1a2b3c4d5e6f7a8b9c1",
+        "year": "1995",
+        "title": "Tıp Fakültesi",
+        "institution": "İstanbul Üniversitesi",
+        "order": 1
+      },
+      {
+        "_id": "6579f1a2b3c4d5e6f7a8b9c2",
+        "year": "2000",
+        "title": "Göz Hastalıkları Uzmanlığı",
+        "institution": "İstanbul Üniversitesi Tıp Fakültesi",
+        "order": 2
+      },
+      {
+        "_id": "6579f1a2b3c4d5e6f7a8b9c3",
+        "year": "2005",
+        "title": "Doçentlik",
+        "institution": "İstanbul Üniversitesi",
+        "order": 3
+      },
+      {
+        "_id": "6579f1a2b3c4d5e6f7a8b9c4",
+        "year": "2010",
+        "title": "Profesörlük",
+        "institution": "Marmara Üniversitesi",
+        "order": 4
+      }
+    ],
+    "experience": [
+      {
+        "_id": "6579f1a2b3c4d5e6f7a8b9c5",
+        "years": "2000-2005",
+        "title": "Göz Hastalıkları Uzmanı",
+        "institution": "İstanbul Üniversitesi Tıp Fakültesi",
+        "order": 1
+      },
+      {
+        "_id": "6579f1a2b3c4d5e6f7a8b9c6",
+        "years": "2005-2010",
+        "title": "Doçent",
+        "institution": "İstanbul Üniversitesi Tıp Fakültesi",
+        "order": 2
+      },
+      {
+        "_id": "6579f1a2b3c4d5e6f7a8b9c7",
+        "years": "2010-2020",
+        "title": "Profesör",
+        "institution": "Marmara Üniversitesi Tıp Fakültesi",
+        "order": 3
+      },
+      {
+        "_id": "6579f1a2b3c4d5e6f7a8b9c8",
+        "years": "2020-Günümüz",
+        "title": "Özel Muayenehane",
+        "institution": "İstanbul",
+        "order": 4
+      }
+    ],
+    "certifications": [
+      "Türk Oftalmoloji Derneği Üyeliği",
+      "Avrupa Katarakt ve Refraktif Cerrahi Derneği (ESCRS) Üyeliği",
+      "Amerikan Göz Akademisi (AAO) Üyeliği",
+      "Türk Glokom Derneği Üyeliği",
+      "Uluslararası Glokom Derneği Üyeliği"
+    ],
+    "locale": "tr",
+    "updatedAt": "2024-01-20T10:00:00.000Z"
+  }
+}
+

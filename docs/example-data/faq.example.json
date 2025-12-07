@@ -1,0 +1,51 @@
+{
+  "success": true,
+  "data": [
+    {
+      "_id": "6579e1f2a3b4c5d6e7f8a9b0",
+      "question": "Glokom tedavisi ne kadar sürer?",
+      "answer": "Glokom tedavisi, hastalığın türüne ve evresine bağlı olarak değişir. Çoğu durumda, glokom ömür boyu yönetilmesi gereken kronik bir hastalıktır. Göz damlaları düzenli kullanılmalı ve belirli aralıklarla kontrol muayeneleri yapılmalıdır. Lazer veya cerrahi tedavi sonrasında da takip önemlidir.",
+      "order": 1,
+      "locale": "tr",
+      "createdAt": "2024-01-01T10:00:00.000Z",
+      "updatedAt": "2024-01-01T10:00:00.000Z"
+    },
+    {
+      "_id": "6579e1f2a3b4c5d6e7f8a9b1",
+      "question": "Katarakt ameliyatı ağrılı mıdır?",
+      "answer": "Katarakt ameliyatı lokal anestezi altında yapılır ve genellikle ağrısızdır. Ameliyat sırasında hafif bir basınç hissedebilirsiniz ancak ağrı duymazsınız. Ameliyat sonrası birkaç gün hafif rahatsızlık hissedilebilir, ancak bu durum ağrı kesicilerle kolayca yönetilebilir.",
+      "order": 2,
+      "locale": "tr",
+      "createdAt": "2024-01-01T11:00:00.000Z",
+      "updatedAt": "2024-01-01T11:00:00.000Z"
+    },
+    {
+      "_id": "6579e1f2a3b4c5d6e7f8a9b2",
+      "question": "Göz kontrolü ne sıklıkla yapılmalıdır?",
+      "answer": "40 yaş altı bireyler için 2-3 yılda bir, 40-65 yaş arası için 1-2 yılda bir, 65 yaş üstü için yılda bir göz kontrolü önerilir. Diyabet, glokom ailevi öyküsü veya diğer risk faktörleri olan kişilerin daha sık kontrol yaptırması gerekebilir.",
+      "order": 3,
+      "locale": "tr",
+      "createdAt": "2024-01-01T12:00:00.000Z",
+      "updatedAt": "2024-01-01T12:00:00.000Z"
+    },
+    {
+      "_id": "6579e1f2a3b4c5d6e7f8a9b3",
+      "question": "Lazer tedavisi kimlere uygulanabilir?",
+      "answer": "Lazer tedavisi, miyop, hipermetrop ve astigmat gibi kırma kusurları olan hastalara uygulanabilir. Ancak her hasta lazer tedavisine uygun değildir. 18 yaş üstü, göz numarası stabil olan, kornea kalınlığı yeterli olan ve belirli göz hastalıkları bulunmayan hastalar uygun adaylardır. Detaylı muayene sonrası karar verilir.",
+      "order": 4,
+      "locale": "tr",
+      "createdAt": "2024-01-01T13:00:00.000Z",
+      "updatedAt": "2024-01-01T13:00:00.000Z"
+    },
+    {
+      "_id": "6579e1f2a3b4c5d6e7f8a9b4",
+      "question": "Randevu nasıl alabilirim?",
+      "answer": "Randevu almak için web sitemizdeki iletişim formunu doldurabilir, telefon numaramızı arayabilir veya WhatsApp üzerinden mesaj gönderebilirsiniz. En kısa sürede size dönüş yapılacaktır.",
+      "order": 5,
+      "locale": "tr",
+      "createdAt": "2024-01-01T14:00:00.000Z",
+      "updatedAt": "2024-01-01T14:00:00.000Z"
+    }
+  ]
+}
+

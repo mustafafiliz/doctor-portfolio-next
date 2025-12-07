@@ -1,0 +1,135 @@
+{
+  "success": true,
+  "data": {
+    "stats": {
+      "totalBlogs": 12,
+      "publishedBlogs": 10,
+      "draftBlogs": 2,
+      "totalSpecialties": 8,
+      "totalGalleryItems": 24,
+      "galleryImages": 20,
+      "galleryVideos": 4,
+      "totalFAQ": 15,
+      "totalContacts": 45,
+      "unreadContacts": 3,
+      "pageViews": {
+        "total": 12450,
+        "thisMonth": 1234,
+        "lastMonth": 1100,
+        "growth": 12.18
+      },
+      "uniqueVisitors": {
+        "total": 8560,
+        "thisMonth": 856,
+        "lastMonth": 790,
+        "growth": 8.35
+      }
+    },
+    "recentActivity": [
+      {
+        "_id": "6579a1b2c3d4e5f6a7b8c9d1",
+        "type": "blog",
+        "action": "updated",
+        "title": "Glokom Nedir?",
+        "user": {
+          "name": "Admin"
+        },
+        "createdAt": "2024-01-20T10:30:00.000Z"
+      },
+      {
+        "_id": "6579a1b2c3d4e5f6a7b8c9d2",
+        "type": "specialty",
+        "action": "created",
+        "title": "Katarakt Ameliyatı",
+        "user": {
+          "name": "Admin"
+        },
+        "createdAt": "2024-01-20T09:15:00.000Z"
+      },
+      {
+        "_id": "6579a1b2c3d4e5f6a7b8c9d3",
+        "type": "gallery",
+        "action": "created",
+        "title": "Yeni fotoğraf yüklendi",
+        "user": {
+          "name": "Admin"
+        },
+        "createdAt": "2024-01-19T16:45:00.000Z"
+      },
+      {
+        "_id": "6579a1b2c3d4e5f6a7b8c9d4",
+        "type": "faq",
+        "action": "created",
+        "title": "Ameliyat sonrası bakım",
+        "user": {
+          "name": "Admin"
+        },
+        "createdAt": "2024-01-18T14:20:00.000Z"
+      },
+      {
+        "_id": "6579a1b2c3d4e5f6a7b8c9d5",
+        "type": "contact",
+        "action": "received",
+        "title": "Yeni iletişim mesajı",
+        "user": {
+          "name": "Ahmet Yılmaz"
+        },
+        "createdAt": "2024-01-18T11:30:00.000Z"
+      }
+    ],
+    "recentContacts": [
+      {
+        "_id": "6579a1b2c3d4e5f6a7b8c9d6",
+        "name": "Ahmet Yılmaz",
+        "email": "ahmet@example.com",
+        "subject": "Randevu Talebi",
+        "isRead": false,
+        "createdAt": "2024-01-20T11:00:00.000Z"
+      },
+      {
+        "_id": "6579a1b2c3d4e5f6a7b8c9d7",
+        "name": "Ayşe Demir",
+        "email": "ayse@example.com",
+        "subject": "Bilgi Almak İstiyorum",
+        "isRead": false,
+        "createdAt": "2024-01-19T15:30:00.000Z"
+      },
+      {
+        "_id": "6579a1b2c3d4e5f6a7b8c9d8",
+        "name": "Mehmet Kaya",
+        "email": "mehmet@example.com",
+        "subject": "Katarakt Ameliyatı Hakkında",
+        "isRead": true,
+        "createdAt": "2024-01-18T09:45:00.000Z"
+      }
+    ],
+    "popularPages": [
+      {
+        "path": "/tr",
+        "title": "Ana Sayfa",
+        "views": 3450
+      },
+      {
+        "path": "/tr/glokom-nedir",
+        "title": "Glokom Nedir?",
+        "views": 1234
+      },
+      {
+        "path": "/tr/katarakt-ameliyati",
+        "title": "Katarakt Ameliyatı",
+        "views": 987
+      },
+      {
+        "path": "/tr/hakkimda",
+        "title": "Hakkımda",
+        "views": 756
+      },
+      {
+        "path": "/tr/iletisim",
+        "title": "İletişim",
+        "views": 543
+      }
+    ]
+  }
+}
+

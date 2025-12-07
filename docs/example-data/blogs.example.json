@@ -1,0 +1,86 @@
+{
+  "success": true,
+  "data": [
+    {
+      "_id": "6579a1b2c3d4e5f6a7b8c9d0",
+      "title": "Glokom Nedir? Belirtileri ve Tedavi Yöntemleri",
+      "slug": "glokom-nedir",
+      "excerpt": "Glokom, göz içi basıncının artmasıyla ortaya çıkan ve görme sinirini etkileyen ciddi bir göz hastalığıdır. Erken teşhis hayati önem taşır.",
+      "content": "<h2>Glokom Nedir?</h2><p>Glokom, göz içi basıncının yükselmesi sonucu görme sinirinde hasar oluşmasıdır. Bu durum zamanla görme kaybına yol açabilir.</p><h2>Glokom Belirtileri</h2><ul><li>Çevresel görme kaybı</li><li>Tünel görüşü</li><li>Göz ağrısı ve baş ağrısı</li><li>Bulantı ve kusma</li><li>Işık çevresinde haleler görme</li></ul><h2>Risk Faktörleri</h2><p>Glokom için risk faktörleri arasında yaş, aile öyküsü, yüksek göz içi basıncı, miyopi, diyabet ve uzun süreli kortikosteroid kullanımı sayılabilir.</p><h2>Tedavi Yöntemleri</h2><p>Glokom tedavisinde göz damlaları, lazer tedavisi ve cerrahi müdahale seçenekleri bulunmaktadır.</p>",
+      "image": "/uploads/blog/glokom-nedir.jpg",
+      "category": {
+        "_id": "6579a1b2c3d4e5f6a7b8c9d1",
+        "name": "Göz Hastalıkları",
+        "slug": "goz-hastaliklari"
+      },
+      "status": "published",
+      "views": 1234,
+      "metaTitle": "Glokom Nedir? | Göz Hastalıkları Uzmanı",
+      "metaDescription": "Glokom hastalığı hakkında detaylı bilgi, belirtileri, risk faktörleri ve tedavi yöntemleri. Prof. Dr. Kadriye Ufuk Elgin.",
+      "locale": "tr",
+      "author": {
+        "_id": "6579a1b2c3d4e5f6a7b8c9d2",
+        "name": "Admin"
+      },
+      "createdAt": "2024-01-15T10:30:00.000Z",
+      "updatedAt": "2024-01-20T14:45:00.000Z"
+    },
+    {
+      "_id": "6579a1b2c3d4e5f6a7b8c9d3",
+      "title": "Katarakt Ameliyatı Sonrası Dikkat Edilmesi Gerekenler",
+      "slug": "katarakt-ameliyati-sonrasi",
+      "excerpt": "Katarakt ameliyatı sonrasında iyileşme sürecini hızlandırmak için dikkat etmeniz gereken önemli noktalar ve bakım önerileri.",
+      "content": "<h2>Ameliyat Sonrası İlk 24 Saat</h2><p>Ameliyat sonrası ilk gün gözünüzü ovuşturmaktan kaçının...</p>",
+      "image": "/uploads/blog/katarakt-ameliyati.jpg",
+      "category": {
+        "_id": "6579a1b2c3d4e5f6a7b8c9d4",
+        "name": "Ameliyat",
+        "slug": "ameliyat"
+      },
+      "status": "published",
+      "views": 892,
+      "metaTitle": "Katarakt Ameliyatı Sonrası Bakım",
+      "metaDescription": "Katarakt ameliyatı sonrası dikkat edilmesi gerekenler ve iyileşme süreci hakkında bilgiler.",
+      "locale": "tr",
+      "author": {
+        "_id": "6579a1b2c3d4e5f6a7b8c9d2",
+        "name": "Admin"
+      },
+      "createdAt": "2024-01-10T09:15:00.000Z",
+      "updatedAt": "2024-01-10T09:15:00.000Z"
+    },
+    {
+      "_id": "6579a1b2c3d4e5f6a7b8c9d5",
+      "title": "Göz Kuruluğu ve Modern Çözümler",
+      "slug": "goz-kurulugu",
+      "excerpt": "Dijital çağın en yaygın göz sorunlarından biri olan göz kuruluğu hakkında bilmeniz gerekenler.",
+      "content": "<h2>Göz Kuruluğu Nedir?</h2><p>Göz kuruluğu, gözyaşı üretiminin yetersiz olması veya gözyaşının hızlı buharlaşması sonucu ortaya çıkar...</p>",
+      "image": "/uploads/blog/goz-kurulugu.jpg",
+      "category": {
+        "_id": "6579a1b2c3d4e5f6a7b8c9d6",
+        "name": "Göz Sağlığı",
+        "slug": "goz-sagligi"
+      },
+      "status": "draft",
+      "views": 0,
+      "metaTitle": "",
+      "metaDescription": "",
+      "locale": "tr",
+      "author": {
+        "_id": "6579a1b2c3d4e5f6a7b8c9d2",
+        "name": "Admin"
+      },
+      "createdAt": "2024-01-08T16:20:00.000Z",
+      "updatedAt": "2024-01-08T16:20:00.000Z"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 10,
+    "total": 3,
+    "pages": 1,
+    "hasNext": false,
+    "hasPrev": false
+  }
+}
+

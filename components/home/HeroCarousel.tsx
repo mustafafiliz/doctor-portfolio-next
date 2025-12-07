@@ -34,7 +34,7 @@ export function HeroCarousel() {
                 priority
               />
               {/* Decorative gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none" />
+              <div className="absolute inset-0 from-primary/5 via-transparent to-accent/5 pointer-events-none" />
             </div>
 
             {/* Floating decorative elements */}

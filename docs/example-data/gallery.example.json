@@ -1,0 +1,65 @@
+{
+  "success": true,
+  "data": [
+    {
+      "_id": "6579d1e2f3a4b5c6d7e8f9a0",
+      "type": "image",
+      "url": "/uploads/gallery/muayene-odasi-1.jpg",
+      "thumbnail": "/uploads/gallery/thumbs/muayene-odasi-1.jpg",
+      "title": "Muayene Odası",
+      "order": 1,
+      "createdAt": "2024-01-15T10:00:00.000Z"
+    },
+    {
+      "_id": "6579d1e2f3a4b5c6d7e8f9a1",
+      "type": "image",
+      "url": "/uploads/gallery/ameliyat-salonu.jpg",
+      "thumbnail": "/uploads/gallery/thumbs/ameliyat-salonu.jpg",
+      "title": "Ameliyat Salonu",
+      "order": 2,
+      "createdAt": "2024-01-14T10:00:00.000Z"
+    },
+    {
+      "_id": "6579d1e2f3a4b5c6d7e8f9a2",
+      "type": "image",
+      "url": "/uploads/gallery/bekleme-salonu.jpg",
+      "thumbnail": "/uploads/gallery/thumbs/bekleme-salonu.jpg",
+      "title": "Bekleme Salonu",
+      "order": 3,
+      "createdAt": "2024-01-13T10:00:00.000Z"
+    },
+    {
+      "_id": "6579d1e2f3a4b5c6d7e8f9a3",
+      "type": "image",
+      "url": "/uploads/gallery/cihazlar.jpg",
+      "thumbnail": "/uploads/gallery/thumbs/cihazlar.jpg",
+      "title": "Modern Tanı Cihazları",
+      "order": 4,
+      "createdAt": "2024-01-12T10:00:00.000Z"
+    },
+    {
+      "_id": "6579d1e2f3a4b5c6d7e8f9a4",
+      "type": "video",
+      "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "thumbnail": "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg",
+      "title": "Klinik Tanıtım Videosu",
+      "order": 5,
+      "createdAt": "2024-01-11T10:00:00.000Z"
+    },
+    {
+      "_id": "6579d1e2f3a4b5c6d7e8f9a5",
+      "type": "video",
+      "url": "https://www.youtube.com/watch?v=abc123xyz",
+      "thumbnail": "https://img.youtube.com/vi/abc123xyz/maxresdefault.jpg",
+      "title": "Katarakt Ameliyatı Süreci",
+      "order": 6,
+      "createdAt": "2024-01-10T10:00:00.000Z"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 6,
+    "pages": 1
+  }
+}

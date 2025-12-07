@@ -1,0 +1,62 @@
+{
+  "submit": {
+    "request": {
+      "name": "Ahmet Yılmaz",
+      "email": "ahmet@example.com",
+      "phone": "+90 555 123 4567",
+      "subject": "Randevu Talebi",
+      "message": "Merhaba, glokom tedavisi için randevu almak istiyorum. En yakın tarihte görüşebilir miyiz?"
+    },
+    "response_success": {
+      "success": true,
+      "message": "Mesajınız başarıyla gönderildi. En kısa sürede sizinle iletişime geçeceğiz."
+    },
+    "response_error": {
+      "success": false,
+      "message": "Mesaj gönderilemedi",
+      "errors": [
+        {
+          "field": "email",
+          "message": "Geçerli bir email adresi giriniz"
+        }
+      ]
+    }
+  },
+  "list": {
+    "response": {
+      "success": true,
+      "data": [
+        {
+          "_id": "6579a1b2c3d4e5f6a7b8c9d0",
+          "name": "Ahmet Yılmaz",
+          "email": "ahmet@example.com",
+          "phone": "+90 555 123 4567",
+          "subject": "Randevu Talebi",
+          "message": "Merhaba, glokom tedavisi için randevu almak istiyorum.",
+          "isRead": false,
+          "isReplied": false,
+          "createdAt": "2024-01-20T10:30:00.000Z"
+        },
+        {
+          "_id": "6579a1b2c3d4e5f6a7b8c9d1",
+          "name": "Ayşe Demir",
+          "email": "ayse@example.com",
+          "phone": "+90 555 987 6543",
+          "subject": "Bilgi Talebi",
+          "message": "Katarakt ameliyatı hakkında bilgi almak istiyorum.",
+          "isRead": true,
+          "isReplied": true,
+          "repliedAt": "2024-01-19T14:00:00.000Z",
+          "createdAt": "2024-01-19T11:00:00.000Z"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 20,
+        "total": 45,
+        "pages": 3
+      }
+    }
+  }
+}
+

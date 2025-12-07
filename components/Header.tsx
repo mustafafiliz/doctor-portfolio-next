@@ -11,45 +11,17 @@ import { locales, type Locale } from "@/lib/i18n";
 import { useConfig } from "@/hooks/useConfig";
 import { getRoute } from "@/lib/routes";
 
-// Uzmanlık kategorileri ve alt başlıkları
-const specialtyCategories = [
-  {
-    id: "glaucoma",
-    title: "Glokom (Göz Tansiyonu)",
-    items: [
-      { title: "Glokom Nedir?", slug: "glokom-nedir" },
-      { title: "Glokom Tedavisi", slug: "glokom-tedavisi" },
-      { title: "Glokom Lazer Tedavisi", slug: "glokom-lazer-tedavisi" }
-    ]
-  },
-  {
-    id: "cataract",
-    title: "Katarakt",
-    items: [
-      { title: "Katarakt Nedir?", slug: "katarakt-nedir" },
-      { title: "Katarakt Ameliyatı", slug: "katarakt-ameliyati" },
-      { title: "Akıllı Lensler", slug: "akilli-lensler" }
-    ]
-  },
-  {
-    id: "retina",
-    title: "Retina Hastalıkları",
-    items: [
-      { title: "Sarı Nokta Hastalığı", slug: "sari-nokta-hastaligi" },
-      { title: "Diyabetik Retinopati", slug: "diyabetik-retinopati" },
-      { title: "Retina Dekolmanı", slug: "retina-dekolmani" }
-    ]
-  },
-  {
-    id: "eye-diseases",
-    title: "Göz Rahatsızlıkları",
-    items: [
-      { title: "Kuru Göz Tedavisi", slug: "kuru-goz-tedavisi" },
-      { title: "Göz Enfeksiyonları", slug: "goz-enfeksiyonlari" },
-      { title: "Göz Alerjisi", slug: "goz-alerjisi" }
-    ]
-  }
-];
+import specialtiesData from "@/data/specialties.json";
+
+// JSON'dan uzmanlık kategorileri ve alt başlıklarını oluştur
+const specialtyCategories = specialtiesData.categories.map((category) => ({
+  id: category.id,
+  title: category.title,
+  slug: category.slug,
+  items: specialtiesData.specialties
+    .filter((s) => s.categoryId === category.id)
+    .map((s) => ({ title: s.title, slug: s.slug }))
+}));
 
 export function Header() {
   const t = useTranslations("nav");
@@ -203,10 +175,17 @@ export function Header() {
                               }
                               onMouseLeave={() => setActiveCategory(null)}
                             >
-                              <button className="w-full flex items-center justify-between px-4 py-3 text-sm text-foreground hover:bg-primary/10 hover:text-primary transition-colors">
+                              <Link
+                                href={`/${currentLocale}/uzmanlik/${category.slug}`}
+                                className="w-full flex items-center justify-between px-4 py-3 text-sm text-foreground hover:bg-primary/10 hover:text-primary transition-colors"
+                                onClick={() => {
+                                  setSpecialtiesOpen(false);
+                                  setActiveCategory(null);
+                                }}
+                              >
                                 <span>{category.title}</span>
                                 <ChevronRight className="h-4 w-4" />
-                              </button>
+                              </Link>
 
                               {/* Sub-menu */}
                               {activeCategory === category.id && (
@@ -359,10 +338,17 @@ export function Header() {
                           <div className="ml-4 mt-1 border-l border-border/30 pl-4">
                             {specialtyCategories.map((category) => (
                               <div key={category.id} className="mb-3">
-                                <p className="text-sm font-semibold text-foreground py-2">
+                                <Link
+                                  href={`/${currentLocale}/uzmanlik/${category.slug}`}
+                                  className="text-sm font-semibold text-foreground py-2 block hover:text-primary transition-colors"
+                                  onClick={() => {
+                                    setMobileMenuOpen(false);
+                                    setMobileSpecialtiesOpen(false);
+                                  }}
+                                >
                                   {category.title}
-                                </p>
-                                <div className="flex flex-col gap-1">
+                                </Link>
+                                <div className="flex flex-col gap-1 pl-3 border-l border-border/30">
                                   {category.items.map((subItem) => (
                                     <Link
                                       key={subItem.slug}

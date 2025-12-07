@@ -1,14 +1,11 @@
 import { notFound } from 'next/navigation';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
-import { WhatsAppButton } from '@/components/WhatsAppButton';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { Toaster } from '@/components/ui/toaster';
 import { I18nProvider } from '@/components/I18nProvider';
 import { Geist, Geist_Mono } from 'next/font/google';
 import '../globals.css';
 import { getConfig } from '@/lib/config';
-import { locales, defaultLocale, type Locale } from '@/lib/i18n';
+import { locales, type Locale } from '@/lib/i18n';
 import { getDictionary } from './dictionaries';
 
 const geistSans = Geist({
@@ -58,13 +55,8 @@ export default async function LocaleLayout({
       >
         <I18nProvider locale={validLocale} dictionary={dictionary}>
           <ThemeProvider>
-            <div className="flex min-h-screen flex-col">
-              <Header />
-              <main className="flex-1">{children}</main>
-              <Footer />
-              <WhatsAppButton />
-              <Toaster />
-            </div>
+            {children}
+            <Toaster />
           </ThemeProvider>
         </I18nProvider>
       </body>

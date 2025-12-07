@@ -1,0 +1,122 @@
+{
+  "success": true,
+  "data": {
+    "categories": [
+      {
+        "_id": "6579b1c2d3e4f5a6b7c8d9e0",
+        "title": "Glokom (Göz Tansiyonu)",
+        "slug": "glokom",
+        "description": "Glokom, göz içi basıncının yükselmesi sonucu görme sinirinde hasar oluşmasıdır.",
+        "order": 1,
+        "specialtyCount": 3
+      },
+      {
+        "_id": "6579b1c2d3e4f5a6b7c8d9e1",
+        "title": "Katarakt",
+        "slug": "katarakt",
+        "description": "Katarakt, göz merceğinin saydamlığını yitirmesi sonucu görme kaybına neden olan bir hastalıktır.",
+        "order": 2,
+        "specialtyCount": 2
+      },
+      {
+        "_id": "6579b1c2d3e4f5a6b7c8d9e2",
+        "title": "Retina Hastalıkları",
+        "slug": "retina",
+        "description": "Retina hastalıkları, gözün arka kısmındaki ışığa duyarlı tabakanın etkilendiği durumlardır.",
+        "order": 3,
+        "specialtyCount": 2
+      },
+      {
+        "_id": "6579b1c2d3e4f5a6b7c8d9e3",
+        "title": "Göz Rahatsızlıkları",
+        "slug": "goz-rahatsizliklari",
+        "description": "Göz sağlığını etkileyen çeşitli rahatsızlıklar ve tedavi yöntemleri.",
+        "order": 4,
+        "specialtyCount": 1
+      }
+    ],
+    "specialties": [
+      {
+        "_id": "6579c1d2e3f4a5b6c7d8e9f0",
+        "title": "Glokom Nedir?",
+        "slug": "glokom-nedir",
+        "description": "Glokom, göz içi basıncının yükselmesi sonucu görme sinirinde hasar oluşmasıdır.",
+        "content": "<h2>Glokom Nedir?</h2><p>Glokom, göz içi basıncının yükselmesi sonucu görme sinirinde hasar oluşmasıdır. Bu durum zamanla görme kaybına yol açabilir. Glokom, dünya genelinde körlüğün önde gelen nedenlerinden biridir.</p><h2>Glokom Belirtileri</h2><p>Glokomun erken evreleri genellikle belirtisiz seyreder. Bu nedenle düzenli göz muayeneleri çok önemlidir. İleri evrelerde şu belirtiler görülebilir:</p><ul><li>Çevresel görme kaybı</li><li>Tünel görüşü</li><li>Göz ağrısı ve baş ağrısı</li><li>Bulantı ve kusma</li><li>Işık çevresinde haleler görme</li></ul><h2>Risk Faktörleri</h2><p>Glokom için risk faktörleri arasında yaş, aile öyküsü, yüksek göz içi basıncı, miyopi, diyabet ve uzun süreli kortikosteroid kullanımı sayılabilir.</p>",
+        "image": "/uploads/specialties/glokom-nedir.jpg",
+        "category": {
+          "_id": "6579b1c2d3e4f5a6b7c8d9e0",
+          "title": "Glokom (Göz Tansiyonu)",
+          "slug": "glokom"
+        },
+        "relatedSlugs": ["glokom-tedavisi", "glokom-lazer-tedavisi"],
+        "order": 1,
+        "locale": "tr",
+        "metaTitle": "Glokom Nedir? | Göz Tansiyonu Hakkında",
+        "metaDescription": "Glokom hastalığı, belirtileri ve risk faktörleri hakkında detaylı bilgi.",
+        "createdAt": "2024-01-05T10:00:00.000Z",
+        "updatedAt": "2024-01-15T14:30:00.000Z"
+      },
+      {
+        "_id": "6579c1d2e3f4a5b6c7d8e9f1",
+        "title": "Glokom Tedavisi",
+        "slug": "glokom-tedavisi",
+        "description": "Glokom tedavisinde göz damlaları, lazer ve cerrahi yöntemler kullanılmaktadır.",
+        "content": "<h2>Glokom Tedavi Yöntemleri</h2><p>Glokom tedavisinde amaç, göz içi basıncını düşürerek görme sinirindeki hasarı durdurmak veya yavaşlatmaktır.</p><h2>İlaç Tedavisi</h2><p>Glokom tedavisinde ilk tercih genellikle göz damlaları olur. Bu damlalar göz içi basıncını düşürmeye yardımcı olur.</p><h2>Lazer Tedavisi</h2><p>İlaç tedavisinin yeterli olmadığı durumlarda lazer tedavisi uygulanabilir.</p><h2>Cerrahi Tedavi</h2><p>İlaç ve lazer tedavilerinin yeterli olmadığı durumlarda cerrahi müdahale gerekebilir.</p>",
+        "image": "/uploads/specialties/glokom-tedavisi.jpg",
+        "category": {
+          "_id": "6579b1c2d3e4f5a6b7c8d9e0",
+          "title": "Glokom (Göz Tansiyonu)",
+          "slug": "glokom"
+        },
+        "relatedSlugs": ["glokom-nedir", "glokom-lazer-tedavisi"],
+        "order": 2,
+        "locale": "tr",
+        "metaTitle": "Glokom Tedavisi | Tedavi Yöntemleri",
+        "metaDescription": "Glokom tedavi yöntemleri: ilaç, lazer ve cerrahi seçenekleri hakkında bilgi.",
+        "createdAt": "2024-01-05T11:00:00.000Z",
+        "updatedAt": "2024-01-05T11:00:00.000Z"
+      },
+      {
+        "_id": "6579c1d2e3f4a5b6c7d8e9f2",
+        "title": "Glokom Lazer Tedavisi",
+        "slug": "glokom-lazer-tedavisi",
+        "description": "SLT ve diğer lazer yöntemleri ile glokom tedavisi.",
+        "content": "<h2>Lazer Tedavisi Nedir?</h2><p>Glokom lazer tedavisi, göz içi sıvısının drenajını artırarak göz içi basıncını düşürmeyi amaçlar...</p>",
+        "image": "/uploads/specialties/glokom-lazer.jpg",
+        "category": {
+          "_id": "6579b1c2d3e4f5a6b7c8d9e0",
+          "title": "Glokom (Göz Tansiyonu)",
+          "slug": "glokom"
+        },
+        "relatedSlugs": ["glokom-nedir", "glokom-tedavisi"],
+        "order": 3,
+        "locale": "tr",
+        "metaTitle": "Glokom Lazer Tedavisi | SLT",
+        "metaDescription": "Glokom lazer tedavisi ve SLT hakkında bilgi.",
+        "createdAt": "2024-01-05T12:00:00.000Z",
+        "updatedAt": "2024-01-05T12:00:00.000Z"
+      },
+      {
+        "_id": "6579c1d2e3f4a5b6c7d8e9f3",
+        "title": "Katarakt Ameliyatı",
+        "slug": "katarakt-ameliyati",
+        "description": "Modern katarakt cerrahisi ve lens implantasyonu hakkında bilgi.",
+        "content": "<h2>Katarakt Ameliyatı Nedir?</h2><p>Katarakt ameliyatı, bulanıklaşmış göz merceğinin çıkarılarak yerine yapay mercek takılması işlemidir...</p>",
+        "image": "/uploads/specialties/katarakt-ameliyati.jpg",
+        "category": {
+          "_id": "6579b1c2d3e4f5a6b7c8d9e1",
+          "title": "Katarakt",
+          "slug": "katarakt"
+        },
+        "relatedSlugs": ["katarakt-nedir"],
+        "order": 1,
+        "locale": "tr",
+        "metaTitle": "Katarakt Ameliyatı",
+        "metaDescription": "Katarakt ameliyatı hakkında detaylı bilgi.",
+        "createdAt": "2024-01-06T10:00:00.000Z",
+        "updatedAt": "2024-01-06T10:00:00.000Z"
+      }
+    ]
+  }
+}
+
