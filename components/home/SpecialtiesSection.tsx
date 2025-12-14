@@ -103,20 +103,15 @@ export function SpecialtiesSection({
               return (
                 <CarouselItem key={category._id} className="pl-2 sm:pl-4 basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
                   <Link href={`/${currentLocale}/uzmanlik/${category.slug}`}>
-                    <div className="group bg-white rounded-sm shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 block flex flex-col h-full">
+                    <div className="group bg-white rounded-sm shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 h-full flex flex-col">
                       {/* Content */}
-                      <div className="p-4 sm:p-6 flex flex-col flex-1">
-                        <h2 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-gray-800 line-clamp-2 min-h-[3rem] sm:min-h-[3.5rem] group-hover:text-primary transition-colors duration-200">
+                      <div className="p-4 sm:p-6 flex flex-col h-full">
+                        <h2 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-gray-800 group-hover:text-primary transition-colors duration-200">
                           {category.title || category.name}
                         </h2>
                         {category.description && (
-                          <p className="text-gray-600 line-clamp-3 mb-3 sm:mb-4 text-xs sm:text-sm leading-relaxed min-h-[3.5rem] sm:min-h-[4.5rem] flex-1">
+                          <p className="text-gray-600 line-clamp-3 text-xs sm:text-sm leading-relaxed flex-1">
                             {category.description}
-                          </p>
-                        )}
-                        {category.specialties && category.specialties.length > 0 && (
-                          <p className="text-xs text-muted-foreground mt-auto">
-                            {category.specialties.length} {category.specialties.length === 1 ? 'uzmanlık' : 'uzmanlık'}
                           </p>
                         )}
                       </div>
