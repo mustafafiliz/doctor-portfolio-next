@@ -106,7 +106,7 @@ export function SpecialtiesSection({
             {specialties.map((specialty) => {
               return (
                 <CarouselItem key={specialty._id} className="pl-2 sm:pl-4 basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                  <Link href={`/${currentLocale}/uzmanlik/${specialty.slug}`}>
+                  <Link href={`/${currentLocale}/${specialty.slug}`}>
                     <div className="group bg-white rounded-sm shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 block flex flex-col h-full">
                       {/* Image */}
                       <div className="relative overflow-hidden">

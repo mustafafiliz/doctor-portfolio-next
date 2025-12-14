@@ -131,7 +131,7 @@ export function SpecialtiesList({
               return (
                 <Link
                   key={specialty._id}
-                  href={`/${currentLocale}/uzmanlik/${specialty.slug}`}
+                  href={`/${currentLocale}/${specialty.slug}`}
                   className="group bg-white border border-gray-200 rounded-sm overflow-hidden hover:border-primary hover:shadow-lg transition-all"
                 >
                   {specialty.image ? (

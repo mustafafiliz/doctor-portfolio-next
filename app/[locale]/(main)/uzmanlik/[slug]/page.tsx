@@ -4,8 +4,8 @@ import { Container } from '@/components/Container';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronRight, ArrowLeft } from 'lucide-react';
-import { getPublicSpecialtyBySlug, getPublicCategoryBySlug, getPublicSpecialties, getConfig } from '@/lib/config';
-import type { Specialty, SpecialtyCategory } from '@/lib/types';
+import { getPublicCategoryBySlug, getPublicSpecialties, getConfig } from '@/lib/config';
+import type { SpecialtyCategory } from '@/lib/types';
 import type { Metadata } from 'next';
 
 interface CategoryWithSpecialties extends SpecialtyCategory {
@@ -20,16 +20,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const config = await getConfig();
 
-  // Önce specialty'yi kontrol et
-  const specialty = await getPublicSpecialtyBySlug(slug);
-  if (specialty) {
-    return {
-      title: `${specialty.title} - ${config.meta.siteName}`,
-      description: specialty.description || config.meta.defaultDescription,
-    };
-  }
-
-  // Specialty bulunamadı, kategoriyi kontrol et
+  // Sadece kategoriyi kontrol et (specialty'ler artık /[slug] route'unda)
   const category = await getPublicCategoryBySlug(slug);
   if (category) {
     return {
@@ -43,7 +34,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function SpecialtyOrCategoryPage({
+export default async function CategoryPage({
   params,
 }: {
   params: Promise<{ slug: string; locale: string }>;
@@ -52,164 +43,27 @@ export default async function SpecialtyOrCategoryPage({
   const currentLocale = (locale || 'tr') as Locale;
   const config = await getConfig();
 
-  // Önce specialty'yi kontrol et
-  let specialty: Specialty | null = null;
-  let category: CategoryWithSpecialties | null = null;
+  // Sadece kategoriyi kontrol et (specialty'ler artık /[slug] route'unda)
+  const categoryData = await getPublicCategoryBySlug(slug);
 
-  specialty = await getPublicSpecialtyBySlug(slug);
-
-  if (specialty) {
-    // Specialty bulundu
-    // Eğer specialty'de category yoksa, kategoriyi bul
-    if (!specialty.category) {
-      const allSpecialties = await getPublicSpecialties();
-      
-      // categoryId varsa onu kullan
-      if (specialty.categoryId) {
-        const foundCategory = allSpecialties.categories.find(
-          (cat: SpecialtyCategory & { specialties?: Specialty[] }) => cat._id === specialty!.categoryId
-        );
-        if (foundCategory) {
-          specialty.category = foundCategory;
-        }
-      } else {
-        // categoryId yoksa, tüm kategorilerde ara
-        for (const category of allSpecialties.categories) {
-          const foundSpecialty = category.specialties?.find(
-            (s: Specialty) => s._id === specialty!._id || s.slug === specialty!.slug
-          );
-          if (foundSpecialty) {
-            specialty.category = category;
-            break;
-          }
-        }
-      }
-    }
-  } else {
-    // Specialty bulunamadı, kategoriyi kontrol et
-    const categoryData = await getPublicCategoryBySlug(slug);
-
-    if (categoryData) {
-      // Kategori bulundu, içindeki specialty'leri de çek
-      const allSpecialties = await getPublicSpecialties();
-      const categorySpecialties =
-        allSpecialties.categories.find((cat: SpecialtyCategory & { specialties?: Specialty[] }) => cat._id === categoryData._id)?.specialties || [];
-
-      category = {
-        ...categoryData,
-        specialties: categorySpecialties,
-      };
-    }
-  }
-
-  // Hiçbiri bulunamadı
-  if (!specialty && !category) {
+  if (!categoryData) {
     notFound();
   }
 
+  // Kategori bulundu, içindeki specialty'leri de çek
+  const allSpecialties = await getPublicSpecialties();
+  const categorySpecialties =
+    allSpecialties.categories.find((cat: SpecialtyCategory & { specialties?: Specialty[] }) => cat._id === categoryData._id)?.specialties || [];
+
+  const category: CategoryWithSpecialties = {
+    ...categoryData,
+    specialties: categorySpecialties,
+  };
+
   const primaryColor = config.colors.primary;
 
-  // Specialty sayfası
-  if (specialty) {
-    return (
-      <>
-        {/* Breadcrumb Header */}
-        <section
-          className="py-6 sm:py-8"
-          style={{ backgroundColor: primaryColor }}
-        >
-          <Container>
-            <nav className="flex items-center gap-2 text-sm text-white/80 flex-wrap">
-              <Link href={`/${currentLocale}`} className="hover:text-white transition-colors">
-                Anasayfa
-              </Link>
-              <ChevronRight size={14} className="text-white/50" />
-              <Link
-                href={`/${currentLocale}/uzmanliklar`}
-                className="hover:text-white transition-colors"
-              >
-                Uzmanlıklar
-              </Link>
-              {specialty.category ? (
-                <>
-                  <ChevronRight size={14} className="text-white/50" />
-                  <Link
-                    href={`/${currentLocale}/uzmanlik/${specialty.category.slug}`}
-                    className="hover:text-white transition-colors"
-                  >
-                    {specialty.category.title || specialty.category.name}
-                  </Link>
-                  <ChevronRight size={14} className="text-white/50" />
-                  <span className="text-white font-medium">{specialty.title}</span>
-                </>
-              ) : (
-                <>
-                  <ChevronRight size={14} className="text-white/50" />
-                  <span className="text-white font-medium">{specialty.title}</span>
-                </>
-              )}
-            </nav>
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mt-3">
-              {specialty.title}
-            </h1>
-          </Container>
-        </section>
-
-        {/* Content Section */}
-        <Container className="py-12 sm:py-16">
-          <div className="max-w-4xl mx-auto">
-            {/* Back Button */}
-            <div className="mb-8">
-              <Link
-                href={
-                  specialty.category
-                    ? `/${currentLocale}/uzmanlik/${specialty.category.slug}`
-                    : `/${currentLocale}/uzmanliklar`
-                }
-                className="inline-flex items-center text-gray-600 hover:text-primary transition-colors"
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                {specialty.category
-                  ? specialty.category.title || specialty.category.name
-                  : 'Tüm Uzmanlıklar'}
-              </Link>
-            </div>
-
-            {/* Featured Image */}
-            {specialty.image && (
-              <div className="relative w-full h-64 sm:h-80 md:h-96 rounded-sm overflow-hidden mb-8">
-                <Image
-                  src={specialty.image}
-                  alt={specialty.title}
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-              </div>
-            )}
-
-            {/* Description */}
-            {specialty.description && (
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                {specialty.description}
-              </p>
-            )}
-
-            {/* Content */}
-            {specialty.content && (
-              <div
-                className="prose prose-lg max-w-none mb-12"
-                dangerouslySetInnerHTML={{ __html: specialty.content }}
-              />
-            )}
-          </div>
-        </Container>
-      </>
-    );
-  }
-
   // Kategori sayfası
-  if (category) {
+  return (
     return (
       <div>
         {/* Breadcrumb Header */}
@@ -248,7 +102,7 @@ export default async function SpecialtyOrCategoryPage({
               {category.specialties.map((specialty) => (
                 <Link
                   key={specialty._id}
-                  href={`/${currentLocale}/uzmanlik/${specialty.slug}`}
+                  href={`/${currentLocale}/${specialty.slug}`}
                   className="group bg-white border border-gray-200 rounded-sm overflow-hidden hover:border-primary hover:shadow-lg transition-all"
                 >
                   {specialty.image ? (
@@ -290,8 +144,5 @@ export default async function SpecialtyOrCategoryPage({
           )}
         </Container>
       </div>
-    );
-  }
-
-  return null;
+  );
 }

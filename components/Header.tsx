@@ -331,7 +331,7 @@ export function Header() {
                                               (specialty) => (
                                                 <Link
                                                   key={specialty._id}
-                                                  href={`/${currentLocale}/uzmanlik/${specialty.slug}`}
+                                                  href={`/${currentLocale}/${specialty.slug}`}
                                                   className="block px-4 py-2.5 text-sm text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors"
                                                   onClick={() => {
                                                     setSpecialtiesOpen(false);

@@ -291,7 +291,7 @@ export default function AdminSpecialtiesPage() {
                   <td className="px-4 py-4">
                     <div className="flex items-center justify-end gap-1">
                       <Link
-                        href={`/${currentLocale}/uzmanlik/${specialty.slug}`}
+                        href={`/${currentLocale}/${specialty.slug}`}
                         target="_blank"
                         className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-sm"
                         title="Görüntüle"

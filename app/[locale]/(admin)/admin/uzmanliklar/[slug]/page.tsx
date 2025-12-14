@@ -194,7 +194,7 @@ export default function EditSpecialtyPage() {
         </div>
         <div className="flex items-center gap-2">
           <Link
-            href={`/${currentLocale}/uzmanlik/${formData.slug}`}
+            href={`/${currentLocale}/${formData.slug}`}
             target="_blank"
             className="inline-flex items-center gap-2 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-sm hover:bg-gray-50 transition-colors"
           >
