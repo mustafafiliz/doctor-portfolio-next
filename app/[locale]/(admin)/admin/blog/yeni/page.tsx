@@ -1,24 +1,29 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, useRef } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Save, Eye, Image as ImageIcon, X } from 'lucide-react';
+import { ArrowLeft, Save, Image as ImageIcon, X, Upload, Loader2 } from 'lucide-react';
 import { Editor } from '@/components/admin/Editor';
+import { blogApi } from '@/lib/api';
 
 export default function NewBlogPage() {
   const router = useRouter();
+  const pathname = usePathname();
+  const currentLocale = pathname?.split('/')[1] || 'tr';
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
   const [isLoading, setIsLoading] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
     excerpt: '',
     content: '',
-    image: '',
-    category: '',
     status: 'draft' as 'draft' | 'published',
-    metaTitle: '',
-    metaDescription: '',
   });
 
   const generateSlug = (title: string) => {
@@ -44,23 +49,49 @@ export default function NewBlogPage() {
     });
   };
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setSelectedFile(null);
+    setImagePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(null);
 
-    // TODO: API'ye gönder
-    // const response = await fetch('/api/admin/blogs', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(formData),
-    // });
-    // const data = await response.json();
+    try {
+      const form = new FormData();
+      form.append('title', formData.title);
+      form.append('slug', formData.slug);
+      form.append('excerpt', formData.excerpt);
+      form.append('content', formData.content);
+      form.append('status', formData.status);
+      if (selectedFile) {
+        form.append('image', selectedFile);
+      }
 
-    // Mock save
-    setTimeout(() => {
-      alert('Blog yazısı kaydedildi! (Demo)');
-      router.push('/admin/blog');
-    }, 1000);
+      await blogApi.create(form);
+      router.push(`/${currentLocale}/admin/blog`);
+    } catch (err) {
+      console.error('Blog kaydetme hatası:', err);
+      setError('Blog yazısı kaydedilirken bir hata oluştu');
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -69,7 +100,7 @@ export default function NewBlogPage() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link
-            href="/admin/blog"
+            href={`/${currentLocale}/admin/blog`}
             className="p-2 hover:bg-gray-100 rounded-sm transition-colors"
           >
             <ArrowLeft size={20} />
@@ -80,6 +111,12 @@ export default function NewBlogPage() {
           </div>
         </div>
       </div>
+
+      {error && (
+        <div className="bg-red-50 text-red-600 px-4 py-3 rounded-sm text-sm border border-red-100">
+          {error}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="grid lg:grid-cols-3 gap-6">
         {/* Main Content */}
@@ -141,35 +178,6 @@ export default function NewBlogPage() {
               placeholder="Blog yazısı içeriğini buraya yazın..."
             />
           </div>
-
-          {/* SEO */}
-          <div className="bg-white rounded-sm border border-gray-200 p-6 space-y-4">
-            <h3 className="font-medium text-gray-800">SEO Ayarları</h3>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Meta Başlık
-              </label>
-              <input
-                type="text"
-                value={formData.metaTitle}
-                onChange={(e) => setFormData({ ...formData, metaTitle: e.target.value })}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
-                placeholder="SEO için başlık (boş bırakılırsa yazı başlığı kullanılır)"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Meta Açıklama
-              </label>
-              <textarea
-                value={formData.metaDescription}
-                onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })}
-                rows={2}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none resize-none"
-                placeholder="SEO için açıklama (boş bırakılırsa özet kullanılır)"
-              />
-            </div>
-          </div>
         </div>
 
         {/* Sidebar */}
@@ -196,57 +204,51 @@ export default function NewBlogPage() {
                 disabled={isLoading}
                 className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#144793] text-white rounded-sm hover:bg-[#0f3a7a] disabled:opacity-50 transition-colors"
               >
-                <Save size={18} />
+                {isLoading ? (
+                  <Loader2 size={18} className="animate-spin" />
+                ) : (
+                  <Save size={18} />
+                )}
                 {isLoading ? 'Kaydediliyor...' : 'Kaydet'}
               </button>
             </div>
           </div>
 
-          {/* Category */}
-          <div className="bg-white rounded-sm border border-gray-200 p-6 space-y-4">
-            <h3 className="font-medium text-gray-800">Kategori</h3>
-            <select
-              value={formData.category}
-              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none bg-white"
-            >
-              <option value="">Kategori Seçin</option>
-              <option value="goz-hastaliklari">Göz Hastalıkları</option>
-              <option value="ameliyat">Ameliyat</option>
-              <option value="goz-sagligi">Göz Sağlığı</option>
-              <option value="tedavi">Tedavi Yöntemleri</option>
-            </select>
-          </div>
-
           {/* Featured Image */}
           <div className="bg-white rounded-sm border border-gray-200 p-6 space-y-4">
             <h3 className="font-medium text-gray-800">Öne Çıkan Görsel</h3>
-            {formData.image ? (
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
+            {imagePreview ? (
               <div className="relative">
                 <img
-                  src={formData.image}
-                  alt="Featured"
+                  src={imagePreview}
+                  alt="Preview"
                   className="w-full h-40 object-cover rounded-sm"
                 />
                 <button
                   type="button"
-                  onClick={() => setFormData({ ...formData, image: '' })}
+                  onClick={handleRemoveImage}
                   className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-sm hover:bg-red-600"
                 >
                   <X size={16} />
                 </button>
               </div>
             ) : (
-              <div className="border-2 border-dashed border-gray-300 rounded-sm p-6 text-center">
-                <ImageIcon size={32} className="mx-auto text-gray-400 mb-2" />
-                <p className="text-sm text-gray-500 mb-2">Görsel URL&apos;si girin</p>
-                <input
-                  type="url"
-                  placeholder="https://..."
-                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
-                />
-              </div>
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="w-full border-2 border-dashed border-gray-300 rounded-sm p-6 text-center hover:border-[#144793] transition-colors"
+              >
+                <Upload size={32} className="mx-auto text-gray-400 mb-2" />
+                <p className="text-sm text-gray-500">Görsel yüklemek için tıklayın</p>
+                <p className="text-xs text-gray-400 mt-1">PNG, JPG, WebP (max 10MB)</p>
+              </button>
             )}
           </div>
         </div>
@@ -254,4 +256,3 @@ export default function NewBlogPage() {
     </div>
   );
 }
-

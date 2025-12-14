@@ -9,62 +9,74 @@ import { getRoute } from '@/lib/routes';
 import Autoplay from 'embla-carousel-autoplay';
 import Image from 'next/image';
 import { Container } from '@/components/Container';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Loader2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { getPublicSpecialties } from '@/lib/config';
+import type { Specialty } from '@/lib/types';
 
-export function SpecialtiesSection() {
+interface SpecialtiesSectionProps {
+  initialSpecialties?: Specialty[];
+  currentLocale?: Locale;
+}
+
+export function SpecialtiesSection({ 
+  initialSpecialties, 
+  currentLocale: propLocale 
+}: SpecialtiesSectionProps = {} as SpecialtiesSectionProps) {
   const t = useTranslations('specialties');
   const pathname = usePathname();
-  const currentLocale = (pathname?.split('/')[1] || 'tr') as Locale;
+  const currentLocale = propLocale || (pathname?.split('/')[1] || 'tr') as Locale;
 
-  const specialties = [
-    {
-      id: 'glaucoma',
-      title: t('glaucoma.title'),
-      description: t('glaucoma.description'),
-      image: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=800&h=600&fit=crop',
-    },
-    {
-      id: 'cataract',
-      title: t('cataract.title'),
-      description: t('cataract.description'),
-      image: 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=800&h=600&fit=crop',
-    },
-    {
-      id: 'infections',
-      title: t('infections.title'),
-      description: t('infections.description'),
-      image: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=800&h=600&fit=crop',
-    },
-    {
-      id: 'premiumLenses',
-      title: t('premiumLenses.title'),
-      description: t('premiumLenses.description'),
-      image: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800&h=600&fit=crop',
-    },
-    {
-      id: 'trauma',
-      title: t('trauma.title'),
-      description: t('trauma.description'),
-      image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop',
-    },
-    {
-      id: 'conjunctiva',
-      title: t('conjunctiva.title'),
-      description: t('conjunctiva.description'),
-      image: 'https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=800&h=600&fit=crop',
-    },
-    {
-      id: 'refractive',
-      title: t('refractive.title'),
-      description: t('refractive.description'),
-      image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop',
-    },
-  ];
+  const [specialties, setSpecialties] = useState<Specialty[]>(initialSpecialties || []);
+  const [isLoading, setIsLoading] = useState(!initialSpecialties);
+
+  useEffect(() => {
+    // Eğer initialSpecialties yoksa client-side fetch yap
+    if (!initialSpecialties) {
+      const fetchSpecialties = async () => {
+        try {
+          const data = await getPublicSpecialties();
+          // Categories içindeki tüm specialties'i düzleştir
+          const allSpecialties: Specialty[] = [];
+          if (data.categories) {
+            data.categories.forEach((category: { specialties?: Specialty[] }) => {
+              if (category.specialties) {
+                allSpecialties.push(...category.specialties);
+              }
+            });
+          }
+          setSpecialties(allSpecialties);
+        } catch (error) {
+          console.error('Uzmanlık yükleme hatası:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      fetchSpecialties();
+    }
+  }, [initialSpecialties]);
 
   const plugin = Autoplay({
     delay: 4000,
     stopOnInteraction: false,
   });
+
+  if (isLoading) {
+    return (
+      <section className="py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-b from-background via-muted/30 to-background relative overflow-hidden">
+        <Container className="relative z-10">
+          <div className="flex items-center justify-center min-h-[300px]">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          </div>
+        </Container>
+      </section>
+    );
+  }
+
+  if (specialties.length === 0) {
+    return null; // Uzmanlık yoksa section'ı gösterme
+  }
 
   return (
     <section className="py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-b from-background via-muted/30 to-background relative overflow-hidden">
@@ -93,19 +105,25 @@ export function SpecialtiesSection() {
           <CarouselContent className="-ml-2 sm:-ml-4">
             {specialties.map((specialty) => {
               return (
-                <CarouselItem key={specialty.id} className="pl-2 sm:pl-4 basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                  <Link href={`/${currentLocale}${getRoute('specialties', currentLocale)}#${specialty.id}`}>
+                <CarouselItem key={specialty._id} className="pl-2 sm:pl-4 basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                  <Link href={`/${currentLocale}/uzmanlik/${specialty.slug}`}>
                     <div className="group bg-white rounded-sm shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 block flex flex-col h-full">
                       {/* Image */}
                       <div className="relative overflow-hidden">
                         <div className="w-full h-52 relative bg-muted overflow-hidden">
-                          <Image
-                            src={specialty.image}
-                            alt={specialty.title}
-                            fill
-                            className="object-cover transform group-hover:scale-105 transition-transform duration-300"
-                            unoptimized
-                          />
+                          {specialty.image ? (
+                            <Image
+                              src={specialty.image}
+                              alt={specialty.title}
+                              fill
+                              className="object-cover transform group-hover:scale-105 transition-transform duration-300"
+                              unoptimized
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
+                              <span className="text-primary font-semibold">{specialty.title.charAt(0)}</span>
+                            </div>
+                          )}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         </div>
                       </div>

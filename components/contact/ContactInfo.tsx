@@ -9,6 +9,14 @@ export function ContactInfo() {
   const t = useTranslations("contact.info");
   const { config } = useConfig();
 
+  // Working hours from API or fallback
+  const workingHours = config.workingHours && config.workingHours.length > 0
+    ? config.workingHours
+    : [
+        { day: "Pazartesi - Cuma", hours: "09:00 - 18:00" },
+        { day: "Cumartesi", hours: "09:00 - 13:00" }
+      ];
+
   const contactItems = [
     {
       icon: MapPin,
@@ -17,49 +25,53 @@ export function ContactInfo() {
       link: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
         config.contact.address
       )}`,
-      isLink: true
+      isLink: true,
+      show: !!config.contact.address
     },
     {
       icon: Phone,
       title: t("phone"),
       content: config.contact.phone,
       link: `tel:${config.contact.phone}`,
-      isLink: true
+      isLink: true,
+      show: !!config.contact.phone
     },
     {
       icon: Phone,
       title: t("mobile"),
       content: config.contact.mobile,
       link: `tel:${config.contact.mobile}`,
-      isLink: true
+      isLink: true,
+      show: !!config.contact.mobile
     },
     {
       icon: Mail,
       title: t("email"),
       content: config.contact.email,
       link: `mailto:${config.contact.email}`,
-      isLink: true
+      isLink: true,
+      show: !!config.contact.email
     },
     {
       icon: Clock,
       title: t("workingHours"),
       content: (
         <>
-          <p className="text-sm text-muted-foreground">
-            Pazartesi - Cuma: 09:00 - 18:00
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Cumartesi: 09:00 - 13:00
-          </p>
+          {workingHours.map((wh, idx) => (
+            <p key={idx} className="text-sm text-muted-foreground">
+              {wh.day}: {wh.hours}
+            </p>
+          ))}
         </>
       ),
-      isLink: false
+      isLink: false,
+      show: true
     }
   ];
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      {contactItems.map((item, index) => {
+      {contactItems.filter(item => item.show).map((item, index) => {
         const Icon = item.icon;
         const content = (
           <div className="flex items-start space-x-3 sm:space-x-4 group">

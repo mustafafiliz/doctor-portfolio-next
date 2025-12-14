@@ -3,40 +3,120 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import {
   Plus,
   Search,
   Edit,
   Trash2,
   Eye,
-  Calendar,
   FolderOpen,
-  ChevronRight,
+  Loader2,
+  AlertCircle,
+  X,
 } from 'lucide-react';
-import specialtiesData from '@/data/specialties.json';
+import { specialtyApi } from '@/lib/api';
+import type { Specialty, SpecialtyCategory } from '@/lib/types';
 
 export default function AdminSpecialtiesPage() {
+  const pathname = usePathname();
+  const currentLocale = pathname?.split('/')[1] || 'tr';
+  
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
-  const [specialties, setSpecialties] = useState(specialtiesData.specialties);
+  const [specialties, setSpecialties] = useState<Specialty[]>([]);
+  const [categories, setCategories] = useState<SpecialtyCategory[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  useEffect(() => {
+    fetchData();
+  }, [page, categoryFilter]);
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const [specialtiesData, categoriesData] = await Promise.all([
+        specialtyApi.list({
+          page,
+          limit: 20,
+          categoryId: categoryFilter !== 'all' ? categoryFilter : undefined,
+        }),
+        specialtyApi.listCategories(),
+      ]);
+      
+      setSpecialties(specialtiesData.data || []);
+      setTotalPages(specialtiesData.totalPages || 1);
+      setCategories(categoriesData || []);
+    } catch (err) {
+      console.error('Uzmanlık veri yükleme hatası:', err);
+      setError('Veriler yüklenirken bir hata oluştu');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const filteredSpecialties = specialties.filter((specialty) => {
     const matchesSearch = specialty.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = categoryFilter === 'all' || specialty.categoryId === categoryFilter;
-    return matchesSearch && matchesCategory;
+    return matchesSearch;
   });
 
-  const getCategoryName = (categoryId: string) => {
-    return specialtiesData.categories.find((c) => c.id === categoryId)?.title || categoryId;
+  const getCategoryName = (categoryId?: string) => {
+    if (!categoryId) return '-';
+    const category = categories.find((c) => c._id === categoryId);
+    return category?.title || category?.name || '-';
   };
 
-  const handleDelete = async (slug: string) => {
-    if (confirm('Bu uzmanlık alanını silmek istediğinizden emin misiniz?')) {
-      // TODO: API'ye silme isteği gönder
-      // await fetch(`/api/admin/specialties/${slug}`, { method: 'DELETE' });
-      setSpecialties(specialties.filter((s) => s.slug !== slug));
+  const [deletingCategoryId, setDeletingCategoryId] = useState<string | null>(null);
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Bu uzmanlık alanını silmek istediğinizden emin misiniz?')) {
+      return;
+    }
+
+    setDeletingId(id);
+    try {
+      await specialtyApi.delete(id);
+      setSpecialties(specialties.filter((s) => s._id !== id));
+    } catch (err) {
+      console.error('Uzmanlık silme hatası:', err);
+      setError('Uzmanlık silinirken bir hata oluştu');
+    } finally {
+      setDeletingId(null);
     }
   };
+
+  const handleDeleteCategory = async (id: string) => {
+    if (!confirm('Bu kategoriyi silmek istediğinizden emin misiniz? Kategoriye ait uzmanlıklar silinmeyecektir.')) {
+      return;
+    }
+
+    setDeletingCategoryId(id);
+    try {
+      await specialtyApi.deleteCategory(id);
+      setCategories(categories.filter((c) => c._id !== id));
+      if (categoryFilter === id) {
+        setCategoryFilter('all');
+      }
+    } catch (err) {
+      console.error('Kategori silme hatası:', err);
+      setError('Kategori silinirken bir hata oluştu');
+    } finally {
+      setDeletingCategoryId(null);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-[#144793]" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -48,35 +128,87 @@ export default function AdminSpecialtiesPage() {
             Toplam {specialties.length} uzmanlık alanı
           </p>
         </div>
-        <Link
-          href="/admin/uzmanliklar/yeni"
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#144793] text-white rounded-sm hover:bg-[#0f3a7a] transition-colors"
-        >
-          <Plus size={20} />
-          <span>Yeni Uzmanlık</span>
-        </Link>
+        <div className="flex gap-2">
+          <Link
+            href={`/${currentLocale}/admin/uzmanliklar/kategori/yeni`}
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-600 text-white rounded-sm hover:bg-gray-700 transition-colors"
+          >
+            <Plus size={20} />
+            <span>Yeni Kategori</span>
+          </Link>
+          <Link
+            href={`/${currentLocale}/admin/uzmanliklar/yeni`}
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#144793] text-white rounded-sm hover:bg-[#0f3a7a] transition-colors"
+          >
+            <Plus size={20} />
+            <span>Yeni Uzmanlık</span>
+          </Link>
+        </div>
       </div>
 
+      {error && (
+        <div className="flex items-center gap-2 bg-red-50 text-red-600 px-4 py-3 rounded-sm text-sm border border-red-100">
+          <AlertCircle size={18} />
+          {error}
+          <button onClick={() => setError(null)} className="ml-auto">
+            <X size={16} />
+          </button>
+        </div>
+      )}
+
       {/* Categories Overview */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-        {specialtiesData.categories.map((category) => {
-          const count = specialties.filter((s) => s.categoryId === category.id).length;
-          return (
-            <button
-              key={category.id}
-              onClick={() => setCategoryFilter(categoryFilter === category.id ? 'all' : category.id)}
-              className={`p-4 rounded-sm border transition-all ${
-                categoryFilter === category.id
+      {categories.length > 0 && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          {categories.map((category) => (
+            <div
+              key={category._id}
+              className={`relative group p-4 rounded-sm border transition-all ${
+                categoryFilter === category._id
                   ? 'border-[#144793] bg-[#144793]/5'
                   : 'border-gray-200 bg-white hover:border-[#144793]'
               }`}
             >
-              <div className="text-2xl font-bold text-[#144793]">{count}</div>
-              <div className="text-xs text-gray-600 mt-1 truncate">{category.title}</div>
-            </button>
-          );
-        })}
-      </div>
+              <button
+                onClick={() => {
+                  setCategoryFilter(categoryFilter === category._id ? 'all' : category._id);
+                  setPage(1);
+                }}
+                className="w-full text-left"
+              >
+                <div className="text-2xl font-bold text-[#144793]">
+                  {category.specialtyCount || 0}
+                </div>
+                <div className="text-xs text-gray-600 mt-1 truncate">{category.name || category.title}</div>
+              </button>
+              <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <Link
+                  href={`/${currentLocale}/admin/uzmanliklar/kategori/${category._id}`}
+                  className="p-1 text-gray-400 hover:text-[#144793] hover:bg-gray-100 rounded-sm"
+                  title="Düzenle"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Edit size={14} />
+                </Link>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteCategory(category._id);
+                  }}
+                  disabled={deletingCategoryId === category._id}
+                  className="p-1 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-sm disabled:opacity-50"
+                  title="Sil"
+                >
+                  {deletingCategoryId === category._id ? (
+                    <Loader2 size={14} className="animate-spin" />
+                  ) : (
+                    <Trash2 size={14} />
+                  )}
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Filters */}
       <div className="bg-white rounded-sm border border-gray-200 p-4">
@@ -93,13 +225,16 @@ export default function AdminSpecialtiesPage() {
           </div>
           <select
             value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
+            onChange={(e) => {
+              setCategoryFilter(e.target.value);
+              setPage(1);
+            }}
             className="px-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none bg-white"
           >
             <option value="all">Tüm Kategoriler</option>
-            {specialtiesData.categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.title}
+            {categories.map((category) => (
+              <option key={category._id} value={category._id}>
+                {category.title || category.name}
               </option>
             ))}
           </select>
@@ -114,13 +249,12 @@ export default function AdminSpecialtiesPage() {
               <tr>
                 <th className="text-left px-4 py-3 text-sm font-medium text-gray-600">Uzmanlık</th>
                 <th className="text-left px-4 py-3 text-sm font-medium text-gray-600 hidden md:table-cell">Kategori</th>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-600 hidden lg:table-cell">İlgili Yazılar</th>
                 <th className="text-right px-4 py-3 text-sm font-medium text-gray-600">İşlemler</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {filteredSpecialties.map((specialty) => (
-                <tr key={specialty.slug} className="hover:bg-gray-50">
+                <tr key={specialty._id} className="hover:bg-gray-50">
                   <td className="px-4 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 bg-gray-100 rounded-sm overflow-hidden flex-shrink-0">
@@ -140,7 +274,7 @@ export default function AdminSpecialtiesPage() {
                       </div>
                       <div className="min-w-0">
                         <Link
-                          href={`/admin/uzmanliklar/${specialty.slug}`}
+                          href={`/${currentLocale}/admin/uzmanliklar/${specialty.slug}`}
                           className="font-medium text-gray-800 hover:text-[#144793] block truncate"
                         >
                           {specialty.title}
@@ -154,15 +288,10 @@ export default function AdminSpecialtiesPage() {
                       {getCategoryName(specialty.categoryId)}
                     </span>
                   </td>
-                  <td className="px-4 py-4 hidden lg:table-cell">
-                    <span className="text-sm text-gray-500">
-                      {specialty.relatedSlugs?.length || 0} yazı
-                    </span>
-                  </td>
                   <td className="px-4 py-4">
                     <div className="flex items-center justify-end gap-1">
                       <Link
-                        href={`/tr/${specialty.slug}`}
+                        href={`/${currentLocale}/uzmanlik/${specialty.slug}`}
                         target="_blank"
                         className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-sm"
                         title="Görüntüle"
@@ -170,18 +299,23 @@ export default function AdminSpecialtiesPage() {
                         <Eye size={18} />
                       </Link>
                       <Link
-                        href={`/admin/uzmanliklar/${specialty.slug}`}
+                        href={`/${currentLocale}/admin/uzmanliklar/${specialty.slug}`}
                         className="p-2 text-gray-400 hover:text-[#144793] hover:bg-gray-100 rounded-sm"
                         title="Düzenle"
                       >
                         <Edit size={18} />
                       </Link>
                       <button
-                        onClick={() => handleDelete(specialty.slug)}
-                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-sm"
+                        onClick={() => handleDelete(specialty._id)}
+                        disabled={deletingId === specialty._id}
+                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-sm disabled:opacity-50"
                         title="Sil"
                       >
-                        <Trash2 size={18} />
+                        {deletingId === specialty._id ? (
+                          <Loader2 size={18} className="animate-spin" />
+                        ) : (
+                          <Trash2 size={18} />
+                        )}
                       </button>
                     </div>
                   </td>
@@ -197,7 +331,29 @@ export default function AdminSpecialtiesPage() {
           </div>
         )}
       </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="px-3 py-1 border border-gray-300 rounded-sm disabled:opacity-50 hover:bg-gray-50"
+          >
+            Önceki
+          </button>
+          <span className="text-sm text-gray-600">
+            Sayfa {page} / {totalPages}
+          </span>
+          <button
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page === totalPages}
+            className="px-3 py-1 border border-gray-300 rounded-sm disabled:opacity-50 hover:bg-gray-50"
+          >
+            Sonraki
+          </button>
+        </div>
+      )}
     </div>
   );
 }
-

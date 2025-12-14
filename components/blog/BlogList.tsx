@@ -1,55 +1,65 @@
 'use client';
 
 import { useTranslations } from '@/components/I18nProvider';
-import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { type Locale } from '@/lib/i18n';
 import { getRoute } from '@/lib/routes';
 import Image from 'next/image';
-import { Calendar, ArrowRight } from 'lucide-react';
+import { Calendar, ArrowRight, Loader2 } from 'lucide-react';
 import { Container } from '@/components/Container';
+import { useEffect, useState } from 'react';
+import { getPublicBlogs } from '@/lib/config';
+import type { Blog } from '@/lib/types';
 
 export function BlogList() {
   const t = useTranslations('blog');
   const pathname = usePathname();
   const currentLocale = (pathname?.split('/')[1] || 'tr') as Locale;
 
-  // Placeholder blog posts - replace with actual data from API/CMS
-  const posts = [
-    {
-      id: 1,
-      slug: 'glokom-tedavisi',
-      title: 'Glokom Tedavisi ve Önleme Yöntemleri',
-      excerpt: 'Glokom, göz içi basıncının yükselmesi sonucu görme sinirinde hasar oluşmasıdır. Erken teşhis ve tedavi çok önemlidir.',
-      date: '2024-01-15',
-      image: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=800&h=600&fit=crop',
-    },
-    {
-      id: 2,
-      slug: 'katarakt-cerrahisi',
-      title: 'Katarakt Cerrahisi: Modern Teknikler ve İyileşme Süreci',
-      excerpt: 'Katarakt cerrahisi günümüzde çok gelişmiş tekniklerle yapılmaktadır. Ameliyat sonrası hasta aynı gün evine dönebilir.',
-      date: '2024-01-10',
-      image: 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=800&h=600&fit=crop',
-    },
-    {
-      id: 3,
-      slug: 'akilli-lensler',
-      title: 'Akıllı Lensler ile Yaşam Kalitesi Artışı',
-      excerpt: 'Akıllı lensler ile hem uzak hem yakın görme sorunları tek ameliyatla çözülebilir.',
-      date: '2024-01-05',
-      image: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800&h=600&fit=crop',
-    },
-    {
-      id: 4,
-      slug: 'goz-enfeksiyonlari',
-      title: 'Göz Enfeksiyonları: Belirtiler, Tedavi ve Korunma Yöntemleri',
-      excerpt: 'Göz enfeksiyonları doğru teşhis ve tedavi ile başarılı bir şekilde tedavi edilebilir. Erken müdahale görme kaybını önler.',
-      date: '2024-01-01',
-      image: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=800&h=600&fit=crop',
-    },
-  ];
+  const [posts, setPosts] = useState<Blog[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const data = await getPublicBlogs({ limit: 20 });
+        setPosts(data.data || []);
+      } catch (error) {
+        console.error('Blog yükleme hatası:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <Container className="py-12 sm:py-16 md:py-20 lg:py-24">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </Container>
+    );
+  }
+
+  if (posts.length === 0) {
+    return (
+      <Container className="py-12 sm:py-16 md:py-20 lg:py-24">
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
+            {t('title')}
+          </h1>
+          <p className="text-base sm:text-lg text-muted-foreground px-4">{t('subtitle')}</p>
+        </div>
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">Henüz blog yazısı eklenmemiş.</p>
+        </div>
+      </Container>
+    );
+  }
 
   return (
     <Container className="py-12 sm:py-16 md:py-20 lg:py-24">
@@ -63,26 +73,32 @@ export function BlogList() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {posts.map((post) => (
             <Link 
-              key={post.id} 
+              key={post._id} 
               href={`/${currentLocale}${getRoute('blog', currentLocale)}/${post.slug}`}
               className="group bg-white rounded-sm shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 block flex flex-col h-full"
             >
               <div className="relative overflow-hidden">
                 <div className="w-full h-52 relative bg-muted overflow-hidden">
-                  <Image
-                    src={post.image}
-                    alt={post.title}
-                    fill
-                    className="object-cover transform group-hover:scale-105 transition-transform duration-300"
-                    unoptimized
-                  />
+                  {post.image ? (
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      className="object-cover transform group-hover:scale-105 transition-transform duration-300"
+                      unoptimized
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                      <span className="text-gray-400 text-sm">Görsel yok</span>
+                    </div>
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
               </div>
               <div className="p-4 sm:p-6 flex flex-col flex-1">
                 <div className="flex items-center text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-3">
                   <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
-                  {new Date(post.date).toLocaleDateString('tr-TR', { 
+                  {new Date(post.createdAt).toLocaleDateString('tr-TR', { 
                     year: 'numeric', 
                     month: 'long', 
                     day: 'numeric' 

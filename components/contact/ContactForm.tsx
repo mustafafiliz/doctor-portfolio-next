@@ -8,6 +8,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Send, Loader2 } from 'lucide-react';
+import { contactApi } from '@/lib/api';
+import { getWebsiteId } from '@/lib/config';
 
 export function ContactForm() {
   const t = useTranslations('contact.form');
@@ -26,8 +28,20 @@ export function ContactForm() {
     setLoading(true);
 
     try {
-      // In production, this would send to an API endpoint
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const websiteId = getWebsiteId();
+      
+      if (websiteId) {
+        await contactApi.submit(websiteId, {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || undefined,
+          subject: formData.subject || undefined,
+          message: formData.message,
+        });
+      } else {
+        // Fallback for demo mode
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
       
       toast({
         title: t('success'),
@@ -42,6 +56,7 @@ export function ContactForm() {
         message: '',
       });
     } catch (error) {
+      console.error('Contact form error:', error);
       toast({
         title: t('error'),
         description: 'Bir hata oluştu. Lütfen tekrar deneyin.',

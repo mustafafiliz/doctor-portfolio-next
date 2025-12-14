@@ -13,35 +13,20 @@ import { type Locale } from '@/lib/i18n';
 import { getRoute } from '@/lib/routes';
 import { Container } from '@/components/Container';
 import { ArrowRight } from 'lucide-react';
+import type { FAQ } from '@/lib/types';
 
-export function HomeFAQSection() {
+interface HomeFAQSectionProps {
+  faqs: FAQ[];
+}
+
+export function HomeFAQSection({ faqs }: HomeFAQSectionProps) {
   const t = useTranslations('faq');
   const pathname = usePathname();
   const currentLocale = (pathname?.split('/')[1] || 'tr') as Locale;
 
-  // İlk 4 soruyu göster
-  const faqs = [
-    {
-      id: 1,
-      question: 'Göz muayenesi ne kadar sürer?',
-      answer: 'Rutin göz muayenesi genellikle 30-45 dakika sürer. Detaylı muayene veya özel testler gerektiğinde bu süre uzayabilir.',
-    },
-    {
-      id: 2,
-      question: 'Katarakt ameliyatı ne kadar sürer?',
-      answer: 'Katarakt ameliyatı genellikle 15-20 dakika sürer. Ameliyat sonrası hasta aynı gün evine dönebilir.',
-    },
-    {
-      id: 3,
-      question: 'Glokom tedavisi nasıl yapılır?',
-      answer: 'Glokom tedavisi öncelikle ilaçlarla başlar. İlaç tedavisi yeterli olmadığında lazer veya cerrahi tedavi uygulanabilir.',
-    },
-    {
-      id: 4,
-      question: 'Göz muayenesi için randevu nasıl alınır?',
-      answer: 'Randevu almak için telefon numaramızdan veya WhatsApp üzerinden bizimle iletişime geçebilirsiniz.',
-    },
-  ];
+  if (faqs.length === 0) {
+    return null; // FAQ yoksa section'ı gösterme
+  }
 
   return (
     <section className="py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-b from-background via-muted/30 to-background relative overflow-hidden">
@@ -59,7 +44,7 @@ export function HomeFAQSection() {
         <div className="max-w-3xl mx-auto mb-6 sm:mb-8">
           <Accordion type="single" collapsible className="w-full">
             {faqs.map((faq) => (
-              <AccordionItem key={faq.id} value={`item-${faq.id}`} className="border-border/50">
+              <AccordionItem key={faq._id} value={`item-${faq._id}`} className="border-border/50">
                 <AccordionTrigger className="text-left text-sm sm:text-base font-semibold hover:text-primary transition-colors px-4 sm:px-6">
                   {faq.question}
                 </AccordionTrigger>
@@ -84,4 +69,3 @@ export function HomeFAQSection() {
     </section>
   );
 }
-

@@ -1,10 +1,9 @@
 import { notFound } from 'next/navigation';
-import { getConfig } from '@/lib/config';
+import { getConfig, getPublicSpecialties } from '@/lib/config';
 import type { Metadata } from 'next';
 import { SpecialtiesList } from '@/components/specialties/SpecialtiesList';
 import { getDictionary } from '../../dictionaries';
 import { locales, type Locale } from '@/lib/i18n';
-import { Suspense } from 'react';
 
 export async function generateMetadata({
   params,
@@ -27,11 +26,24 @@ export async function generateMetadata({
   };
 }
 
-export default async function SpecialtiesPage() {
+export default async function SpecialtiesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const validLocale = (locale || 'tr') as Locale;
+  
+  // Server-side'da specialties'i fetch et
+  const specialtiesData = await getPublicSpecialties();
+  const config = await getConfig();
+
   return (
-    <Suspense fallback={<div className="container mx-auto px-4 py-12">Yükleniyor...</div>}>
-      <SpecialtiesList />
-    </Suspense>
+    <SpecialtiesList 
+      initialCategories={specialtiesData.categories || []}
+      currentLocale={validLocale}
+      config={config}
+    />
   );
 }
 

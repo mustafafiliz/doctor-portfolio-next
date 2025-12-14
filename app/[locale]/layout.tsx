@@ -1,21 +1,22 @@
-import { notFound } from 'next/navigation';
-import { ThemeProvider } from '@/components/ThemeProvider';
-import { Toaster } from '@/components/ui/toaster';
-import { I18nProvider } from '@/components/I18nProvider';
-import { Geist, Geist_Mono } from 'next/font/google';
-import '../globals.css';
-import { getConfig } from '@/lib/config';
-import { locales, type Locale } from '@/lib/i18n';
-import { getDictionary } from './dictionaries';
+import { notFound } from "next/navigation";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { Toaster } from "@/components/ui/toaster";
+import { I18nProvider } from "@/components/I18nProvider";
+import { ConfigProvider } from "@/contexts/ConfigContext";
+import { Geist, Geist_Mono } from "next/font/google";
+import "../globals.css";
+import { getConfig } from "@/lib/config";
+import { locales, type Locale } from "@/lib/i18n";
+import { getDictionary } from "./dictionaries";
 
 const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
+  variable: "--font-geist-sans",
+  subsets: ["latin"]
 });
 
 const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+  variable: "--font-geist-mono",
+  subsets: ["latin"]
 });
 
 export function generateStaticParams() {
@@ -24,7 +25,7 @@ export function generateStaticParams() {
 
 export default async function LocaleLayout({
   children,
-  params,
+  params
 }: {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
@@ -42,23 +43,29 @@ export default async function LocaleLayout({
   return (
     <html lang={validLocale}>
       <head>
-        <style dangerouslySetInnerHTML={{ __html: `
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
           :root {
             --color-primary: ${config.colors.primary};
             --color-secondary: ${config.colors.secondary};
             --color-accent: ${config.colors.accent};
           }
-        ` }} />
+        `
+          }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <I18nProvider locale={validLocale} dictionary={dictionary}>
-          <ThemeProvider>
-            {children}
-            <Toaster />
-          </ThemeProvider>
-        </I18nProvider>
+        <ConfigProvider config={config}>
+          <I18nProvider locale={validLocale} dictionary={dictionary}>
+            <ThemeProvider>
+              {children}
+              <Toaster />
+            </ThemeProvider>
+          </I18nProvider>
+        </ConfigProvider>
       </body>
     </html>
   );

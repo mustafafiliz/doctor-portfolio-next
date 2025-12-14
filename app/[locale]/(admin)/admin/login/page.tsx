@@ -1,37 +1,67 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
-import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function AdminLoginPage() {
   const router = useRouter();
   const pathname = usePathname();
-  const currentLocale = pathname?.split('/')[1] || 'tr';
+  const currentLocale = pathname?.split("/")[1] || "tr";
   const currentYear = new Date().getFullYear();
-  
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+
+  const {
+    login,
+    isAuthenticated,
+    isLoading: authLoading,
+    error: authError,
+    clearError
+  } = useAuth();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated && !authLoading) {
+      router.push(`/${currentLocale}/admin/dashboard`);
+    }
+  }, [isAuthenticated, authLoading, router, currentLocale]);
+
+  // Show auth error
+  useEffect(() => {
+    if (authError) {
+      setError(authError);
+      clearError();
+    }
+  }, [authError, clearError]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError('');
+    setIsSubmitting(true);
+    setError("");
 
-    // TODO: API'ye login isteği gönder
-    setTimeout(() => {
-      if (email === 'admin@example.com' && password === 'admin123') {
-        localStorage.setItem('admin_token', 'mock_token_123');
-        router.push(`/${currentLocale}/admin/dashboard`);
-      } else {
-        setError('Geçersiz email veya şifre');
-        setIsLoading(false);
-      }
-    }, 1000);
+    try {
+      await login({ email, password });
+      router.push(`/${currentLocale}/admin/dashboard`);
+    } catch {
+      // Error is handled by auth context
+      setIsSubmitting(false);
+    }
   };
+
+  // Show loading while checking auth
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#144793]"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex">
@@ -39,16 +69,30 @@ export default function AdminLoginPage() {
       <div className="hidden lg:flex lg:w-1/2 relative bg-[#144793]">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
-          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <svg
+            className="w-full h-full"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+          >
             <defs>
-              <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeWidth="0.5"/>
+              <pattern
+                id="grid"
+                width="10"
+                height="10"
+                patternUnits="userSpaceOnUse"
+              >
+                <path
+                  d="M 10 0 L 0 0 0 10"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="0.5"
+                />
               </pattern>
             </defs>
             <rect width="100" height="100" fill="url(#grid)" />
           </svg>
         </div>
-        
+
         {/* Content */}
         <div className="relative z-10 flex flex-col justify-between w-full p-12">
           {/* Logo */}
@@ -63,15 +107,29 @@ export default function AdminLoginPage() {
             <div className="relative w-full max-w-md">
               <div className="absolute -top-8 -left-8 w-32 h-32 bg-white/10 rounded-full blur-3xl"></div>
               <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
-              
+
               <div className="relative bg-white/10 backdrop-blur-sm rounded-sm p-8 border border-white/20 text-center">
                 <div className="w-20 h-20 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center">
-                  <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  <svg
+                    className="w-10 h-10 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                    />
                   </svg>
                 </div>
-                <h3 className="text-white text-2xl font-bold mb-2">Güvenli Giriş</h3>
-                <p className="text-white/70">Yönetim paneline erişim için kimlik doğrulaması yapın</p>
+                <h3 className="text-white text-2xl font-bold mb-2">
+                  Güvenli Giriş
+                </h3>
+                <p className="text-white/70">
+                  Yönetim paneline erişim için kimlik doğrulaması yapın
+                </p>
               </div>
             </div>
           </div>
@@ -97,7 +155,9 @@ export default function AdminLoginPage() {
           {/* Welcome Text */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-800">Hoş Geldiniz</h1>
-            <p className="text-gray-500 mt-2">Yönetim paneline erişmek için giriş yapın</p>
+            <p className="text-gray-500 mt-2">
+              Yönetim paneline erişmek için giriş yapın
+            </p>
           </div>
 
           {/* Login Form */}
@@ -109,7 +169,10 @@ export default function AdminLoginPage() {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-1.5"
+              >
                 Email Adresi
               </label>
               <div className="relative">
@@ -129,7 +192,10 @@ export default function AdminLoginPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-1.5"
+              >
                 Şifre
               </label>
               <div className="relative">
@@ -138,7 +204,7 @@ export default function AdminLoginPage() {
                 </div>
                 <input
                   id="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full pl-10 pr-12 py-3 border border-gray-200 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none transition-all bg-white"
@@ -157,20 +223,20 @@ export default function AdminLoginPage() {
 
             <div className="flex items-center justify-between">
               <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-[#144793] focus:ring-[#144793]" />
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 rounded border-gray-300 text-[#144793] focus:ring-[#144793]"
+                />
                 <span className="text-sm text-gray-600">Beni hatırla</span>
               </label>
-              <a href="#" className="text-sm text-[#144793] hover:underline">
-                Şifremi unuttum
-              </a>
             </div>
 
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isSubmitting}
               className="w-full bg-[#144793] text-white py-3 rounded-sm font-medium hover:bg-[#0f3a7a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {isLoading ? (
+              {isSubmitting ? (
                 <span className="flex items-center justify-center gap-2">
                   <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
                     <circle
@@ -191,7 +257,7 @@ export default function AdminLoginPage() {
                   Giriş yapılıyor...
                 </span>
               ) : (
-                'Giriş Yap'
+                "Giriş Yap"
               )}
             </button>
           </form>

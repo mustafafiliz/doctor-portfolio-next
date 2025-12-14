@@ -1,70 +1,136 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Save, X, Plus, Trash2, Image as ImageIcon } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Save, X, Plus, Trash2, Upload, Loader2, AlertCircle } from 'lucide-react';
 import { Editor } from '@/components/admin/Editor';
-
-// TODO: API'den hakkımda verilerini çek
-const mockAboutData = {
-  title: 'Prof. Dr. Kadriye Ufuk Elgin',
-  subtitle: 'Göz Hastalıkları Uzmanı',
-  image: '/images/me.jpg',
-  bio: '<p>Prof. Dr. Kadriye Ufuk Elgin, göz hastalıkları alanında 25 yılı aşkın deneyime sahip, alanında uzman bir hekimdir.</p><p>İstanbul Üniversitesi Tıp Fakültesi\'nden mezun olduktan sonra, aynı üniversitede göz hastalıkları uzmanlığını tamamlamıştır.</p>',
-  education: [
-    { id: '1', year: '1995', title: 'Tıp Fakültesi', institution: 'İstanbul Üniversitesi' },
-    { id: '2', year: '2000', title: 'Göz Hastalıkları Uzmanlığı', institution: 'İstanbul Üniversitesi' },
-    { id: '3', year: '2010', title: 'Profesörlük', institution: 'Marmara Üniversitesi' },
-  ],
-  experience: [
-    { id: '1', years: '2000-2010', title: 'Göz Hastalıkları Uzmanı', institution: 'Florence Nightingale Hastanesi' },
-    { id: '2', years: '2010-2020', title: 'Profesör', institution: 'Marmara Üniversitesi Tıp Fakültesi' },
-    { id: '3', years: '2020-Günümüz', title: 'Özel Muayenehane', institution: 'İstanbul' },
-  ],
-  certifications: [
-    'Türk Oftalmoloji Derneği Üyeliği',
-    'Avrupa Katarakt ve Refraktif Cerrahi Derneği Üyeliği',
-    'Amerikan Göz Akademisi Üyeliği',
-  ],
-};
+import { websiteApi } from '@/lib/api';
+import type { AboutSection, Education, Experience } from '@/lib/types';
 
 export default function AdminAboutPage() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState(mockAboutData);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  
+  const [formData, setFormData] = useState<{
+    title: string;
+    subtitle: string;
+    image: string;
+    bio: string;
+    education: Education[];
+    experience: Experience[];
+    certifications: string[];
+  }>({
+    title: '',
+    subtitle: '',
+    image: '',
+    bio: '',
+    education: [],
+    experience: [],
+    certifications: [],
+  });
+  
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [newEducation, setNewEducation] = useState({ year: '', title: '', institution: '' });
   const [newExperience, setNewExperience] = useState({ years: '', title: '', institution: '' });
   const [newCertification, setNewCertification] = useState('');
 
+  useEffect(() => {
+    fetchAbout();
+  }, []);
+
+  const fetchAbout = async () => {
+    setIsLoading(true);
+    try {
+      const data = await websiteApi.getAbout();
+      setFormData({
+        title: data.title || '',
+        subtitle: data.subtitle || '',
+        image: data.image || '',
+        bio: data.bio || '',
+        education: data.education || [],
+        experience: data.experience || [],
+        certifications: data.certifications || [],
+      });
+      if (data.image) {
+        setImagePreview(data.image);
+      }
+    } catch (err) {
+      console.error('Hakkımda yükleme hatası:', err);
+      // If no about section exists yet, that's okay
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    setIsSaving(true);
+    setError(null);
+    setSuccess(null);
 
-    // TODO: API'ye güncelleme isteği gönder
-    // const response = await fetch('/api/admin/about', {
-    //   method: 'PUT',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(formData),
-    // });
+    try {
+      const form = new FormData();
+      form.append('title', formData.title);
+      form.append('subtitle', formData.subtitle);
+      form.append('bio', formData.bio);
+      form.append('education', JSON.stringify(formData.education));
+      form.append('experience', JSON.stringify(formData.experience));
+      form.append('certifications', JSON.stringify(formData.certifications));
+      
+      if (selectedFile) {
+        form.append('image', selectedFile);
+      }
 
-    setTimeout(() => {
-      alert('Hakkımda sayfası güncellendi! (Demo)');
-      setIsLoading(false);
-    }, 1000);
+      await websiteApi.updateAbout(form);
+      setSuccess('Hakkımda sayfası güncellendi');
+      setSelectedFile(null);
+    } catch (err) {
+      console.error('Hakkımda güncelleme hatası:', err);
+      setError('Hakkımda sayfası güncellenirken bir hata oluştu');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setSelectedFile(null);
+    setImagePreview(null);
+    setFormData({ ...formData, image: '' });
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   const addEducation = () => {
     if (newEducation.year && newEducation.title && newEducation.institution) {
       setFormData({
         ...formData,
-        education: [...formData.education, { id: Date.now().toString(), ...newEducation }],
+        education: [...formData.education, { ...newEducation }],
       });
       setNewEducation({ year: '', title: '', institution: '' });
     }
   };
 
-  const removeEducation = (id: string) => {
+  const removeEducation = (index: number) => {
     setFormData({
       ...formData,
-      education: formData.education.filter((e) => e.id !== id),
+      education: formData.education.filter((_, i) => i !== index),
     });
   };
 
@@ -72,16 +138,16 @@ export default function AdminAboutPage() {
     if (newExperience.years && newExperience.title && newExperience.institution) {
       setFormData({
         ...formData,
-        experience: [...formData.experience, { id: Date.now().toString(), ...newExperience }],
+        experience: [...formData.experience, { ...newExperience }],
       });
       setNewExperience({ years: '', title: '', institution: '' });
     }
   };
 
-  const removeExperience = (id: string) => {
+  const removeExperience = (index: number) => {
     setFormData({
       ...formData,
-      experience: formData.experience.filter((e) => e.id !== id),
+      experience: formData.experience.filter((_, i) => i !== index),
     });
   };
 
@@ -102,6 +168,14 @@ export default function AdminAboutPage() {
     });
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-[#144793]" />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -112,13 +186,28 @@ export default function AdminAboutPage() {
         </div>
         <button
           onClick={handleSubmit}
-          disabled={isLoading}
+          disabled={isSaving}
           className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#144793] text-white rounded-sm hover:bg-[#0f3a7a] disabled:opacity-50 transition-colors"
         >
-          <Save size={18} />
-          {isLoading ? 'Kaydediliyor...' : 'Kaydet'}
+          {isSaving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
+          {isSaving ? 'Kaydediliyor...' : 'Kaydet'}
         </button>
       </div>
+
+      {error && (
+        <div className="flex items-center gap-2 bg-red-50 text-red-600 px-4 py-3 rounded-sm text-sm border border-red-100">
+          <AlertCircle size={18} />
+          {error}
+          <button onClick={() => setError(null)} className="ml-auto"><X size={16} /></button>
+        </div>
+      )}
+
+      {success && (
+        <div className="flex items-center gap-2 bg-green-50 text-green-600 px-4 py-3 rounded-sm text-sm border border-green-100">
+          {success}
+          <button onClick={() => setSuccess(null)} className="ml-auto"><X size={16} /></button>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="grid lg:grid-cols-3 gap-6">
         {/* Main Content */}
@@ -162,8 +251,8 @@ export default function AdminAboutPage() {
             
             {formData.education.length > 0 && (
               <div className="space-y-2">
-                {formData.education.map((edu) => (
-                  <div key={edu.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-sm">
+                {formData.education.map((edu, index) => (
+                  <div key={index} className="flex items-center gap-3 p-3 bg-gray-50 rounded-sm">
                     <div className="w-16 text-sm font-medium text-[#144793]">{edu.year}</div>
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-gray-800">{edu.title}</p>
@@ -171,7 +260,7 @@ export default function AdminAboutPage() {
                     </div>
                     <button
                       type="button"
-                      onClick={() => removeEducation(edu.id)}
+                      onClick={() => removeEducation(index)}
                       className="p-1.5 text-red-500 hover:bg-red-50 rounded-sm"
                     >
                       <Trash2 size={16} />
@@ -221,8 +310,8 @@ export default function AdminAboutPage() {
             
             {formData.experience.length > 0 && (
               <div className="space-y-2">
-                {formData.experience.map((exp) => (
-                  <div key={exp.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-sm">
+                {formData.experience.map((exp, index) => (
+                  <div key={index} className="flex items-center gap-3 p-3 bg-gray-50 rounded-sm">
                     <div className="w-24 text-sm font-medium text-[#144793]">{exp.years}</div>
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-gray-800">{exp.title}</p>
@@ -230,7 +319,7 @@ export default function AdminAboutPage() {
                     </div>
                     <button
                       type="button"
-                      onClick={() => removeExperience(exp.id)}
+                      onClick={() => removeExperience(index)}
                       className="p-1.5 text-red-500 hover:bg-red-50 rounded-sm"
                     >
                       <Trash2 size={16} />
@@ -321,32 +410,38 @@ export default function AdminAboutPage() {
           {/* Profile Image */}
           <div className="bg-white rounded-sm border border-gray-200 p-6 space-y-4">
             <h3 className="font-medium text-gray-800">Profil Fotoğrafı</h3>
-            {formData.image ? (
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
+            {imagePreview ? (
               <div className="relative">
                 <img
-                  src={formData.image}
+                  src={imagePreview}
                   alt="Profile"
                   className="w-full aspect-square object-cover rounded-sm"
                 />
                 <button
                   type="button"
-                  onClick={() => setFormData({ ...formData, image: '' })}
+                  onClick={handleRemoveImage}
                   className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-sm hover:bg-red-600"
                 >
                   <X size={16} />
                 </button>
               </div>
             ) : (
-              <div className="border-2 border-dashed border-gray-300 rounded-sm p-6 text-center">
-                <ImageIcon size={32} className="mx-auto text-gray-400 mb-2" />
-                <p className="text-sm text-gray-500 mb-2">Görsel URL&apos;si girin</p>
-                <input
-                  type="url"
-                  placeholder="https://..."
-                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
-                />
-              </div>
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="w-full border-2 border-dashed border-gray-300 rounded-sm p-6 text-center hover:border-[#144793] transition-colors"
+              >
+                <Upload size={32} className="mx-auto text-gray-400 mb-2" />
+                <p className="text-sm text-gray-500">Fotoğraf yüklemek için tıklayın</p>
+                <p className="text-xs text-gray-400 mt-1">PNG, JPG, WebP (max 10MB)</p>
+              </button>
             )}
           </div>
 
@@ -373,4 +468,3 @@ export default function AdminAboutPage() {
     </div>
   );
 }
-

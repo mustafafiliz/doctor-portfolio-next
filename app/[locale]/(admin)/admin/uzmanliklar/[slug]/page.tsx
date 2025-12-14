@@ -1,16 +1,30 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useState, useEffect, useRef } from 'react';
+import { useRouter, useParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Save, Eye, Trash2, X, Image as ImageIcon, Plus } from 'lucide-react';
+import { ArrowLeft, Save, Eye, Trash2, X, Upload, Loader2, AlertCircle } from 'lucide-react';
 import { Editor } from '@/components/admin/Editor';
-import specialtiesData from '@/data/specialties.json';
+import { specialtyApi } from '@/lib/api';
+import type { SpecialtyCategory } from '@/lib/types';
 
 export default function EditSpecialtyPage() {
   const router = useRouter();
   const params = useParams();
-  const [isLoading, setIsLoading] = useState(false);
+  const pathname = usePathname();
+  const currentLocale = pathname?.split('/')[1] || 'tr';
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const specialtySlug = params.slug as string;
+  
+  const [specialtyId, setSpecialtyId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [categories, setCategories] = useState<SpecialtyCategory[]>([]);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
@@ -18,29 +32,44 @@ export default function EditSpecialtyPage() {
     content: '',
     image: '',
     categoryId: '',
-    relatedSlugs: [] as string[],
-    metaTitle: '',
-    metaDescription: '',
   });
-  const [newRelatedSlug, setNewRelatedSlug] = useState('');
 
   useEffect(() => {
-    // TODO: API'den veriyi çek
-    const specialty = specialtiesData.specialties.find((s) => s.slug === params.slug);
-    if (specialty) {
-      setFormData({
-        title: specialty.title,
-        slug: specialty.slug,
-        description: specialty.description,
-        content: specialty.content,
-        image: specialty.image,
-        categoryId: specialty.categoryId,
-        relatedSlugs: specialty.relatedSlugs || [],
-        metaTitle: '',
-        metaDescription: '',
-      });
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const [specialtyData, categoriesData] = await Promise.all([
+          specialtyApi.getBySlug(specialtySlug),
+          specialtyApi.listCategories(),
+        ]);
+        
+        setSpecialtyId(specialtyData._id); // Update ve delete için _id'yi sakla
+        setFormData({
+          title: specialtyData.title,
+          slug: specialtyData.slug,
+          description: specialtyData.description || '',
+          content: specialtyData.content,
+          image: specialtyData.image || '',
+          categoryId: specialtyData.categoryId || '',
+        });
+        
+        if (specialtyData.image) {
+          setImagePreview(specialtyData.image);
+        }
+        
+        setCategories(categoriesData || []);
+      } catch (err) {
+        console.error('Uzmanlık yükleme hatası:', err);
+        setError('Uzmanlık alanı yüklenirken bir hata oluştu');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (specialtySlug) {
+      fetchData();
     }
-  }, [params.slug]);
+  }, [specialtySlug]);
 
   const generateSlug = (title: string) => {
     return title
@@ -65,47 +94,87 @@ export default function EditSpecialtyPage() {
     });
   };
 
-  const addRelatedSlug = () => {
-    if (newRelatedSlug && !formData.relatedSlugs.includes(newRelatedSlug)) {
-      setFormData({
-        ...formData,
-        relatedSlugs: [...formData.relatedSlugs, newRelatedSlug],
-      });
-      setNewRelatedSlug('');
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  const removeRelatedSlug = (index: number) => {
-    setFormData({
-      ...formData,
-      relatedSlugs: formData.relatedSlugs.filter((_, i) => i !== index),
-    });
+  const handleRemoveImage = () => {
+    setSelectedFile(null);
+    setImagePreview(null);
+    setFormData({ ...formData, image: '' });
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    setIsSaving(true);
+    setError(null);
 
-    // TODO: API'ye güncelleme isteği gönder
-    // const response = await fetch(`/api/admin/specialties/${params.slug}`, {
-    //   method: 'PUT',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(formData),
-    // });
+    try {
+      const form = new FormData();
+      form.append('title', formData.title);
+      form.append('slug', formData.slug);
+      form.append('description', formData.description);
+      form.append('content', formData.content);
+      if (formData.categoryId) {
+        form.append('categoryId', formData.categoryId);
+      }
+      if (selectedFile) {
+        form.append('image', selectedFile);
+      }
 
-    setTimeout(() => {
-      alert('Uzmanlık alanı güncellendi! (Demo)');
-      setIsLoading(false);
-    }, 1000);
+      if (!specialtyId) {
+        setError('Uzmanlık ID bulunamadı');
+        setIsSaving(false);
+        return;
+      }
+      await specialtyApi.update(specialtyId, form);
+      router.push(`/${currentLocale}/admin/uzmanliklar`);
+    } catch (err) {
+      console.error('Uzmanlık güncelleme hatası:', err);
+      setError('Uzmanlık alanı güncellenirken bir hata oluştu');
+      setIsSaving(false);
+    }
   };
 
   const handleDelete = async () => {
-    if (confirm('Bu uzmanlık alanını silmek istediğinizden emin misiniz?')) {
-      // TODO: API'ye silme isteği gönder
-      // await fetch(`/api/admin/specialties/${params.slug}`, { method: 'DELETE' });
-      router.push('/admin/uzmanliklar');
+    if (!confirm('Bu uzmanlık alanını silmek istediğinizden emin misiniz?')) {
+      return;
+    }
+
+    if (!specialtyId) {
+      setError('Uzmanlık ID bulunamadı');
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      await specialtyApi.delete(specialtyId);
+      router.push(`/${currentLocale}/admin/uzmanliklar`);
+    } catch (err) {
+      console.error('Uzmanlık silme hatası:', err);
+      setError('Uzmanlık silinirken bir hata oluştu');
+      setIsDeleting(false);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-[#144793]" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -113,7 +182,7 @@ export default function EditSpecialtyPage() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link
-            href="/admin/uzmanliklar"
+            href={`/${currentLocale}/admin/uzmanliklar`}
             className="p-2 hover:bg-gray-100 rounded-sm transition-colors"
           >
             <ArrowLeft size={20} />
@@ -125,7 +194,7 @@ export default function EditSpecialtyPage() {
         </div>
         <div className="flex items-center gap-2">
           <Link
-            href={`/tr/${formData.slug}`}
+            href={`/${currentLocale}/uzmanlik/${formData.slug}`}
             target="_blank"
             className="inline-flex items-center gap-2 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-sm hover:bg-gray-50 transition-colors"
           >
@@ -134,13 +203,25 @@ export default function EditSpecialtyPage() {
           </Link>
           <button
             onClick={handleDelete}
-            className="inline-flex items-center gap-2 px-4 py-2.5 border border-red-300 text-red-600 rounded-sm hover:bg-red-50 transition-colors"
+            disabled={isDeleting}
+            className="inline-flex items-center gap-2 px-4 py-2.5 border border-red-300 text-red-600 rounded-sm hover:bg-red-50 transition-colors disabled:opacity-50"
           >
-            <Trash2 size={18} />
+            {isDeleting ? (
+              <Loader2 size={18} className="animate-spin" />
+            ) : (
+              <Trash2 size={18} />
+            )}
             <span className="hidden sm:inline">Sil</span>
           </button>
         </div>
       </div>
+
+      {error && (
+        <div className="flex items-center gap-2 bg-red-50 text-red-600 px-4 py-3 rounded-sm text-sm border border-red-100">
+          <AlertCircle size={18} />
+          {error}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="grid lg:grid-cols-3 gap-6">
         {/* Main Content */}
@@ -166,7 +247,7 @@ export default function EditSpecialtyPage() {
               </label>
               <div className="flex items-center">
                 <span className="px-3 py-2.5 bg-gray-100 border border-r-0 border-gray-300 rounded-l-sm text-sm text-gray-500">
-                  /
+                  /uzmanlik/
                 </span>
                 <input
                   type="text"
@@ -202,76 +283,6 @@ export default function EditSpecialtyPage() {
               placeholder="Uzmanlık alanı içeriğini buraya yazın..."
             />
           </div>
-
-          {/* Related Slugs */}
-          <div className="bg-white rounded-sm border border-gray-200 p-6 space-y-4">
-            <h3 className="font-medium text-gray-800">İlgili Yazılar</h3>
-            
-            {formData.relatedSlugs.length > 0 && (
-              <div className="space-y-2">
-                {formData.relatedSlugs.map((slug, index) => (
-                  <div key={index} className="flex items-center gap-2 p-3 bg-gray-50 rounded-sm">
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-gray-800 truncate">/{slug}</p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => removeRelatedSlug(index)}
-                      className="p-1.5 text-red-500 hover:bg-red-50 rounded-sm"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder="slug (örn: glokom-nedir)"
-                value={newRelatedSlug}
-                onChange={(e) => setNewRelatedSlug(e.target.value)}
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-sm text-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
-              />
-              <button
-                type="button"
-                onClick={addRelatedSlug}
-                className="px-3 py-2 bg-gray-100 text-gray-700 rounded-sm hover:bg-gray-200"
-              >
-                <Plus size={18} />
-              </button>
-            </div>
-          </div>
-
-          {/* SEO */}
-          <div className="bg-white rounded-sm border border-gray-200 p-6 space-y-4">
-            <h3 className="font-medium text-gray-800">SEO Ayarları</h3>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Meta Başlık
-              </label>
-              <input
-                type="text"
-                value={formData.metaTitle}
-                onChange={(e) => setFormData({ ...formData, metaTitle: e.target.value })}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
-                placeholder="SEO için başlık"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Meta Açıklama
-              </label>
-              <textarea
-                value={formData.metaDescription}
-                onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })}
-                rows={2}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none resize-none"
-                placeholder="SEO için açıklama"
-              />
-            </div>
-          </div>
         </div>
 
         {/* Sidebar */}
@@ -280,27 +291,30 @@ export default function EditSpecialtyPage() {
           <div className="bg-white rounded-sm border border-gray-200 p-6 space-y-4">
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isSaving}
               className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#144793] text-white rounded-sm hover:bg-[#0f3a7a] disabled:opacity-50 transition-colors"
             >
-              <Save size={18} />
-              {isLoading ? 'Kaydediliyor...' : 'Güncelle'}
+              {isSaving ? (
+                <Loader2 size={18} className="animate-spin" />
+              ) : (
+                <Save size={18} />
+              )}
+              {isSaving ? 'Kaydediliyor...' : 'Güncelle'}
             </button>
           </div>
 
           {/* Category */}
           <div className="bg-white rounded-sm border border-gray-200 p-6 space-y-4">
-            <h3 className="font-medium text-gray-800">Kategori *</h3>
+            <h3 className="font-medium text-gray-800">Kategori</h3>
             <select
               value={formData.categoryId}
               onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
-              required
               className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none bg-white"
             >
               <option value="">Kategori Seçin</option>
-              {specialtiesData.categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.title}
+              {categories.map((category) => (
+                <option key={category._id} value={category._id}>
+                  {category.name}
                 </option>
               ))}
             </select>
@@ -309,32 +323,38 @@ export default function EditSpecialtyPage() {
           {/* Featured Image */}
           <div className="bg-white rounded-sm border border-gray-200 p-6 space-y-4">
             <h3 className="font-medium text-gray-800">Görsel</h3>
-            {formData.image ? (
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
+            {imagePreview ? (
               <div className="relative">
                 <img
-                  src={formData.image}
-                  alt="Featured"
+                  src={imagePreview}
+                  alt="Preview"
                   className="w-full h-40 object-cover rounded-sm"
                 />
                 <button
                   type="button"
-                  onClick={() => setFormData({ ...formData, image: '' })}
+                  onClick={handleRemoveImage}
                   className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-sm hover:bg-red-600"
                 >
                   <X size={16} />
                 </button>
               </div>
             ) : (
-              <div className="border-2 border-dashed border-gray-300 rounded-sm p-6 text-center">
-                <ImageIcon size={32} className="mx-auto text-gray-400 mb-2" />
-                <p className="text-sm text-gray-500 mb-2">Görsel URL&apos;si girin</p>
-                <input
-                  type="url"
-                  placeholder="https://..."
-                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
-                />
-              </div>
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="w-full border-2 border-dashed border-gray-300 rounded-sm p-6 text-center hover:border-[#144793] transition-colors"
+              >
+                <Upload size={32} className="mx-auto text-gray-400 mb-2" />
+                <p className="text-sm text-gray-500">Görsel yüklemek için tıklayın</p>
+                <p className="text-xs text-gray-400 mt-1">PNG, JPG, WebP (max 10MB)</p>
+              </button>
             )}
           </div>
         </div>
@@ -342,4 +362,3 @@ export default function EditSpecialtyPage() {
     </div>
   );
 }
-

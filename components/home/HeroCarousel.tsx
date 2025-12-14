@@ -16,6 +16,14 @@ export function HeroCarousel() {
   const pathname = usePathname();
   const currentLocale = (pathname?.split("/")[1] || "tr") as Locale;
 
+  // Use API hero data if available, otherwise fallback to translations
+  const heroTitle = config.hero?.title || t("hero.title");
+  const heroSubtitle = config.hero?.subtitle || t("hero.subtitle");
+  const heroDescription = config.hero?.description || t("summary");
+  const heroImage = config.hero?.image || "/images/me.jpg";
+  const heroCta = config.hero?.ctaText || t("hero.learnMore");
+  const heroCtaUrl = config.hero?.ctaUrl || `/${currentLocale}${getRoute("about", currentLocale)}`;
+
   return (
     <section className="relative w-full overflow-hidden bg-gradient-to-br from-background via-muted/20 to-background">
       <Container className="py-8 sm:py-12 md:py-16 lg:py-20">
@@ -27,11 +35,12 @@ export function HeroCarousel() {
               style={{ aspectRatio: "290/362" }}
             >
               <Image
-                src="/images/me.jpg"
-                alt="Prof. Dr. Kadriye Ufuk Elgin"
+                src={heroImage}
+                alt={heroTitle}
                 fill
                 className="object-contain object-left"
                 priority
+                unoptimized={heroImage.startsWith('http')}
               />
               {/* Decorative gradient overlay */}
               <div className="absolute inset-0 from-primary/5 via-transparent to-accent/5 pointer-events-none" />
@@ -47,23 +56,21 @@ export function HeroCarousel() {
             {/* Title */}
             <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-tight">
               <span className="block animate-fade-in-up">
-                {t("hero.title")}
+                {heroTitle}
               </span>
               <span className="block text-base sm:text-lg md:text-xl lg:text-2xl mt-2 sm:mt-3 font-semibold text-primary">
-                {t("hero.subtitle")}
+                {heroSubtitle}
               </span>
             </h1>
 
             {/* Summary */}
             <p className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed animate-fade-in-up delay-200">
-              {t("summary")}
+              {heroDescription}
             </p>
 
             {/* CTA Button */}
             <div className="pt-2 sm:pt-4 animate-fade-in-up delay-300">
-              <Link
-                href={`/${currentLocale}${getRoute("about", currentLocale)}`}
-              >
+              <Link href={heroCtaUrl}>
                 <Button
                   size="lg"
                   variant="outline"
@@ -73,7 +80,7 @@ export function HeroCarousel() {
                     color: config.colors.primary
                   }}
                 >
-                  {t("hero.learnMore")}
+                  {heroCta}
                 </Button>
               </Link>
             </div>

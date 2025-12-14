@@ -10,18 +10,12 @@ import { useState, useEffect, useRef } from "react";
 import { locales, type Locale } from "@/lib/i18n";
 import { useConfig } from "@/hooks/useConfig";
 import { getRoute } from "@/lib/routes";
+import { getPublicSpecialties } from "@/lib/config";
+import type { SpecialtyCategory, Specialty } from "@/lib/types";
 
-import specialtiesData from "@/data/specialties.json";
-
-// JSON'dan uzmanlık kategorileri ve alt başlıklarını oluştur
-const specialtyCategories = specialtiesData.categories.map((category) => ({
-  id: category.id,
-  title: category.title,
-  slug: category.slug,
-  items: specialtiesData.specialties
-    .filter((s) => s.categoryId === category.id)
-    .map((s) => ({ title: s.title, slug: s.slug }))
-}));
+interface CategoryWithSpecialties extends SpecialtyCategory {
+  specialties?: Specialty[];
+}
 
 export function Header() {
   const t = useTranslations("nav");
@@ -31,9 +25,114 @@ export function Header() {
   const [specialtiesOpen, setSpecialtiesOpen] = useState(false);
   const [mobileSpecialtiesOpen, setMobileSpecialtiesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [specialtyCategories, setSpecialtyCategories] = useState<
+    CategoryWithSpecialties[]
+  >([]);
+  const [isLoadingSpecialties, setIsLoadingSpecialties] = useState(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const currentLocale = (pathname?.split("/")[1] || "tr") as Locale;
+
+  // Uzmanlıkları kategorilere göre grupla
+  const groupSpecialtiesByCategory = (
+    categories: CategoryWithSpecialties[]
+  ): CategoryWithSpecialties[] => {
+    console.log(
+      "🔄 [Header] groupSpecialtiesByCategory çağrıldı, kategoriler:",
+      categories
+    );
+
+    // Kategorileri order'a göre sırala
+    const sortedCategories = [...categories].sort((a, b) => {
+      const orderA = a.order ?? 999;
+      const orderB = b.order ?? 999;
+      return orderA - orderB;
+    });
+    console.log("📊 [Header] Sıralanmış kategoriler:", sortedCategories);
+
+    // Her kategori içindeki uzmanlıkları da order'a göre sırala
+    const result = sortedCategories.map((category) => {
+      const sortedSpecialties = category.specialties
+        ? [...category.specialties].sort((a, b) => {
+            const orderA = a.order ?? 999;
+            const orderB = b.order ?? 999;
+            return orderA - orderB;
+          })
+        : [];
+
+      console.log(
+        `📁 [Header] Kategori "${category.title || category.name}":`,
+        {
+          categoryId: category._id,
+          specialtiesCount: sortedSpecialties.length,
+          specialties: sortedSpecialties
+        }
+      );
+
+      return {
+        ...category,
+        specialties: sortedSpecialties
+      };
+    });
+
+    console.log("✅ [Header] groupSpecialtiesByCategory sonucu:", result);
+    return result;
+  };
+
+  // API'den uzmanlık verilerini çek
+  useEffect(() => {
+    const fetchSpecialties = async () => {
+      try {
+        console.log("🔍 [Header] Uzmanlık verileri çekiliyor...");
+        const data = await getPublicSpecialties();
+        console.log("📦 [Header] API'den gelen veri:", data);
+        console.log("📦 [Header] Data type:", typeof data);
+        console.log("📦 [Header] Is Array:", Array.isArray(data));
+        console.log("📦 [Header] Data.categories:", data.categories);
+        console.log(
+          "📦 [Header] Data.categories length:",
+          data.categories?.length
+        );
+
+        // API direkt array döndürüyorsa veya categories içinde array varsa
+        let categories: CategoryWithSpecialties[] = [];
+
+        if (Array.isArray(data)) {
+          // API direkt array döndürüyor
+          console.log("✅ [Header] API direkt array döndürüyor");
+          categories = data;
+        } else if (data.categories && Array.isArray(data.categories)) {
+          // API { categories: [...] } formatında döndürüyor
+          console.log("✅ [Header] API categories wrapper içinde döndürüyor");
+          categories = data.categories;
+        } else {
+          console.warn("⚠️ [Header] Beklenmeyen veri formatı:", data);
+          categories = [];
+        }
+
+        console.log("📋 [Header] İşlenecek kategoriler:", categories);
+        console.log("📋 [Header] Kategoriler length:", categories.length);
+
+        // Kategorilere göre grupla ve sırala
+        const groupedCategories = groupSpecialtiesByCategory(categories);
+        console.log("✅ [Header] Gruplanmış kategoriler:", groupedCategories);
+        console.log(
+          "✅ [Header] Gruplanmış kategoriler length:",
+          groupedCategories.length
+        );
+
+        setSpecialtyCategories(groupedCategories);
+        console.log("✅ [Header] State güncellendi");
+      } catch (error) {
+        console.error("❌ [Header] Uzmanlık yükleme hatası:", error);
+      } finally {
+        setIsLoadingSpecialties(false);
+        console.log("🏁 [Header] Loading tamamlandı");
+      }
+    };
+
+    fetchSpecialties();
+  }, []);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -120,14 +219,25 @@ export function Header() {
           <div className="flex h-full items-center justify-between">
             {/* Logo Section */}
             <Link href={`/${currentLocale}`} className="flex items-center">
-              <Image
-                src="/images/logo.webp"
-                alt="Prof. Dr. Kadriye Ufuk Elgin Logo"
-                width={160}
-                height={44}
-                className="h-9 sm:h-10 lg:h-12 w-auto object-contain"
-                priority
-              />
+              {config.site?.logo ? (
+                <Image
+                  src={config.site.logo}
+                  alt={config.site.name || "Logo"}
+                  width={160}
+                  height={44}
+                  className="h-9 sm:h-10 lg:h-12 w-auto object-contain"
+                  priority
+                />
+              ) : (
+                <Image
+                  src="/images/logo.webp"
+                  alt="Logo"
+                  width={160}
+                  height={44}
+                  className="h-9 sm:h-10 lg:h-12 w-auto object-contain"
+                  priority
+                />
+              )}
             </Link>
 
             {/* Desktop Navigation */}
@@ -164,65 +274,100 @@ export function Header() {
                       </button>
 
                       {/* Dropdown Menu */}
-                      {specialtiesOpen && (
-                        <div className="absolute top-full left-0 mt-2 bg-background border border-border/50 rounded-sm shadow-xl min-w-[220px] z-50">
-                          {specialtyCategories.map((category) => (
-                            <div
-                              key={category.id}
-                              className="relative"
-                              onMouseEnter={() =>
-                                setActiveCategory(category.id)
-                              }
-                              onMouseLeave={() => setActiveCategory(null)}
-                            >
-                              <Link
-                                href={`/${currentLocale}/uzmanlik/${category.slug}`}
-                                className="w-full flex items-center justify-between px-4 py-3 text-sm text-foreground hover:bg-primary/10 hover:text-primary transition-colors"
-                                onClick={() => {
-                                  setSpecialtiesOpen(false);
-                                  setActiveCategory(null);
-                                }}
-                              >
-                                <span>{category.title}</span>
-                                <ChevronRight className="h-4 w-4" />
-                              </Link>
+                      {specialtiesOpen &&
+                        !isLoadingSpecialties &&
+                        (() => {
+                          console.log("🎨 [Header] Dropdown render ediliyor");
+                          console.log(
+                            "🎨 [Header] isLoadingSpecialties:",
+                            isLoadingSpecialties
+                          );
+                          console.log(
+                            "🎨 [Header] specialtyCategories:",
+                            specialtyCategories
+                          );
+                          console.log(
+                            "🎨 [Header] specialtyCategories.length:",
+                            specialtyCategories.length
+                          );
+                          return (
+                            <div className="absolute top-full left-0 mt-2 bg-background border border-border/50 rounded-sm shadow-xl min-w-[220px] z-50">
+                              {specialtyCategories.length > 0 ? (
+                                <>
+                                  {specialtyCategories.map((category) => (
+                                    <div
+                                      key={category._id}
+                                      className="relative"
+                                      onMouseEnter={() =>
+                                        setActiveCategory(category._id)
+                                      }
+                                      onMouseLeave={() =>
+                                        setActiveCategory(null)
+                                      }
+                                    >
+                                      <Link
+                                        href={`/${currentLocale}/uzmanlik/${category.slug}`}
+                                        className="w-full flex items-center justify-between px-4 py-3 text-sm text-foreground hover:bg-primary/10 hover:text-primary transition-colors"
+                                        onClick={() => {
+                                          setSpecialtiesOpen(false);
+                                          setActiveCategory(null);
+                                        }}
+                                      >
+                                        <span>
+                                          {category.title || category.name}
+                                        </span>
+                                        {category.specialties &&
+                                          category.specialties.length > 0 && (
+                                            <ChevronRight className="h-4 w-4" />
+                                          )}
+                                      </Link>
 
-                              {/* Sub-menu */}
-                              {activeCategory === category.id && (
-                                <div className="absolute left-full top-0 ml-0.5 bg-background border border-border/50 rounded-sm shadow-xl min-w-[200px]">
-                                  {category.items.map((subItem) => (
+                                      {/* Sub-menu */}
+                                      {activeCategory === category._id &&
+                                        category.specialties &&
+                                        category.specialties.length > 0 && (
+                                          <div className="absolute left-full top-0 ml-0.5 bg-background border border-border/50 rounded-sm shadow-xl min-w-[200px]">
+                                            {category.specialties.map(
+                                              (specialty) => (
+                                                <Link
+                                                  key={specialty._id}
+                                                  href={`/${currentLocale}/uzmanlik/${specialty.slug}`}
+                                                  className="block px-4 py-2.5 text-sm text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors"
+                                                  onClick={() => {
+                                                    setSpecialtiesOpen(false);
+                                                    setActiveCategory(null);
+                                                  }}
+                                                >
+                                                  {specialty.title}
+                                                </Link>
+                                              )
+                                            )}
+                                          </div>
+                                        )}
+                                    </div>
+                                  ))}
+                                  {/* Tümünü Gör linki */}
+                                  <div className="border-t border-border/30">
                                     <Link
-                                      key={subItem.slug}
-                                      href={`/${currentLocale}/${subItem.slug}`}
-                                      className="block px-4 py-2.5 text-sm text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors"
+                                      href={`/${currentLocale}${route}`}
+                                      className="block px-4 py-3 text-sm font-medium text-primary hover:bg-primary/10 transition-colors"
                                       onClick={() => {
                                         setSpecialtiesOpen(false);
                                         setActiveCategory(null);
                                       }}
                                     >
-                                      {subItem.title}
+                                      Tümünü Gör →
                                     </Link>
-                                  ))}
+                                  </div>
+                                </>
+                              ) : (
+                                <div className="px-4 py-3 text-sm text-muted-foreground">
+                                  Henüz kategori eklenmemiş.
                                 </div>
                               )}
                             </div>
-                          ))}
-
-                          {/* Tümünü Gör linki */}
-                          <div className="border-t border-border/30">
-                            <Link
-                              href={`/${currentLocale}${route}`}
-                              className="block px-4 py-3 text-sm font-medium text-primary hover:bg-primary/10 transition-colors"
-                              onClick={() => {
-                                setSpecialtiesOpen(false);
-                                setActiveCategory(null);
-                              }}
-                            >
-                              Tüm Uzmanlıklar →
-                            </Link>
-                          </div>
-                        </div>
-                      )}
+                          );
+                        })()}
                     </div>
                   );
                 }
@@ -282,13 +427,23 @@ export function Header() {
                 className="flex items-center"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <Image
-                  src="/images/logo.webp"
-                  alt="Prof. Dr. Kadriye Ufuk Elgin Logo"
-                  width={140}
-                  height={38}
-                  className="h-9 w-auto object-contain"
-                />
+                {config.site?.logo ? (
+                  <Image
+                    src={config.site.logo}
+                    alt={config.site.name || "Logo"}
+                    width={140}
+                    height={38}
+                    className="h-9 w-auto object-contain"
+                  />
+                ) : (
+                  <Image
+                    src="/images/logo.webp"
+                    alt="Logo"
+                    width={140}
+                    height={38}
+                    className="h-9 w-auto object-contain"
+                  />
+                )}
               </Link>
               <Button
                 variant="ghost"
@@ -334,49 +489,63 @@ export function Header() {
                         </button>
 
                         {/* Mobile Accordion Content */}
-                        {mobileSpecialtiesOpen && (
+                        {mobileSpecialtiesOpen && !isLoadingSpecialties && (
                           <div className="ml-4 mt-1 border-l border-border/30 pl-4">
-                            {specialtyCategories.map((category) => (
-                              <div key={category.id} className="mb-3">
-                                <Link
-                                  href={`/${currentLocale}/uzmanlik/${category.slug}`}
-                                  className="text-sm font-semibold text-foreground py-2 block hover:text-primary transition-colors"
-                                  onClick={() => {
-                                    setMobileMenuOpen(false);
-                                    setMobileSpecialtiesOpen(false);
-                                  }}
-                                >
-                                  {category.title}
-                                </Link>
-                                <div className="flex flex-col gap-1 pl-3 border-l border-border/30">
-                                  {category.items.map((subItem) => (
+                            {specialtyCategories.length > 0 ? (
+                              <>
+                                {specialtyCategories.map((category) => (
+                                  <div key={category._id} className="mb-3">
                                     <Link
-                                      key={subItem.slug}
-                                      href={`/${currentLocale}/${subItem.slug}`}
-                                      className="text-sm text-muted-foreground hover:text-primary py-1.5 transition-colors"
+                                      href={`/${currentLocale}/uzmanlik/${category.slug}`}
+                                      className="text-sm font-semibold text-foreground py-2 block hover:text-primary transition-colors"
                                       onClick={() => {
                                         setMobileMenuOpen(false);
                                         setMobileSpecialtiesOpen(false);
                                       }}
                                     >
-                                      {subItem.title}
+                                      {category.title || category.name}
                                     </Link>
-                                  ))}
-                                </div>
+                                    {category.specialties &&
+                                      category.specialties.length > 0 && (
+                                        <div className="flex flex-col gap-1 pl-3 border-l border-border/30">
+                                          {category.specialties.map(
+                                            (specialty) => (
+                                              <Link
+                                                key={specialty._id}
+                                                href={`/${currentLocale}/uzmanlik/${specialty.slug}`}
+                                                className="text-sm text-muted-foreground hover:text-primary py-1.5 transition-colors"
+                                                onClick={() => {
+                                                  setMobileMenuOpen(false);
+                                                  setMobileSpecialtiesOpen(
+                                                    false
+                                                  );
+                                                }}
+                                              >
+                                                {specialty.title}
+                                              </Link>
+                                            )
+                                          )}
+                                        </div>
+                                      )}
+                                  </div>
+                                ))}
+                                {/* Tümünü Gör */}
+                                <Link
+                                  href={`/${currentLocale}${route}`}
+                                  className="block text-sm font-medium text-primary py-2 border-t border-border/30 mt-2"
+                                  onClick={() => {
+                                    setMobileMenuOpen(false);
+                                    setMobileSpecialtiesOpen(false);
+                                  }}
+                                >
+                                  Tümünü Gör →
+                                </Link>
+                              </>
+                            ) : (
+                              <div className="text-sm text-muted-foreground py-2">
+                                Henüz kategori eklenmemiş.
                               </div>
-                            ))}
-
-                            {/* Tümünü Gör */}
-                            <Link
-                              href={`/${currentLocale}${route}`}
-                              className="block text-sm font-medium text-primary py-2 border-t border-border/30 mt-2"
-                              onClick={() => {
-                                setMobileMenuOpen(false);
-                                setMobileSpecialtiesOpen(false);
-                              }}
-                            >
-                              Tüm Uzmanlıklar →
-                            </Link>
+                            )}
                           </div>
                         )}
                       </div>

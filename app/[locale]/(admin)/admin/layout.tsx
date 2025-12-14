@@ -16,14 +16,9 @@ import {
   X,
   ChevronDown,
   Home,
+  MessageSquare,
 } from 'lucide-react';
-
-// TODO: API'den kullanıcı bilgilerini çek
-const mockUser = {
-  name: 'Admin',
-  email: 'admin@example.com',
-  avatar: null,
-};
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function AdminLayout({
   children,
@@ -33,8 +28,8 @@ export default function AdminLayout({
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  
+  const { user, isAuthenticated, isLoading, logout } = useAuth();
 
   // Locale'i pathname'den al
   const currentLocale = pathname?.split('/')[1] || 'tr';
@@ -45,6 +40,7 @@ export default function AdminLayout({
     { name: 'Uzmanlıklar', href: `/${currentLocale}/admin/uzmanliklar`, icon: Stethoscope },
     { name: 'Galeri', href: `/${currentLocale}/admin/galeri`, icon: Images },
     { name: 'SSS (FAQ)', href: `/${currentLocale}/admin/faq`, icon: HelpCircle },
+    { name: 'Mesajlar', href: `/${currentLocale}/admin/mesajlar`, icon: MessageSquare },
     { name: 'Hakkımda', href: `/${currentLocale}/admin/hakkimda`, icon: User },
     { name: 'Site Ayarları', href: `/${currentLocale}/admin/ayarlar`, icon: Settings },
   ], [currentLocale]);
@@ -53,22 +49,13 @@ export default function AdminLayout({
   const isLoginPage = pathname?.includes('/admin/login');
 
   useEffect(() => {
-    // TODO: API ile authentication kontrolü yap
-    const checkAuth = () => {
-      const token = localStorage.getItem('admin_token');
-      if (token) {
-        setIsAuthenticated(true);
-      } else if (!isLoginPage) {
-        router.push(`/${currentLocale}/admin/login`);
-      }
-      setIsLoading(false);
-    };
-    checkAuth();
-  }, [isLoginPage, router, currentLocale]);
+    if (!isLoading && !isAuthenticated && !isLoginPage) {
+      router.push(`/${currentLocale}/admin/login`);
+    }
+  }, [isLoading, isAuthenticated, isLoginPage, router, currentLocale]);
 
   const handleLogout = () => {
-    // TODO: API'ye logout isteği gönder
-    localStorage.removeItem('admin_token');
+    logout();
     router.push(`/${currentLocale}/admin/login`);
   };
 
@@ -79,7 +66,7 @@ export default function AdminLayout({
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#144793]"></div>
       </div>
     );
   }
@@ -142,7 +129,7 @@ export default function AdminLayout({
 
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10">
           <Link
-            href="/"
+            href={`/${currentLocale}`}
             target="_blank"
             className="flex items-center gap-3 px-3 py-2.5 text-white/80 hover:bg-white/10 hover:text-white rounded-sm transition-colors"
           >
@@ -174,18 +161,18 @@ export default function AdminLayout({
               <div className="relative group">
                 <button className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-sm">
                   <div className="w-8 h-8 bg-[#144793] text-white rounded-full flex items-center justify-center text-sm font-medium">
-                    {mockUser.name.charAt(0)}
+                    {user?.name?.charAt(0) || 'U'}
                   </div>
                   <span className="hidden sm:block text-sm font-medium text-gray-700">
-                    {mockUser.name}
+                    {user?.name || 'Kullanıcı'}
                   </span>
                   <ChevronDown size={16} className="text-gray-500" />
                 </button>
 
                 <div className="absolute right-0 mt-1 w-48 bg-white rounded-sm shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
                   <div className="p-3 border-b border-gray-100">
-                    <p className="text-sm font-medium text-gray-800">{mockUser.name}</p>
-                    <p className="text-xs text-gray-500">{mockUser.email}</p>
+                    <p className="text-sm font-medium text-gray-800">{user?.name || 'Kullanıcı'}</p>
+                    <p className="text-xs text-gray-500">{user?.email || ''}</p>
                   </div>
                   <button
                     onClick={handleLogout}
@@ -206,4 +193,3 @@ export default function AdminLayout({
     </div>
   );
 }
-

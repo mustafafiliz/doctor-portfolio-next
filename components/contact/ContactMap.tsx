@@ -5,9 +5,25 @@ import { useConfig } from '@/hooks/useConfig';
 export function ContactMap() {
   const { config } = useConfig();
   
-  // Google Maps embed URL - API key gerektirmeyen yöntem
-  const mapAddress = encodeURIComponent(config.contact.address);
-  const mapUrl = `https://www.google.com/maps?q=${mapAddress}&output=embed`;
+  // Use embed URL from API if available, otherwise generate from address
+  let mapUrl = '';
+  
+  if (config.maps?.embedUrl) {
+    mapUrl = config.maps.embedUrl;
+  } else if (config.maps?.latitude && config.maps?.longitude) {
+    mapUrl = `https://www.google.com/maps?q=${config.maps.latitude},${config.maps.longitude}&output=embed`;
+  } else if (config.contact.address) {
+    const mapAddress = encodeURIComponent(config.contact.address);
+    mapUrl = `https://www.google.com/maps?q=${mapAddress}&output=embed`;
+  }
+
+  if (!mapUrl) {
+    return (
+      <div className="relative w-full h-full min-h-[300px] sm:min-h-[400px] md:min-h-[500px] rounded-sm overflow-hidden shadow-2xl border border-border/50 bg-muted flex items-center justify-center">
+        <p className="text-muted-foreground">Harita bilgisi mevcut değil</p>
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full h-full min-h-[300px] sm:min-h-[400px] md:min-h-[500px] rounded-sm overflow-hidden shadow-2xl border border-border/50 group">
@@ -28,4 +44,3 @@ export function ContactMap() {
     </div>
   );
 }
-

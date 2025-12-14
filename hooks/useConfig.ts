@@ -1,29 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { SiteConfig, defaultConfig } from '@/lib/config';
+import { useConfigContext } from "@/contexts/ConfigContext";
 
 export function useConfig() {
-  const [config, setConfig] = useState<SiteConfig>(defaultConfig);
-  const [loading, setLoading] = useState(true);
+  const { config } = useConfigContext();
 
-  useEffect(() => {
-    async function fetchConfig() {
-      try {
-        const response = await fetch('/api/config');
-        const data = await response.json();
-        setConfig(data);
-      } catch (error) {
-        console.error('Failed to fetch config:', error);
-        setConfig(defaultConfig);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchConfig();
-  }, []);
-
-  return { config, loading };
+  // loading is always false since config is pre-fetched in layout
+  return { config, loading: false };
 }
-

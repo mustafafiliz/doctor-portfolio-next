@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getConfig } from '@/lib/config';
+import { getConfig, getPublicFAQs } from '@/lib/config';
 import type { Metadata } from 'next';
 import { FAQSection } from '@/components/faq/FAQSection';
 import { getDictionary } from '../../dictionaries';
@@ -26,7 +26,25 @@ export async function generateMetadata({
   };
 }
 
-export default async function FAQPage() {
-  return <FAQSection />;
+export default async function FAQPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const currentLocale = (locale || 'tr') as Locale;
+  
+  // Server-side'da FAQs'i fetch et
+  const faqsData = await getPublicFAQs();
+  const faqs = faqsData.data || [];
+  const config = await getConfig();
+
+  return (
+    <FAQSection 
+      initialFAQs={faqs}
+      currentLocale={currentLocale}
+      config={config}
+    />
+  );
 }
 

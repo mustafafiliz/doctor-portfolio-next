@@ -3,83 +3,89 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import {
   Plus,
   Search,
   Edit,
   Trash2,
   Eye,
-  MoreVertical,
   Calendar,
   Tag,
+  Loader2,
+  AlertCircle,
 } from 'lucide-react';
-
-// TODO: API'den blog yazılarını çek
-const mockBlogs = [
-  {
-    id: '1',
-    title: 'Glokom Nedir? Belirtileri ve Tedavi Yöntemleri',
-    slug: 'glokom-nedir',
-    excerpt: 'Glokom, göz içi basıncının artmasıyla ortaya çıkan ve görme sinirini etkileyen ciddi bir göz hastalığıdır...',
-    image: '/images/blog/glokom.jpg',
-    category: 'Göz Hastalıkları',
-    status: 'published',
-    createdAt: '2024-01-15',
-    views: 1234,
-  },
-  {
-    id: '2',
-    title: 'Katarakt Ameliyatı Sonrası Dikkat Edilmesi Gerekenler',
-    slug: 'katarakt-ameliyati-sonrasi',
-    excerpt: 'Katarakt ameliyatı sonrasında iyileşme sürecini hızlandırmak için dikkat etmeniz gereken önemli noktalar...',
-    image: '/images/blog/katarakt.jpg',
-    category: 'Ameliyat',
-    status: 'published',
-    createdAt: '2024-01-10',
-    views: 892,
-  },
-  {
-    id: '3',
-    title: 'Göz Kuruluğu ve Modern Çözümler',
-    slug: 'goz-kurulugu',
-    excerpt: 'Dijital çağın en yaygın göz sorunlarından biri olan göz kuruluğu hakkında bilmeniz gerekenler...',
-    image: '/images/blog/goz-kurulugu.jpg',
-    category: 'Göz Sağlığı',
-    status: 'draft',
-    createdAt: '2024-01-08',
-    views: 0,
-  },
-];
+import { blogApi } from '@/lib/api';
+import type { Blog } from '@/lib/types';
 
 export default function AdminBlogPage() {
-  const [blogs, setBlogs] = useState(mockBlogs);
+  const pathname = usePathname();
+  const currentLocale = pathname?.split('/')[1] || 'tr';
+  
+  const [blogs, setBlogs] = useState<Blog[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'published' | 'draft'>('all');
-  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    // TODO: API'den blog listesini çek
-    // const fetchBlogs = async () => {
-    //   const response = await fetch('/api/admin/blogs');
-    //   const data = await response.json();
-    //   setBlogs(data);
-    // };
-    // fetchBlogs();
-  }, []);
+    const fetchData = async () => {
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        const blogsData = await blogApi.list({ 
+          page, 
+          limit: 20,
+          status: statusFilter !== 'all' ? statusFilter : undefined,
+        });
+        
+        setBlogs(blogsData.data || []);
+        setTotalPages(blogsData.totalPages || 1);
+      } catch (err) {
+        console.error('Blog veri yükleme hatası:', err);
+        setError('Blog verileri yüklenirken bir hata oluştu');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [page, statusFilter]);
 
   const filteredBlogs = blogs.filter((blog) => {
     const matchesSearch = blog.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || blog.status === statusFilter;
-    return matchesSearch && matchesStatus;
+    return matchesSearch;
   });
 
   const handleDelete = async (id: string) => {
-    if (confirm('Bu blog yazısını silmek istediğinizden emin misiniz?')) {
-      // TODO: API'ye silme isteği gönder
-      // await fetch(`/api/admin/blogs/${id}`, { method: 'DELETE' });
-      setBlogs(blogs.filter((blog) => blog.id !== id));
+    if (!confirm('Bu blog yazısını silmek istediğinizden emin misiniz?')) {
+      return;
+    }
+
+    setIsDeleting(id);
+    try {
+      await blogApi.delete(id);
+      setBlogs(blogs.filter((blog) => blog._id !== id));
+    } catch (err) {
+      console.error('Blog silme hatası:', err);
+      alert('Blog silinirken bir hata oluştu');
+    } finally {
+      setIsDeleting(null);
     }
   };
+
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-[#144793]" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -92,13 +98,20 @@ export default function AdminBlogPage() {
           </p>
         </div>
         <Link
-          href="/admin/blog/yeni"
+          href={`/${currentLocale}/admin/blog/yeni`}
           className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#144793] text-white rounded-sm hover:bg-[#0f3a7a] transition-colors"
         >
           <Plus size={20} />
           <span>Yeni Yazı</span>
         </Link>
       </div>
+
+      {error && (
+        <div className="flex items-center gap-2 bg-red-50 text-red-600 px-4 py-3 rounded-sm text-sm border border-red-100">
+          <AlertCircle size={18} />
+          {error}
+        </div>
+      )}
 
       {/* Filters */}
       <div className="bg-white rounded-sm border border-gray-200 p-4">
@@ -115,7 +128,10 @@ export default function AdminBlogPage() {
           </div>
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
+            onChange={(e) => {
+              setStatusFilter(e.target.value as typeof statusFilter);
+              setPage(1);
+            }}
             className="px-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none bg-white"
           >
             <option value="all">Tüm Durumlar</option>
@@ -132,7 +148,6 @@ export default function AdminBlogPage() {
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th className="text-left px-4 py-3 text-sm font-medium text-gray-600">Yazı</th>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-600 hidden md:table-cell">Kategori</th>
                 <th className="text-left px-4 py-3 text-sm font-medium text-gray-600 hidden lg:table-cell">Tarih</th>
                 <th className="text-left px-4 py-3 text-sm font-medium text-gray-600">Durum</th>
                 <th className="text-right px-4 py-3 text-sm font-medium text-gray-600">İşlemler</th>
@@ -140,7 +155,7 @@ export default function AdminBlogPage() {
             </thead>
             <tbody className="divide-y divide-gray-100">
               {filteredBlogs.map((blog) => (
-                <tr key={blog.id} className="hover:bg-gray-50">
+                <tr key={blog._id} className="hover:bg-gray-50">
                   <td className="px-4 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 bg-gray-100 rounded-sm overflow-hidden flex-shrink-0">
@@ -160,7 +175,7 @@ export default function AdminBlogPage() {
                       </div>
                       <div className="min-w-0">
                         <Link
-                          href={`/admin/blog/${blog.id}`}
+                          href={`/${currentLocale}/admin/blog/${blog.slug}`}
                           className="font-medium text-gray-800 hover:text-[#144793] block truncate"
                         >
                           {blog.title}
@@ -168,11 +183,6 @@ export default function AdminBlogPage() {
                         <p className="text-sm text-gray-500 truncate max-w-xs">{blog.excerpt}</p>
                       </div>
                     </div>
-                  </td>
-                  <td className="px-4 py-4 hidden md:table-cell">
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-sm bg-gray-100 text-gray-700 text-xs font-medium">
-                      {blog.category}
-                    </span>
                   </td>
                   <td className="px-4 py-4 hidden lg:table-cell">
                     <div className="flex items-center gap-1.5 text-sm text-gray-500">
@@ -194,7 +204,7 @@ export default function AdminBlogPage() {
                   <td className="px-4 py-4">
                     <div className="flex items-center justify-end gap-1">
                       <Link
-                        href={`/tr/blog/${blog.slug}`}
+                        href={`/${currentLocale}/blog/${blog.slug}`}
                         target="_blank"
                         className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-sm"
                         title="Görüntüle"
@@ -202,18 +212,23 @@ export default function AdminBlogPage() {
                         <Eye size={18} />
                       </Link>
                       <Link
-                        href={`/admin/blog/${blog.id}`}
+                        href={`/${currentLocale}/admin/blog/${blog.slug}`}
                         className="p-2 text-gray-400 hover:text-[#144793] hover:bg-gray-100 rounded-sm"
                         title="Düzenle"
                       >
                         <Edit size={18} />
                       </Link>
                       <button
-                        onClick={() => handleDelete(blog.id)}
-                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-sm"
+                        onClick={() => handleDelete(blog._id)}
+                        disabled={isDeleting === blog._id}
+                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-sm disabled:opacity-50"
                         title="Sil"
                       >
-                        <Trash2 size={18} />
+                        {isDeleting === blog._id ? (
+                          <Loader2 size={18} className="animate-spin" />
+                        ) : (
+                          <Trash2 size={18} />
+                        )}
                       </button>
                     </div>
                   </td>
@@ -229,7 +244,29 @@ export default function AdminBlogPage() {
           </div>
         )}
       </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="px-3 py-1 border border-gray-300 rounded-sm disabled:opacity-50 hover:bg-gray-50"
+          >
+            Önceki
+          </button>
+          <span className="text-sm text-gray-600">
+            Sayfa {page} / {totalPages}
+          </span>
+          <button
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page === totalPages}
+            className="px-3 py-1 border border-gray-300 rounded-sm disabled:opacity-50 hover:bg-gray-50"
+          >
+            Sonraki
+          </button>
+        </div>
+      )}
     </div>
   );
 }
-
