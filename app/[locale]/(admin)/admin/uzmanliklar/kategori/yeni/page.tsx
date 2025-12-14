@@ -58,7 +58,6 @@ export default function NewCategoryPage() {
       });
       router.push(`/${currentLocale}/admin/uzmanliklar`);
     } catch (err) {
-      console.error('Kategori kaydetme hatası:', err);
       setError('Kategori kaydedilirken bir hata oluştu');
       setIsLoading(false);
     }
@@ -186,5 +185,8 @@ export default function NewCategoryPage() {
     </div>
   );
 }
+
+
+
 
 

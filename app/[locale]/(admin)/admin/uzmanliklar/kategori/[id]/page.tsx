@@ -44,7 +44,6 @@ export default function EditCategoryPage() {
           setError('Kategori bulunamadı');
         }
       } catch (err) {
-        console.error('Kategori yükleme hatası:', err);
         setError('Kategori yüklenirken bir hata oluştu');
       } finally {
         setIsLoading(false);
@@ -93,7 +92,6 @@ export default function EditCategoryPage() {
       });
       router.push(`/${currentLocale}/admin/uzmanliklar`);
     } catch (err) {
-      console.error('Kategori güncelleme hatası:', err);
       setError('Kategori güncellenirken bir hata oluştu');
       setIsSaving(false);
     }
@@ -109,7 +107,6 @@ export default function EditCategoryPage() {
       await specialtyApi.deleteCategory(categoryId);
       router.push(`/${currentLocale}/admin/uzmanliklar`);
     } catch (err) {
-      console.error('Kategori silme hatası:', err);
       setError('Kategori silinirken bir hata oluştu');
       setIsDeleting(false);
     }
@@ -258,5 +255,8 @@ export default function EditCategoryPage() {
     </div>
   );
 }
+
+
+
 
 

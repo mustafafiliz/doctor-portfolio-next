@@ -67,7 +67,6 @@ export default function EditSpecialtyPage() {
         
         setCategories(categoriesData || []);
       } catch (err) {
-        console.error('Uzmanlık yükleme hatası:', err);
         setError('Uzmanlık alanı yüklenirken bir hata oluştu');
       } finally {
         setIsLoading(false);
@@ -129,41 +128,60 @@ export default function EditSpecialtyPage() {
     setError(null);
 
     try {
-      const form = new FormData();
-      form.append('title', formData.title);
-      form.append('slug', formData.slug);
-      form.append('description', formData.description);
-      form.append('content', formData.content);
-      form.append('locale', formData.locale);
-      // order field'ını sadece değer varsa ve 0'dan farklıysa gönder (backend number bekliyor, FormData string gönderir)
-      // Backend muhtemelen string'i number'a parse ediyor, bu yüzden string olarak gönderiyoruz
-      if (formData.order !== undefined && formData.order !== null && formData.order !== 0) {
-        form.append('order', String(formData.order));
-      } else if (formData.order === 0) {
-        // 0 değeri için de gönder (çünkü 0 geçerli bir order değeri)
-        form.append('order', '0');
-      }
-      if (formData.categoryId) {
-        form.append('categoryId', formData.categoryId);
-      }
-      if (selectedFile) {
-        form.append('image', selectedFile);
-      } else if (formData.imageUrl && !formData.image) {
-        form.append('imageUrl', formData.imageUrl);
-      }
-      if (formData.relatedSlugs.length > 0) {
-        form.append('relatedSlugs', JSON.stringify(formData.relatedSlugs));
-      }
-
       if (!specialtyId) {
         setError('Uzmanlık ID bulunamadı');
         setIsSaving(false);
         return;
       }
-      await specialtyApi.update(specialtyId, form);
+
+      // Image varsa FormData, yoksa JSON gönder
+      if (selectedFile || (formData.imageUrl && !formData.image)) {
+        const form = new FormData();
+        form.append('title', formData.title);
+        form.append('slug', formData.slug);
+        form.append('description', formData.description);
+        form.append('content', formData.content);
+        form.append('locale', formData.locale);
+        if (formData.order !== undefined && formData.order !== null) {
+          form.append('order', String(Number(formData.order)));
+        }
+        if (formData.categoryId) {
+          form.append('categoryId', formData.categoryId);
+        }
+        if (selectedFile) {
+          form.append('image', selectedFile);
+        } else if (formData.imageUrl && !formData.image) {
+          form.append('imageUrl', formData.imageUrl);
+        }
+        if (formData.relatedSlugs.length > 0) {
+          form.append('relatedSlugs', JSON.stringify(formData.relatedSlugs));
+        }
+        await specialtyApi.update(specialtyId, form);
+      } else {
+        // Image yoksa JSON gönder (order number olarak gider)
+        const jsonData: any = {
+          title: formData.title,
+          slug: formData.slug,
+          description: formData.description,
+          content: formData.content,
+          locale: formData.locale,
+        };
+        if (formData.order !== undefined && formData.order !== null) {
+          jsonData.order = Number(formData.order);
+        }
+        if (formData.categoryId) {
+          jsonData.categoryId = formData.categoryId;
+        }
+        if (formData.imageUrl) {
+          jsonData.imageUrl = formData.imageUrl;
+        }
+        if (formData.relatedSlugs.length > 0) {
+          jsonData.relatedSlugs = formData.relatedSlugs;
+        }
+        await specialtyApi.updateJson(specialtyId, jsonData);
+      }
       router.push(`/${currentLocale}/admin/uzmanliklar`);
     } catch (err) {
-      console.error('Uzmanlık güncelleme hatası:', err);
       setError('Uzmanlık alanı güncellenirken bir hata oluştu');
       setIsSaving(false);
     }
@@ -184,7 +202,6 @@ export default function EditSpecialtyPage() {
       await specialtyApi.delete(specialtyId);
       router.push(`/${currentLocale}/admin/uzmanliklar`);
     } catch (err) {
-      console.error('Uzmanlık silme hatası:', err);
       setError('Uzmanlık silinirken bir hata oluştu');
       setIsDeleting(false);
     }

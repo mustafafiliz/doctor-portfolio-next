@@ -46,7 +46,6 @@ export default function AdminBlogPage() {
         setBlogs(blogsData.data || []);
         setTotalPages(blogsData.totalPages || 1);
       } catch (err) {
-        console.error('Blog veri yükleme hatası:', err);
         setError('Blog verileri yüklenirken bir hata oluştu');
       } finally {
         setIsLoading(false);
@@ -71,7 +70,6 @@ export default function AdminBlogPage() {
       await blogApi.delete(id);
       setBlogs(blogs.filter((blog) => blog._id !== id));
     } catch (err) {
-      console.error('Blog silme hatası:', err);
       alert('Blog silinirken bir hata oluştu');
     } finally {
       setIsDeleting(null);

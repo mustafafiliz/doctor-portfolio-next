@@ -57,7 +57,6 @@ export default function EditBlogPage() {
           setImagePreview(blogData.image);
         }
       } catch (err) {
-        console.error('Blog yükleme hatası:', err);
         setError('Blog yazısı yüklenirken bir hata oluştu');
       } finally {
         setIsLoading(false);
@@ -140,7 +139,6 @@ export default function EditBlogPage() {
       await blogApi.update(blogId, form);
       router.push(`/${currentLocale}/admin/blog`);
     } catch (err) {
-      console.error('Blog güncelleme hatası:', err);
       setError('Blog yazısı güncellenirken bir hata oluştu');
       setIsSaving(false);
     }
@@ -161,7 +159,6 @@ export default function EditBlogPage() {
       await blogApi.delete(blogId);
       router.push(`/${currentLocale}/admin/blog`);
     } catch (err) {
-      console.error('Blog silme hatası:', err);
       setError('Blog silinirken bir hata oluştu');
       setIsDeleting(false);
     }

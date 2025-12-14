@@ -221,6 +221,15 @@ export const websiteApi = {
     apiFetch("/website/about", {
       method: "PUT",
       body: data
+    }),
+
+  updateAboutJson: (data: UpdateAboutRequest): Promise<AboutSection> =>
+    apiFetch("/website/about", {
+      method: "PUT",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json"
+      }
     })
 };
 
@@ -344,10 +353,28 @@ export const specialtyApi = {
       body: data
     }),
 
+  createJson: (data: CreateSpecialtyRequest): Promise<Specialty> =>
+    apiFetch("/specialty", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }),
+
   update: (id: string, data: FormData): Promise<Specialty> =>
     apiFetch(`/specialty/${id}`, {
       method: "PUT",
       body: data
+    }),
+
+  updateJson: (id: string, data: UpdateSpecialtyRequest): Promise<Specialty> =>
+    apiFetch(`/specialty/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json"
+      }
     }),
 
   delete: (id: string): Promise<void> =>

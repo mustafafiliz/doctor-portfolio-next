@@ -8,7 +8,6 @@ import { type Locale } from '@/lib/i18n';
 import { getRoute } from '@/lib/routes';
 import Autoplay from 'embla-carousel-autoplay';
 import Image from 'next/image';
-import { Container } from '@/components/Container';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { getPublicSpecialties } from '@/lib/config';
@@ -47,7 +46,7 @@ export function SpecialtiesSection({
           }
           setSpecialties(allSpecialties);
         } catch (error) {
-          console.error('Uzmanlık yükleme hatası:', error);
+          // Hata durumunda sessizce devam et
         } finally {
           setIsLoading(false);
         }
@@ -65,11 +64,11 @@ export function SpecialtiesSection({
   if (isLoading) {
     return (
       <section className="py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-b from-background via-muted/30 to-background relative overflow-hidden">
-        <Container className="relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="flex items-center justify-center min-h-[300px]">
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
           </div>
-        </Container>
+        </div>
       </section>
     );
   }
@@ -83,15 +82,15 @@ export function SpecialtiesSection({
       {/* Decorative background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
       
-      <div className="w-full px-0 relative z-10">
-        <Container className="mb-8 sm:mb-12">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+        <div className="mb-8 sm:mb-12">
           <div className="text-center">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
               {t('title')}
             </h2>
-            <p className="text-base sm:text-lg text-muted-foreground px-4">{t('subtitle')}</p>
+            <p className="text-base sm:text-lg text-muted-foreground">{t('subtitle')}</p>
           </div>
-        </Container>
+        </div>
 
         {/* Carousel */}
         <Carousel
@@ -144,14 +143,14 @@ export function SpecialtiesSection({
             })}
           </CarouselContent>
           
-          <Container className="mt-6 sm:mt-8 flex justify-center gap-3 sm:gap-4">
+          <div className="mt-6 sm:mt-8 flex justify-center gap-3 sm:gap-4">
             <CarouselPrevious className="relative static translate-y-0 h-8 w-8 sm:h-10 sm:w-10" />
             <CarouselNext className="relative static translate-y-0 h-8 w-8 sm:h-10 sm:w-10" />
-          </Container>
+          </div>
         </Carousel>
 
         {/* Tümünü Gör Butonu */}
-        <Container className="mt-6 sm:mt-8 text-center">
+        <div className="mt-6 sm:mt-8 text-center">
           <Link
             href={`/${currentLocale}${getRoute('specialties', currentLocale)}`}
             className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-sm bg-gradient-to-r from-primary via-primary/90 to-accent text-primary-foreground text-sm sm:text-base font-semibold shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 hover:scale-105"
@@ -159,7 +158,7 @@ export function SpecialtiesSection({
             Tümünü Gör
             <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
           </Link>
-        </Container>
+        </div>
       </div>
     </section>
   );

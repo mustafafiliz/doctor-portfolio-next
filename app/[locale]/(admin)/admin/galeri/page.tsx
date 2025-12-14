@@ -46,7 +46,6 @@ export default function AdminGalleryPage() {
       setPhotos(data.data || []);
       setLimit(data.limit || 100);
     } catch (err) {
-      console.error('Galeri yükleme hatası:', err);
       setError('Galeri yüklenirken bir hata oluştu');
     } finally {
       setIsLoading(false);
@@ -96,7 +95,6 @@ export default function AdminGalleryPage() {
         fileInputRef.current.value = '';
       }
     } catch (err) {
-      console.error('Fotoğraf yükleme hatası:', err);
       setError('Fotoğraf yüklenirken bir hata oluştu');
     } finally {
       setIsUploading(false);
@@ -113,7 +111,6 @@ export default function AdminGalleryPage() {
       await galleryApi.delete(id);
       setPhotos(photos.filter((photo) => photo._id !== id));
     } catch (err) {
-      console.error('Fotoğraf silme hatası:', err);
       setError('Fotoğraf silinirken bir hata oluştu');
     } finally {
       setDeletingId(null);

@@ -11,9 +11,10 @@ import type { Locale } from "@/lib/i18n";
 
 interface HeroCarouselProps {
   aboutBio?: string | null;
+  aboutImage?: string | null;
 }
 
-export function HeroCarousel({ aboutBio }: HeroCarouselProps) {
+export function HeroCarousel({ aboutBio, aboutImage }: HeroCarouselProps) {
   const { config } = useConfig();
   const pathname = usePathname();
   const currentLocale = (pathname?.split('/')[1] || 'tr') as Locale;
@@ -22,9 +23,11 @@ export function HeroCarousel({ aboutBio }: HeroCarouselProps) {
   const heroTitle = config.hero?.title || "";
   const heroSubtitle = config.hero?.subtitle || "";
   const heroDescription = config.hero?.description || "";
-  const heroImage = config.hero?.image || "";
   const heroCta = config.hero?.ctaText || "";
   const heroCtaUrl = config.hero?.ctaUrl || "";
+  
+  // Öncelik: About image > Hero image
+  const heroImage = aboutImage || config.hero?.image || "";
 
   // Hakkımızda bio'sundan özet çıkar (HTML tag'lerini temizle ve ilk 200 karakteri al)
   const getBioSummary = (bio: string | null | undefined): string => {
@@ -45,36 +48,30 @@ export function HeroCarousel({ aboutBio }: HeroCarouselProps) {
   const displayDescription = aboutBio ? getBioSummary(aboutBio) : heroDescription;
 
   return (
-    <section className="relative w-full max-w-full overflow-x-hidden from-background via-muted/20 to-background">
-      <Container className="py-8 sm:py-12 md:py-16 lg:py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
-          {/* Image Section - Left */}
+    <section className="relative w-full from-background via-muted/20 to-background py-8 sm:py-12 md:py-16 lg:py-20">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-12 items-center">
+          {/* Image Section - Left - %40 genişlik */}
           {heroImage && (
-            <div className="relative w-full order-2 lg:order-1">
+            <div className="relative order-2 lg:order-1 w-full lg:w-[40%] lg:shrink-0">
               <div
-                className="relative w-full ml-0 rounded-sm overflow-hidden"
-                style={{ aspectRatio: "290/362" }}
+                className="relative rounded-sm overflow-hidden w-full"
+                style={{ aspectRatio: "3/4" }}
               >
                 <Image
                   src={heroImage}
                   alt={heroTitle || ""}
                   fill
-                  className="object-contain object-left"
+                  className="object-cover object-top"
                   priority
                   unoptimized={heroImage.startsWith("http")}
                 />
-                {/* Decorative gradient overlay */}
-                <div className="absolute inset-0 from-primary/5 via-transparent to-accent/5 pointer-events-none" />
               </div>
-
-              {/* Floating decorative elements */}
-              <div className="absolute -top-4 -right-4 w-20 h-20 sm:w-24 sm:h-24 bg-primary/10 rounded-sm blur-2xl animate-float hidden md:block" />
-              <div className="absolute -bottom-4 -left-4 w-24 h-24 sm:w-32 sm:h-32 bg-accent/10 rounded-sm blur-2xl animate-float-delayed hidden md:block" />
             </div>
           )}
 
-          {/* Content Section - Right */}
-          <div className="order-1 lg:order-2 space-y-4 sm:space-y-6 lg:space-y-8">
+          {/* Content Section - Right - %60 genişlik */}
+          <div className="order-1 lg:order-2 lg:w-[60%] space-y-4 sm:space-y-6 lg:space-y-8">
             {/* Title */}
             {heroTitle && (
               <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-tight">
@@ -126,7 +123,7 @@ export function HeroCarousel({ aboutBio }: HeroCarouselProps) {
             </div>
           </div>
         </div>
-      </Container>
+      </div>
 
       {/* CSS Animations */}
       <style jsx>{`

@@ -35,7 +35,7 @@ export function FAQSection({
           const data = await getPublicFAQs();
           setFaqs(data.data || []);
         } catch (error) {
-          console.error('FAQ yükleme hatası:', error);
+          // Hata durumunda sessizce devam et
         } finally {
           setIsLoading(false);
         }

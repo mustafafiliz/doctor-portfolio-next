@@ -102,7 +102,6 @@ export async function getConfig(): Promise<SiteConfig> {
     );
 
     if (!response.ok) {
-      console.error("Failed to fetch config:", response.statusText);
       return emptyConfig;
     }
 
@@ -142,7 +141,6 @@ export async function getConfig(): Promise<SiteConfig> {
       hero: data.hero || {}
     };
   } catch (error) {
-    console.error("Failed to fetch config:", error);
     return emptyConfig;
   }
 }
@@ -170,7 +168,6 @@ export async function getPublicData<T>(endpoint: string): Promise<T | null> {
 
     return await response.json();
   } catch (error) {
-    console.error(`Failed to fetch ${endpoint}:`, error);
     return null;
   }
 }
@@ -202,7 +199,6 @@ export async function getPublicBlogs(params?: {
     if (!response.ok) throw new Error("Failed to fetch blogs");
     return await response.json();
   } catch (error) {
-    console.error("Failed to fetch blogs:", error);
     return { data: [], total: 0 };
   }
 }
@@ -224,17 +220,20 @@ export async function getPublicBlogBySlug(slug: string) {
     if (!response.ok) return null;
     return await response.json();
   } catch (error) {
-    console.error("Failed to fetch blog:", error);
     return null;
   }
 }
 
 export async function getPublicSpecialties() {
-  if (!WEBSITE_ID) return { categories: [], total: 0 };
+  if (!WEBSITE_ID) {
+    return { categories: [], total: 0 };
+  }
 
   try {
+    const url = `${API_BASE_URL}/specialty/public/${WEBSITE_ID}`;
+    
     const response = await fetch(
-      `${API_BASE_URL}/specialty/public/${WEBSITE_ID}`,
+      url,
       {
         next: { revalidate: 60 },
         headers: {
@@ -243,7 +242,11 @@ export async function getPublicSpecialties() {
       }
     );
 
-    if (!response.ok) throw new Error("Failed to fetch specialties");
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to fetch specialties: ${response.status} ${errorText}`);
+    }
+    
     const data = await response.json();
 
     // API direkt array döndürüyorsa veya categories içinde array varsa
@@ -258,11 +261,9 @@ export async function getPublicSpecialties() {
       };
     } else {
       // Beklenmeyen format
-      console.warn("Unexpected API response format:", data);
       return { categories: [], total: 0 };
     }
   } catch (error) {
-    console.error("Failed to fetch specialties:", error);
     return { categories: [], total: 0 };
   }
 }
@@ -284,7 +285,6 @@ export async function getPublicSpecialtyBySlug(slug: string) {
     if (!response.ok) return null;
     return await response.json();
   } catch (error) {
-    console.error("Failed to fetch specialty:", error);
     return null;
   }
 }
@@ -302,7 +302,6 @@ export async function getPublicCategoryBySlug(slug: string) {
     );
     return category || null;
   } catch (error) {
-    console.error("Failed to fetch category:", error);
     return null;
   }
 }
@@ -333,7 +332,6 @@ export async function getPublicGallery() {
     // Eğer { data: [...], total: ..., limit: ... } formatında ise direkt döndür
     return data;
   } catch (error) {
-    console.error("Failed to fetch gallery:", error);
     return { data: [], total: 0 };
   }
 }
@@ -359,11 +357,9 @@ export async function getPublicFAQs() {
       // API direkt array döndürüyorsa
       return { data };
     } else {
-      console.warn("Unexpected FAQ API response format:", data);
       return { data: [] };
     }
   } catch (error) {
-    console.error("Failed to fetch FAQs:", error);
     return { data: [] };
   }
 }
@@ -387,7 +383,6 @@ export async function getPublicAbout() {
     const data = await response.json();
     return data.about || null;
   } catch (error) {
-    console.error("Failed to fetch about:", error);
     return null;
   }
 }

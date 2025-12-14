@@ -38,7 +38,7 @@ export default function NewSpecialtyPage() {
         const data = await specialtyApi.listCategories();
         setCategories(data || []);
       } catch (err) {
-        console.error('Kategori yükleme hatası:', err);
+        // Hata durumunda sessizce devam et
       }
     };
     fetchCategories();
@@ -93,36 +93,51 @@ export default function NewSpecialtyPage() {
     setError(null);
 
     try {
-      const form = new FormData();
-      form.append('title', formData.title);
-      form.append('slug', formData.slug);
-      form.append('description', formData.description);
-      form.append('content', formData.content);
-      form.append('locale', formData.locale);
-      // order field'ını sadece değer varsa ve 0'dan farklıysa gönder (backend number bekliyor, FormData string gönderir)
-      // Backend muhtemelen string'i number'a parse ediyor, bu yüzden string olarak gönderiyoruz
-      if (formData.order !== undefined && formData.order !== null && formData.order !== 0) {
-        form.append('order', String(formData.order));
-      } else if (formData.order === 0) {
-        // 0 değeri için de gönder (çünkü 0 geçerli bir order değeri)
-        form.append('order', '0');
+      // Image varsa FormData, yoksa JSON gönder
+      if (selectedFile || formData.imageUrl) {
+        const form = new FormData();
+        form.append('title', formData.title);
+        form.append('slug', formData.slug);
+        form.append('description', formData.description);
+        form.append('content', formData.content);
+        form.append('locale', formData.locale);
+        if (formData.order !== undefined && formData.order !== null) {
+          form.append('order', String(Number(formData.order)));
+        }
+        if (formData.categoryId) {
+          form.append('categoryId', formData.categoryId);
+        }
+        if (selectedFile) {
+          form.append('image', selectedFile);
+        } else if (formData.imageUrl) {
+          form.append('imageUrl', formData.imageUrl);
+        }
+        if (formData.relatedSlugs.length > 0) {
+          form.append('relatedSlugs', JSON.stringify(formData.relatedSlugs));
+        }
+        await specialtyApi.create(form);
+      } else {
+        // Image yoksa JSON gönder (order number olarak gider)
+        const jsonData: any = {
+          title: formData.title,
+          slug: formData.slug,
+          description: formData.description,
+          content: formData.content,
+          locale: formData.locale,
+        };
+        if (formData.order !== undefined && formData.order !== null) {
+          jsonData.order = Number(formData.order);
+        }
+        if (formData.categoryId) {
+          jsonData.categoryId = formData.categoryId;
+        }
+        if (formData.relatedSlugs.length > 0) {
+          jsonData.relatedSlugs = formData.relatedSlugs;
+        }
+        await specialtyApi.createJson(jsonData);
       }
-      if (formData.categoryId) {
-        form.append('categoryId', formData.categoryId);
-      }
-      if (selectedFile) {
-        form.append('image', selectedFile);
-      } else if (formData.imageUrl) {
-        form.append('imageUrl', formData.imageUrl);
-      }
-      if (formData.relatedSlugs.length > 0) {
-        form.append('relatedSlugs', JSON.stringify(formData.relatedSlugs));
-      }
-
-      await specialtyApi.create(form);
       router.push(`/${currentLocale}/admin/uzmanliklar`);
     } catch (err) {
-      console.error('Uzmanlık kaydetme hatası:', err);
       setError('Uzmanlık alanı kaydedilirken bir hata oluştu');
       setIsLoading(false);
     }

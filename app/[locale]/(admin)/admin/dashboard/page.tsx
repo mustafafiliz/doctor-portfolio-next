@@ -62,15 +62,6 @@ export default function AdminDashboardPage() {
           contactApi.list().catch(() => ({ data: [], unreadCount: 0 })),
         ]);
         
-        // Debug: API response'larını kontrol et
-        console.log('Dashboard API Responses:', {
-          blogsData,
-          specialtiesData,
-          galleryData,
-          faqsData,
-          contactData
-        });
-        
         // FAQ data type guard
         const faqsArray = Array.isArray(faqsData) 
           ? faqsData 
@@ -87,7 +78,6 @@ export default function AdminDashboardPage() {
           unreadMessages: contactData.unreadCount || 0,
         });
       } catch (err) {
-        console.error('Dashboard veri yükleme hatası:', err);
         setError('Veriler yüklenirken bir hata oluştu');
       } finally {
         setIsLoading(false);

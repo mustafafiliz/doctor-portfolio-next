@@ -43,7 +43,7 @@ export default async function HomePage({
 
   return (
     <div className="flex flex-col w-full max-w-full overflow-x-hidden">
-      <HeroCarousel aboutBio={about?.bio} />
+      <HeroCarousel aboutBio={about?.bio} aboutImage={about?.image} />
       <SpecialtiesSection 
         initialSpecialties={allSpecialties}
         currentLocale={currentLocale}

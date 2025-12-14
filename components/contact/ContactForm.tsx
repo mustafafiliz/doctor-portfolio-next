@@ -71,7 +71,6 @@ export function ContactForm() {
       });
       setMessageError(null);
     } catch (error) {
-      console.error('Contact form error:', error);
       toast({
         title: t('error'),
         description: 'Bir hata oluştu. Lütfen tekrar deneyin.',

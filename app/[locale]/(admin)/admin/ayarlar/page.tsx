@@ -34,7 +34,6 @@ export default function AdminSettingsPage() {
       if (data.site?.logo) setLogoPreview(data.site.logo);
       if (data.site?.favicon) setFaviconPreview(data.site.favicon);
     } catch (err) {
-      console.error('Ayarlar yükleme hatası:', err);
       setError('Ayarlar yüklenirken bir hata oluştu');
     } finally {
       setIsLoading(false);
@@ -59,7 +58,6 @@ export default function AdminSettingsPage() {
       setLogoFile(null);
       setFaviconFile(null);
     } catch (err) {
-      console.error('Site güncelleme hatası:', err);
       setError('Site bilgileri güncellenirken bir hata oluştu');
     } finally {
       setIsSaving(false);
@@ -76,7 +74,6 @@ export default function AdminSettingsPage() {
       await websiteApi.updateColors(settings.colors);
       setSuccess('Renkler güncellendi');
     } catch (err) {
-      console.error('Renk güncelleme hatası:', err);
       setError('Renkler güncellenirken bir hata oluştu');
     } finally {
       setIsSaving(false);
@@ -93,7 +90,6 @@ export default function AdminSettingsPage() {
       await websiteApi.updateContact(settings.contact);
       setSuccess('İletişim bilgileri güncellendi');
     } catch (err) {
-      console.error('İletişim güncelleme hatası:', err);
       setError('İletişim bilgileri güncellenirken bir hata oluştu');
     } finally {
       setIsSaving(false);
@@ -110,7 +106,6 @@ export default function AdminSettingsPage() {
       await websiteApi.updateWorkingHours(settings.workingHours);
       setSuccess('Çalışma saatleri güncellendi');
     } catch (err) {
-      console.error('Çalışma saatleri güncelleme hatası:', err);
       setError('Çalışma saatleri güncellenirken bir hata oluştu');
     } finally {
       setIsSaving(false);
@@ -127,7 +122,6 @@ export default function AdminSettingsPage() {
       await websiteApi.updateSocial(settings.social);
       setSuccess('Sosyal medya linkleri güncellendi');
     } catch (err) {
-      console.error('Sosyal medya güncelleme hatası:', err);
       setError('Sosyal medya linkleri güncellenirken bir hata oluştu');
     } finally {
       setIsSaving(false);
@@ -144,7 +138,6 @@ export default function AdminSettingsPage() {
       await websiteApi.updateMaps(settings.maps);
       setSuccess('Harita ayarları güncellendi');
     } catch (err) {
-      console.error('Harita güncelleme hatası:', err);
       setError('Harita ayarları güncellenirken bir hata oluştu');
     } finally {
       setIsSaving(false);
@@ -165,7 +158,6 @@ export default function AdminSettingsPage() {
       await websiteApi.updateSeo(formData);
       setSuccess('SEO ayarları güncellendi');
     } catch (err) {
-      console.error('SEO güncelleme hatası:', err);
       setError('SEO ayarları güncellenirken bir hata oluştu');
     } finally {
       setIsSaving(false);

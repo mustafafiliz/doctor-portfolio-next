@@ -41,7 +41,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(false);
       return true;
     } catch (err) {
-      console.error('Auth check failed:', err);
       removeToken();
       setUser(null);
       setIsLoading(false);
@@ -106,6 +105,9 @@ export function useAuth() {
   
   return context;
 }
+
+
+
 
 
 

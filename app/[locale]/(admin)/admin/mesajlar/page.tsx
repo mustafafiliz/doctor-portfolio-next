@@ -42,7 +42,6 @@ export default function AdminMessagesPage() {
       setUnreadCount(data.unreadCount || 0);
       setTotalPages(Math.ceil((data.total || 0) / 20));
     } catch (err) {
-      console.error('Mesaj yükleme hatası:', err);
       setError('Mesajlar yüklenirken bir hata oluştu');
     } finally {
       setIsLoading(false);
@@ -75,7 +74,7 @@ export default function AdminMessagesPage() {
         ));
         setUnreadCount((prev) => Math.max(0, prev - 1));
       } catch (err) {
-        console.error('Mesaj okundu işaretleme hatası:', err);
+        // Hata durumunda sessizce devam et
       }
     }
   };
@@ -90,7 +89,7 @@ export default function AdminMessagesPage() {
         setSelectedMessage({ ...selectedMessage, isReplied: true });
       }
     } catch (err) {
-      console.error('Yanıtlandı işaretleme hatası:', err);
+      // Hata durumunda sessizce devam et
     }
   };
 
@@ -107,7 +106,6 @@ export default function AdminMessagesPage() {
         setSelectedMessage(null);
       }
     } catch (err) {
-      console.error('Mesaj silme hatası:', err);
       setError('Mesaj silinirken bir hata oluştu');
     } finally {
       setDeletingId(null);
@@ -373,6 +371,9 @@ export default function AdminMessagesPage() {
     </div>
   );
 }
+
+
+
 
 
 

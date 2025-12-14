@@ -48,7 +48,7 @@ export function SpecialtiesList({
           const data = await getPublicSpecialties();
           setCategories(data.categories || []);
         } catch (error) {
-          console.error('Uzmanlık yükleme hatası:', error);
+          // Hata durumunda sessizce devam et
         } finally {
           setIsLoading(false);
         }

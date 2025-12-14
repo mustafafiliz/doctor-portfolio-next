@@ -100,13 +100,8 @@ export default async function SpecialtyPage({
     }
   }
 
-  // Debug: Kategori bilgisini kontrol et
+  // Kategori bilgisini kontrol et
   if (!specialty.category) {
-    console.warn('Specialty için kategori bulunamadı:', {
-      specialtyId: specialty._id,
-      specialtySlug: specialty.slug,
-      categoryId: specialty.categoryId
-    });
   }
 
   const primaryColor = config.colors.primary;

@@ -53,7 +53,6 @@ export default function AdminSpecialtiesPage() {
       setTotalPages(specialtiesData.totalPages || 1);
       setCategories(categoriesData || []);
     } catch (err) {
-      console.error('Uzmanlık veri yükleme hatası:', err);
       setError('Veriler yüklenirken bir hata oluştu');
     } finally {
       setIsLoading(false);
@@ -83,7 +82,6 @@ export default function AdminSpecialtiesPage() {
       await specialtyApi.delete(id);
       setSpecialties(specialties.filter((s) => s._id !== id));
     } catch (err) {
-      console.error('Uzmanlık silme hatası:', err);
       setError('Uzmanlık silinirken bir hata oluştu');
     } finally {
       setDeletingId(null);
@@ -103,7 +101,6 @@ export default function AdminSpecialtiesPage() {
         setCategoryFilter('all');
       }
     } catch (err) {
-      console.error('Kategori silme hatası:', err);
       setError('Kategori silinirken bir hata oluştu');
     } finally {
       setDeletingCategoryId(null);

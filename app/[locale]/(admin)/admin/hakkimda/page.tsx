@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { Save, X, Plus, Trash2, Upload, Loader2, AlertCircle } from 'lucide-react';
 import { Editor } from '@/components/admin/Editor';
 import { websiteApi } from '@/lib/api';
-import type { AboutSection, Education, Experience } from '@/lib/types';
+import type { AboutSection, Education, Experience, UpdateAboutRequest } from '@/lib/types';
 
 export default function AdminAboutPage() {
   const pathname = usePathname();
@@ -62,7 +62,6 @@ export default function AdminAboutPage() {
         setImagePreview(data.image);
       }
     } catch (err) {
-      console.error('Hakkımda yükleme hatası:', err);
       // If no about section exists yet, that's okay
     } finally {
       setIsLoading(false);
@@ -76,42 +75,58 @@ export default function AdminAboutPage() {
     setSuccess(null);
 
     try {
-      const form = new FormData();
-      form.append('title', formData.title);
-      form.append('subtitle', formData.subtitle);
-      form.append('bio', formData.bio);
-      form.append('locale', currentLocale);
-      
-      // Education array - indexed format ile gönder (backend array bekliyor)
-      formData.education.forEach((edu, index) => {
-        form.append(`education[${index}][year]`, edu.year);
-        form.append(`education[${index}][title]`, edu.title);
-        form.append(`education[${index}][institution]`, edu.institution);
-        form.append(`education[${index}][order]`, (edu.order ?? index).toString());
-      });
-      
-      // Experience array - indexed format ile gönder (backend array bekliyor)
-      formData.experience.forEach((exp, index) => {
-        form.append(`experience[${index}][years]`, exp.years);
-        form.append(`experience[${index}][title]`, exp.title);
-        form.append(`experience[${index}][institution]`, exp.institution);
-        form.append(`experience[${index}][order]`, (exp.order ?? index).toString());
-      });
-      
-      // Certifications array - indexed format ile gönder (backend array bekliyor)
-      formData.certifications.forEach((cert, index) => {
-        form.append(`certifications[${index}]`, cert);
-      });
-      
+      // Image varsa FormData, yoksa JSON gönder
       if (selectedFile) {
+        const form = new FormData();
+        form.append('title', formData.title);
+        form.append('subtitle', formData.subtitle);
+        form.append('bio', formData.bio);
+        form.append('locale', currentLocale);
+        
+        // Education array - indexed format ile gönder (backend array bekliyor)
+        formData.education.forEach((edu, index) => {
+          form.append(`education[${index}][year]`, edu.year);
+          form.append(`education[${index}][title]`, edu.title);
+          form.append(`education[${index}][institution]`, edu.institution);
+          form.append(`education[${index}][order]`, String(Number(edu.order ?? index)));
+        });
+        
+        // Experience array - indexed format ile gönder (backend array bekliyor)
+        formData.experience.forEach((exp, index) => {
+          form.append(`experience[${index}][years]`, exp.years);
+          form.append(`experience[${index}][title]`, exp.title);
+          form.append(`experience[${index}][institution]`, exp.institution);
+          form.append(`experience[${index}][order]`, String(Number(exp.order ?? index)));
+        });
+        
+        // Certifications array - indexed format ile gönder (backend array bekliyor)
+        formData.certifications.forEach((cert, index) => {
+          form.append(`certifications[${index}]`, cert);
+        });
+        
         form.append('image', selectedFile);
+        await websiteApi.updateAbout(form);
+      } else {
+        // Image yoksa JSON gönder (order number olarak gider)
+        const jsonData: UpdateAboutRequest = {
+          title: formData.title,
+          subtitle: formData.subtitle,
+          bio: formData.bio,
+          education: formData.education.map((edu, index) => ({
+            ...edu,
+            order: Number(edu.order ?? index)
+          })),
+          experience: formData.experience.map((exp, index) => ({
+            ...exp,
+            order: Number(exp.order ?? index)
+          })),
+          certifications: formData.certifications
+        };
+        await websiteApi.updateAboutJson(jsonData);
       }
-
-      await websiteApi.updateAbout(form);
       setSuccess('Hakkımda sayfası güncellendi');
       setSelectedFile(null);
     } catch (err) {
-      console.error('Hakkımda güncelleme hatası:', err);
       setError('Hakkımda sayfası güncellenirken bir hata oluştu');
     } finally {
       setIsSaving(false);

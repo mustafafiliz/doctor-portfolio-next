@@ -93,7 +93,6 @@ export default function NewBlogPage() {
       await blogApi.create(form);
       router.push(`/${currentLocale}/admin/blog`);
     } catch (err) {
-      console.error('Blog kaydetme hatası:', err);
       setError('Blog yazısı kaydedilirken bir hata oluştu');
       setIsLoading(false);
     }

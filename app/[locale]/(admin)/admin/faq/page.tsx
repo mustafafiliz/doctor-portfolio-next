@@ -40,7 +40,6 @@ export default function AdminFaqPage() {
       const data = Array.isArray(response) ? response : (response as unknown as { data: FAQ[] }).data || [];
       setFaqs(data);
     } catch (err) {
-      console.error('FAQ yükleme hatası:', err);
       setError('SSS verileri yüklenirken bir hata oluştu');
     } finally {
       setIsLoading(false);
@@ -61,7 +60,6 @@ export default function AdminFaqPage() {
       await faqApi.delete(id);
       setFaqs(faqs.filter((faq) => faq._id !== id));
     } catch (err) {
-      console.error('FAQ silme hatası:', err);
       setError('Soru silinirken bir hata oluştu');
     } finally {
       setDeletingId(null);
@@ -87,12 +85,10 @@ export default function AdminFaqPage() {
           answer: formData.answer,
           order: faqs.length,
         });
-        setFaqs([...faqs, newFaq]);
       }
 
       closeModal();
     } catch (err) {
-      console.error('FAQ kaydetme hatası:', err);
       setError('Soru kaydedilirken bir hata oluştu');
     } finally {
       setIsSaving(false);
@@ -138,7 +134,6 @@ export default function AdminFaqPage() {
         items: newFaqs.map((faq) => ({ _id: faq._id, order: faq.order })),
       });
     } catch (err) {
-      console.error('FAQ sıralama hatası:', err);
       // Revert on error
       fetchFaqs();
     }
