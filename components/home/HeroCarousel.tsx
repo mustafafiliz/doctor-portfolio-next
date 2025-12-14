@@ -48,7 +48,7 @@ export function HeroCarousel({ aboutBio, aboutImage }: HeroCarouselProps) {
   const displayDescription = aboutBio ? getBioSummary(aboutBio) : heroDescription;
 
   return (
-    <section className="relative w-full from-background via-muted/20 to-background py-8 sm:py-12 md:py-16 lg:py-20">
+    <section className="relative w-full from-background via-muted/20 to-background py-4 sm:py-6 md:py-8 lg:py-10">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-12 items-center">
           {/* Image Section - Left - %40 genişlik */}
