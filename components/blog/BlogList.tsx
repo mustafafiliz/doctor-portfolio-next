@@ -2,48 +2,21 @@
 
 import { useTranslations } from '@/components/I18nProvider';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { type Locale } from '@/lib/i18n';
 import { getRoute } from '@/lib/routes';
 import Image from 'next/image';
-import { Calendar, ArrowRight, Loader2 } from 'lucide-react';
+import { Calendar, ArrowRight } from 'lucide-react';
 import { Container } from '@/components/Container';
-import { useEffect, useState } from 'react';
-import { getPublicBlogs } from '@/lib/config';
 import type { Blog } from '@/lib/types';
 
-export function BlogList() {
+interface BlogListProps {
+  initialBlogs: Blog[];
+  currentLocale: Locale;
+}
+
+export function BlogList({ initialBlogs, currentLocale }: BlogListProps) {
   const t = useTranslations('blog');
-  const pathname = usePathname();
-  const currentLocale = (pathname?.split('/')[1] || 'tr') as Locale;
-
-  const [posts, setPosts] = useState<Blog[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const data = await getPublicBlogs({ limit: 20 });
-        setPosts(data.data || []);
-      } catch (error) {
-        console.error('Blog yükleme hatası:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchBlogs();
-  }, []);
-
-  if (isLoading) {
-    return (
-      <Container className="py-12 sm:py-16 md:py-20 lg:py-24">
-        <div className="flex items-center justify-center min-h-[400px]">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
-        </div>
-      </Container>
-    );
-  }
+  const posts = initialBlogs;
 
   if (posts.length === 0) {
     return (

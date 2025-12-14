@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getConfig } from '@/lib/config';
+import { getConfig, getPublicBlogs } from '@/lib/config';
 import type { Metadata } from 'next';
 import { BlogList } from '@/components/blog/BlogList';
 import { getDictionary } from '../../dictionaries';
@@ -26,6 +26,21 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogPage() {
-  return <BlogList />;
+export default async function BlogPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const validLocale = locale as Locale;
+  
+  if (!locales.includes(validLocale)) {
+    notFound();
+  }
+
+  // SSR: Server-side'da blog listesini çek
+  const blogsData = await getPublicBlogs({ limit: 20 });
+  const blogs = blogsData.data || [];
+
+  return <BlogList initialBlogs={blogs} currentLocale={validLocale} />;
 }

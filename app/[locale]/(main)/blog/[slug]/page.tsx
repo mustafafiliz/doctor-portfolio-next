@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getConfig } from '@/lib/config';
+import { getConfig, getPublicBlogBySlug } from '@/lib/config';
 import type { Metadata } from 'next';
 import { BlogPost } from '@/components/blog/BlogPost';
 import { getDictionary } from '../../../dictionaries';
@@ -19,10 +19,13 @@ export async function generateMetadata({
 
   const config = await getConfig();
   const dict = await getDictionary(validLocale);
+  
+  // SSR: Blog post'u çek ve metadata için kullan
+  const post = await getPublicBlogBySlug(slug);
 
   return {
-    title: `Blog - ${config.meta.siteName}`,
-    description: config.meta.defaultDescription,
+    title: post ? `${post.title} - ${config.meta.siteName}` : `Blog - ${config.meta.siteName}`,
+    description: post?.excerpt || config.meta.defaultDescription,
   };
 }
 
@@ -38,5 +41,12 @@ export default async function BlogPostPage({
     notFound();
   }
 
-  return <BlogPost slug={slug} locale={validLocale} />;
+  // SSR: Server-side'da blog post'u çek
+  const post = await getPublicBlogBySlug(slug);
+
+  if (!post) {
+    notFound();
+  }
+
+  return <BlogPost post={post} locale={validLocale} />;
 }
