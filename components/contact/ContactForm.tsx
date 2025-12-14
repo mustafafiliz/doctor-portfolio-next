@@ -15,16 +15,30 @@ export function ContactForm() {
   const t = useTranslations('contact.form');
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [messageError, setMessageError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
+    phone: '0',
     subject: '',
     message: '',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Mesaj validasyonu
+    if (formData.message.trim().length < 10) {
+      setMessageError('Mesajınız en az 10 karakter olmalıdır.');
+      toast({
+        title: 'Hata',
+        description: 'Mesajınız en az 10 karakter olmalıdır.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    
+    setMessageError(null);
     setLoading(true);
 
     try {
@@ -51,10 +65,11 @@ export function ContactForm() {
       setFormData({
         name: '',
         email: '',
-        phone: '',
+        phone: '0',
         subject: '',
         message: '',
       });
+      setMessageError(null);
     } catch (error) {
       console.error('Contact form error:', error);
       toast({
@@ -64,6 +79,87 @@ export function ContactForm() {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setFormData({ ...formData, message: value });
+    
+    // Real-time validation
+    if (value.trim().length > 0 && value.trim().length < 10) {
+      setMessageError('Mesajınız en az 10 karakter olmalıdır.');
+    } else {
+      setMessageError(null);
+    }
+  };
+
+  // Türkiye telefon numarası formatlama fonksiyonu
+  const formatPhoneNumber = (value: string, previousValue: string): string => {
+    // Sadece rakamları al
+    const numbers = value.replace(/\D/g, '');
+    
+    // Eğer boşsa veya sadece 0 varsa, 0 döndür
+    if (numbers.length === 0 || numbers === '0') {
+      return '0';
+    }
+    
+    // Her zaman 0 ile başlamalı
+    let digits = numbers.startsWith('0') ? numbers : `0${numbers}`;
+    
+    // Tekrarlayan 0'ları engelle (000 gibi)
+    // İlk karakter 0 olmalı, sonrasında tekrarlayan 0'ları temizle
+    if (digits.length > 1) {
+      // İlk 0'ı koru, sonrasındaki tekrarlayan 0'ları temizle
+      const firstZero = digits[0];
+      const rest = digits.slice(1);
+      // Tekrarlayan 0'ları kaldır (ama ilk rakam 0'dan sonra gelen ilk rakam 0 olabilir, onu koru)
+      const cleanedRest = rest.replace(/^0+/, ''); // Başta tekrarlayan 0'ları kaldır
+      digits = firstZero + cleanedRest;
+    }
+    
+    // Maksimum 11 haneli (0 + 10 rakam)
+    if (digits.length > 11) {
+      digits = digits.slice(0, 11);
+    }
+    
+    // Formatlama
+    if (digits.length <= 1) return '0';
+    if (digits.length <= 4) return digits;
+    if (digits.length <= 7) return `${digits.slice(0, 4)} ${digits.slice(4)}`;
+    if (digits.length <= 9) return `${digits.slice(0, 4)} ${digits.slice(4, 7)} ${digits.slice(7)}`;
+    return `${digits.slice(0, 4)} ${digits.slice(4, 7)} ${digits.slice(7, 9)} ${digits.slice(9, 11)}`;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const previousValue = formData.phone;
+    const formatted = formatPhoneNumber(value, previousValue);
+    setFormData({ ...formData, phone: formatted });
+  };
+
+  const handlePhoneKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const input = e.currentTarget;
+    const cursorPosition = input.selectionStart || 0;
+    
+    // Eğer cursor pozisyonu 0'ın üzerindeyse ve kullanıcı Backspace veya Delete tuşuna basarsa
+    if ((e.key === 'Backspace' || e.key === 'Delete') && cursorPosition <= 1) {
+      e.preventDefault();
+      return;
+    }
+    
+    // Sadece rakam, boşluk ve kontrol tuşlarına izin ver
+    const allowedKeys = ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
+    const isNumber = /[0-9]/.test(e.key);
+    const isSpecial = allowedKeys.includes(e.key);
+    
+    if (!isNumber && !isSpecial) {
+      e.preventDefault();
+    }
+    
+    // Eğer kullanıcı 0 yazmaya çalışıyorsa ve cursor pozisyonu 0'dan sonra değilse engelle
+    if (e.key === '0' && cursorPosition === 0) {
+      e.preventDefault();
     }
   };
 
@@ -117,11 +213,28 @@ export function ContactForm() {
               id="phone"
               type="tel"
               required
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              value={formData.phone || '0'}
+              onChange={handlePhoneChange}
+              onKeyDown={handlePhoneKeyDown}
+              onFocus={(e) => {
+                // Eğer alan boşsa, 0 ekle
+                if (!formData.phone || formData.phone === '') {
+                  setFormData({ ...formData, phone: '0' });
+                }
+                // Cursor'ı sona al
+                setTimeout(() => {
+                  e.target.setSelectionRange(e.target.value.length, e.target.value.length);
+                }, 0);
+              }}
+              maxLength={14} // 0XXX XXX XX XX formatı için maksimum uzunluk
               className="h-11 sm:h-12 bg-background/50 border-border/50 focus:border-primary transition-all text-sm sm:text-base"
-              placeholder="+90 5XX XXX XX XX"
+              placeholder="(5XX) XXX XX XX"
             />
+            {formData.phone && formData.phone !== '0' && (
+              <p className="text-xs text-muted-foreground">
+                Format: 0(5XX) XXX XX XX
+              </p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -145,12 +258,30 @@ export function ContactForm() {
           <Textarea
             id="message"
             required
+            minLength={10}
             rows={5}
             value={formData.message}
-            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-            className="bg-background/50 border-border/50 focus:border-primary transition-all resize-none text-sm sm:text-base"
-            placeholder="Mesajınızı buraya yazın..."
+            onChange={handleMessageChange}
+            onBlur={(e) => {
+              if (e.target.value.trim().length > 0 && e.target.value.trim().length < 10) {
+                setMessageError('Mesajınız en az 10 karakter olmalıdır.');
+              } else {
+                setMessageError(null);
+              }
+            }}
+            className={`bg-background/50 border-border/50 focus:border-primary transition-all resize-none text-sm sm:text-base ${
+              messageError ? 'border-red-500 focus:border-red-500' : ''
+            }`}
+            placeholder="Mesajınızı buraya yazın... (En az 10 karakter)"
           />
+          {messageError && (
+            <p className="text-xs sm:text-sm text-red-500 mt-1">{messageError}</p>
+          )}
+          {formData.message.length > 0 && !messageError && (
+            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+              {formData.message.trim().length}/10 karakter
+            </p>
+          )}
         </div>
 
         <Button 
