@@ -180,6 +180,7 @@ export interface Blog {
   category?: BlogCategory;
   tags?: string[];
   status: 'draft' | 'published';
+  locale?: string;
   publishedAt?: string;
   views?: number;
   createdAt: string;
@@ -246,6 +247,7 @@ export interface Specialty {
   categoryId?: string;
   category?: SpecialtyCategory;
   relatedSlugs?: string[];
+  locale?: string;
   order?: number;
   createdAt: string;
   updatedAt: string;

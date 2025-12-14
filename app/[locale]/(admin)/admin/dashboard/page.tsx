@@ -58,7 +58,7 @@ export default function AdminDashboardPage() {
           blogApi.list().catch(() => ({ data: [], total: 0 })),
           specialtyApi.list().catch(() => ({ data: [], total: 0 })),
           galleryApi.list().catch(() => ({ data: [], total: 0 })),
-          faqApi.list().catch(() => []),
+          faqApi.list().catch(() => [] as any),
           contactApi.list().catch(() => ({ data: [], unreadCount: 0 })),
         ]);
         
@@ -71,12 +71,19 @@ export default function AdminDashboardPage() {
           contactData
         });
         
+        // FAQ data type guard
+        const faqsArray = Array.isArray(faqsData) 
+          ? faqsData 
+          : (faqsData && typeof faqsData === 'object' && 'data' in faqsData && Array.isArray(faqsData.data))
+            ? faqsData.data
+            : [];
+        
         setStats({
           // total field'ı varsa onu kullan, yoksa data.length kullan
           totalBlogs: blogsData.total ?? (blogsData.data?.length || 0),
           totalSpecialties: specialtiesData.total ?? (specialtiesData.data?.length || 0),
           totalGalleryItems: galleryData.total ?? (galleryData.data?.length || 0),
-          totalFAQ: Array.isArray(faqsData) ? faqsData.length : (faqsData?.data?.length || 0),
+          totalFAQ: faqsArray.length,
           unreadMessages: contactData.unreadCount || 0,
         });
       } catch (err) {
