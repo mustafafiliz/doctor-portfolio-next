@@ -43,7 +43,7 @@ export default async function LocaleLayout({
   console.log("config", config);
 
   return (
-    <html lang={validLocale}>
+    <html lang={validLocale} className="overflow-x-hidden max-w-full">
       <head>
         <style
           dangerouslySetInnerHTML={{
@@ -58,7 +58,7 @@ export default async function LocaleLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden max-w-full`}
       >
         <ConfigProvider config={config}>
           <I18nProvider locale={validLocale} dictionary={dictionary}>

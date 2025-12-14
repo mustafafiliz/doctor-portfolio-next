@@ -55,18 +55,28 @@ export default function AdminDashboardPage() {
       try {
         // Fetch all data in parallel
         const [blogsData, specialtiesData, galleryData, faqsData, contactData] = await Promise.all([
-          blogApi.list({ limit: 1 }).catch(() => ({ total: 0 })),
-          specialtyApi.list({ limit: 1 }).catch(() => ({ total: 0 })),
-          galleryApi.list().catch(() => ({ total: 0 })),
+          blogApi.list().catch(() => ({ data: [], total: 0 })),
+          specialtyApi.list().catch(() => ({ data: [], total: 0 })),
+          galleryApi.list().catch(() => ({ data: [], total: 0 })),
           faqApi.list().catch(() => []),
-          contactApi.list({ limit: 1 }).catch(() => ({ unreadCount: 0 })),
+          contactApi.list().catch(() => ({ data: [], unreadCount: 0 })),
         ]);
         
+        // Debug: API response'larını kontrol et
+        console.log('Dashboard API Responses:', {
+          blogsData,
+          specialtiesData,
+          galleryData,
+          faqsData,
+          contactData
+        });
+        
         setStats({
-          totalBlogs: blogsData.total || 0,
-          totalSpecialties: specialtiesData.total || 0,
-          totalGalleryItems: galleryData.total || 0,
-          totalFAQ: Array.isArray(faqsData) ? faqsData.length : 0,
+          // total field'ı varsa onu kullan, yoksa data.length kullan
+          totalBlogs: blogsData.total ?? (blogsData.data?.length || 0),
+          totalSpecialties: specialtiesData.total ?? (specialtiesData.data?.length || 0),
+          totalGalleryItems: galleryData.total ?? (galleryData.data?.length || 0),
+          totalFAQ: Array.isArray(faqsData) ? faqsData.length : (faqsData?.data?.length || 0),
           unreadMessages: contactData.unreadCount || 0,
         });
       } catch (err) {

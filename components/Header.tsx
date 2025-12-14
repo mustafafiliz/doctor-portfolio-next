@@ -201,7 +201,7 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full border-y border-white">
+      <header className="sticky top-0 z-50 w-full max-w-full overflow-x-hidden border-y border-white">
         {/* Minimalist background - only on desktop */}
         <div className="absolute inset-0 bg-background/95 backdrop-blur-sm border-b border-border/30 lg:bg-gradient-to-r lg:from-background lg:via-background/95 lg:to-background lg:backdrop-blur-2xl lg:border-border/50" />
 

@@ -1,12 +1,6 @@
 'use client';
 
 import { useTranslations } from '@/components/I18nProvider';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
 import { Container } from '@/components/Container';
 import { useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
@@ -89,14 +83,21 @@ export function FAQSection({
           <p className="text-base sm:text-lg text-muted-foreground px-4">{t('subtitle')}</p>
         </div>
 
-        <Accordion type="single" collapsible className="w-full">
+        <div className="space-y-4">
           {faqs.map((faq) => (
-            <AccordionItem key={faq._id} value={`item-${faq._id}`} className="border-border/50">
-              <AccordionTrigger className="text-left text-sm sm:text-base px-4 sm:px-6">{faq.question}</AccordionTrigger>
-              <AccordionContent className="text-xs sm:text-sm text-muted-foreground px-4 sm:px-6">{faq.answer}</AccordionContent>
-            </AccordionItem>
+            <div 
+              key={faq._id} 
+              className="border border-border/50 rounded-sm bg-card/50 p-4 sm:p-6 hover:bg-card/80 transition-colors"
+            >
+              <h3 className="text-base sm:text-lg font-semibold mb-3 text-foreground">
+                {faq.question}
+              </h3>
+              <div className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                {faq.answer}
+              </div>
+            </div>
           ))}
-        </Accordion>
+        </div>
       </div>
     </Container>
   );

@@ -33,7 +33,7 @@ export function Footer() {
   ].filter(link => link.url);
 
   return (
-    <footer className="border-t bg-gradient-to-b from-background to-muted/30 relative overflow-hidden">
+    <footer className="border-t bg-gradient-to-b from-background to-muted/30 relative overflow-x-hidden max-w-full w-full">
       {/* Decorative elements */}
       <div className="absolute inset-0 bg-grid-pattern opacity-5" />
       
