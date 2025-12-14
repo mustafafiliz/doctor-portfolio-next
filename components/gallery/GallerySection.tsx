@@ -2,36 +2,22 @@
 
 import { useTranslations } from '@/components/I18nProvider';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Fancybox } from '@fancyapps/ui';
 import '@fancyapps/ui/dist/fancybox/fancybox.css';
 import { Container } from '@/components/Container';
-import { Loader2 } from 'lucide-react';
-import { getPublicGallery } from '@/lib/config';
 import type { GalleryPhoto } from '@/lib/types';
 
-export function GallerySection() {
+interface GallerySectionProps {
+  initialPhotos: GalleryPhoto[];
+}
+
+export function GallerySection({ initialPhotos }: GallerySectionProps) {
   const t = useTranslations('gallery');
-  const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const photos = initialPhotos;
 
   useEffect(() => {
-    const fetchGallery = async () => {
-      try {
-        const data = await getPublicGallery();
-        setPhotos(data.data || []);
-      } catch (error) {
-        console.error('Galeri yükleme hatası:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchGallery();
-  }, []);
-
-  useEffect(() => {
-    if (!isLoading && photos.length > 0) {
+    if (photos.length > 0) {
       // Initialize Fancybox
       // @ts-expect-error - Fancybox options type definitions may not be complete
       Fancybox.bind('[data-fancybox]', {
@@ -52,7 +38,7 @@ export function GallerySection() {
         Fancybox.close();
       };
     }
-  }, [isLoading, photos]);
+  }, [photos]);
 
   // Fotoğraf kartı component'i
   const PhotoCard = ({ photo, className = '' }: { photo: GalleryPhoto; className?: string }) => {
@@ -86,16 +72,6 @@ export function GallerySection() {
       </a>
     );
   };
-
-  if (isLoading) {
-    return (
-      <Container className="py-12 sm:py-16 md:py-20 lg:py-24">
-        <div className="flex items-center justify-center min-h-[400px]">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
-        </div>
-      </Container>
-    );
-  }
 
   if (photos.length === 0) {
     return (

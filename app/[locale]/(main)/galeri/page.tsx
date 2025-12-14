@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getConfig } from '@/lib/config';
+import { getConfig, getPublicGallery } from '@/lib/config';
 import type { Metadata } from 'next';
 import { GallerySection } from '@/components/gallery/GallerySection';
 import { getDictionary } from '../../dictionaries';
@@ -26,7 +26,22 @@ export async function generateMetadata({
   };
 }
 
-export default async function GalleryPage() {
-  return <GallerySection />;
+export default async function GalleryPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const validLocale = locale as Locale;
+  
+  if (!locales.includes(validLocale)) {
+    notFound();
+  }
+
+  // SSR: Server-side'da galeri fotoğraflarını çek
+  const galleryData = await getPublicGallery();
+  const photos = galleryData.data || [];
+
+  return <GallerySection initialPhotos={photos} />;
 }
 

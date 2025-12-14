@@ -322,7 +322,16 @@ export async function getPublicGallery() {
     );
 
     if (!response.ok) throw new Error("Failed to fetch gallery");
-    return await response.json();
+    const data = await response.json();
+    
+    // API response formatını kontrol et ve normalize et
+    // Eğer direkt array ise, { data: [...] } formatına çevir
+    if (Array.isArray(data)) {
+      return { data, total: data.length };
+    }
+    
+    // Eğer { data: [...], total: ..., limit: ... } formatında ise direkt döndür
+    return data;
   } catch (error) {
     console.error("Failed to fetch gallery:", error);
     return { data: [], total: 0 };
