@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronRight, ArrowLeft } from 'lucide-react';
 import { getPublicCategoryBySlug, getPublicSpecialties, getConfig } from '@/lib/config';
-import type { SpecialtyCategory } from '@/lib/types';
+import type { SpecialtyCategory, Specialty } from '@/lib/types';
 import type { Metadata } from 'next';
 
 interface CategoryWithSpecialties extends SpecialtyCategory {
@@ -64,8 +64,7 @@ export default async function CategoryPage({
 
   // Kategori sayfası
   return (
-    return (
-      <div>
+    <div>
         {/* Breadcrumb Header */}
         <div
           className="py-6 sm:py-8"

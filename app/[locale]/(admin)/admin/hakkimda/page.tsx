@@ -77,9 +77,25 @@ export default function AdminAboutPage() {
       form.append('title', formData.title);
       form.append('subtitle', formData.subtitle);
       form.append('bio', formData.bio);
-      form.append('education', JSON.stringify(formData.education));
-      form.append('experience', JSON.stringify(formData.experience));
-      form.append('certifications', JSON.stringify(formData.certifications));
+      
+      // Education array - her bir elemanı ayrı ayrı ekle
+      formData.education.forEach((edu, index) => {
+        form.append(`education[${index}][year]`, edu.year);
+        form.append(`education[${index}][title]`, edu.title);
+        form.append(`education[${index}][institution]`, edu.institution);
+      });
+      
+      // Experience array - her bir elemanı ayrı ayrı ekle
+      formData.experience.forEach((exp, index) => {
+        form.append(`experience[${index}][years]`, exp.years);
+        form.append(`experience[${index}][title]`, exp.title);
+        form.append(`experience[${index}][institution]`, exp.institution);
+      });
+      
+      // Certifications array - her bir elemanı ayrı ayrı ekle
+      formData.certifications.forEach((cert, index) => {
+        form.append(`certifications[${index}]`, cert);
+      });
       
       if (selectedFile) {
         form.append('image', selectedFile);

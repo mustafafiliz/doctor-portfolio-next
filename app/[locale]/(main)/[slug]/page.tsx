@@ -82,18 +82,31 @@ export default async function SpecialtyPage({
       if (foundCategory) {
         specialty.category = foundCategory;
       }
-    } else {
-      // categoryId yoksa, tüm kategorilerde ara
+    }
+    
+    // categoryId ile bulunamadıysa veya categoryId yoksa, tüm kategorilerde ara
+    if (!specialty.category) {
       for (const category of allSpecialties.categories) {
-        const foundSpecialty = category.specialties?.find(
-          (s: Specialty) => s._id === specialty!._id || s.slug === specialty!.slug
-        );
-        if (foundSpecialty) {
-          specialty.category = category;
-          break;
+        if (category.specialties && Array.isArray(category.specialties)) {
+          const foundSpecialty = category.specialties.find(
+            (s: Specialty) => s._id === specialty!._id || s.slug === specialty!.slug
+          );
+          if (foundSpecialty) {
+            specialty.category = category;
+            break;
+          }
         }
       }
     }
+  }
+
+  // Debug: Kategori bilgisini kontrol et
+  if (!specialty.category) {
+    console.warn('Specialty için kategori bulunamadı:', {
+      specialtyId: specialty._id,
+      specialtySlug: specialty.slug,
+      categoryId: specialty.categoryId
+    });
   }
 
   const primaryColor = config.colors.primary;
