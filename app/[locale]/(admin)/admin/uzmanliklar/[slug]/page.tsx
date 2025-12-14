@@ -32,6 +32,10 @@ export default function EditSpecialtyPage() {
     content: '',
     image: '',
     categoryId: '',
+    imageUrl: '',
+    locale: currentLocale,
+    order: 0,
+    relatedSlugs: [] as string[],
   });
 
   useEffect(() => {
@@ -51,6 +55,10 @@ export default function EditSpecialtyPage() {
           content: specialtyData.content,
           image: specialtyData.image || '',
           categoryId: specialtyData.categoryId || '',
+          imageUrl: specialtyData.image || '',
+          locale: specialtyData.locale || currentLocale,
+          order: specialtyData.order || 0,
+          relatedSlugs: specialtyData.relatedSlugs || [],
         });
         
         if (specialtyData.image) {
@@ -126,11 +134,25 @@ export default function EditSpecialtyPage() {
       form.append('slug', formData.slug);
       form.append('description', formData.description);
       form.append('content', formData.content);
+      form.append('locale', formData.locale);
+      // order field'ını sadece değer varsa ve 0'dan farklıysa gönder (backend number bekliyor, FormData string gönderir)
+      // Backend muhtemelen string'i number'a parse ediyor, bu yüzden string olarak gönderiyoruz
+      if (formData.order !== undefined && formData.order !== null && formData.order !== 0) {
+        form.append('order', String(formData.order));
+      } else if (formData.order === 0) {
+        // 0 değeri için de gönder (çünkü 0 geçerli bir order değeri)
+        form.append('order', '0');
+      }
       if (formData.categoryId) {
         form.append('categoryId', formData.categoryId);
       }
       if (selectedFile) {
         form.append('image', selectedFile);
+      } else if (formData.imageUrl && !formData.image) {
+        form.append('imageUrl', formData.imageUrl);
+      }
+      if (formData.relatedSlugs.length > 0) {
+        form.append('relatedSlugs', JSON.stringify(formData.relatedSlugs));
       }
 
       if (!specialtyId) {
@@ -320,6 +342,19 @@ export default function EditSpecialtyPage() {
             </select>
           </div>
 
+          {/* Order */}
+          <div className="bg-white rounded-sm border border-gray-200 p-6 space-y-4">
+            <h3 className="font-medium text-gray-800">Sıralama</h3>
+            <input
+              type="number"
+              value={formData.order}
+              onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
+              className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
+              placeholder="0"
+            />
+            <p className="text-xs text-gray-500">Düşük sayılar önce gösterilir</p>
+          </div>
+
           {/* Featured Image */}
           <div className="bg-white rounded-sm border border-gray-200 p-6 space-y-4">
             <h3 className="font-medium text-gray-800">Görsel</h3>
@@ -356,6 +391,24 @@ export default function EditSpecialtyPage() {
                 <p className="text-xs text-gray-400 mt-1">PNG, JPG, WebP (max 10MB)</p>
               </button>
             )}
+            <div className="pt-2 border-t border-gray-200">
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                Veya Görsel URL'si
+              </label>
+              <input
+                type="url"
+                value={formData.imageUrl}
+                onChange={(e) => {
+                  setFormData({ ...formData, imageUrl: e.target.value });
+                  if (e.target.value) {
+                    setImagePreview(e.target.value);
+                    setSelectedFile(null);
+                  }
+                }}
+                placeholder="https://example.com/image.jpg"
+                className="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
+              />
+            </div>
           </div>
         </div>
       </form>

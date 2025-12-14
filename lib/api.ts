@@ -187,7 +187,7 @@ export const websiteApi = {
   ): Promise<WebsiteSettings> =>
     apiFetch("/website/working-hours", {
       method: "PUT",
-      body: JSON.stringify({ workingHours: data })
+      body: JSON.stringify(data)
     }),
 
   updateSocial: (data: WebsiteSettings["social"]): Promise<WebsiteSettings> =>

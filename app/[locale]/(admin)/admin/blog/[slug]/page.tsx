@@ -31,6 +31,8 @@ export default function EditBlogPage() {
     content: '',
     image: '',
     status: 'draft' as 'draft' | 'published',
+    imageUrl: '',
+    locale: currentLocale,
   });
 
   useEffect(() => {
@@ -47,6 +49,8 @@ export default function EditBlogPage() {
           content: blogData.content,
           image: blogData.image || '',
           status: blogData.status,
+          imageUrl: blogData.image || '',
+          locale: blogData.locale || currentLocale,
         });
         
         if (blogData.image) {
@@ -121,8 +125,11 @@ export default function EditBlogPage() {
       form.append('excerpt', formData.excerpt);
       form.append('content', formData.content);
       form.append('status', formData.status);
+      form.append('locale', formData.locale);
       if (selectedFile) {
         form.append('image', selectedFile);
+      } else if (formData.imageUrl && !formData.image) {
+        form.append('imageUrl', formData.imageUrl);
       }
 
       if (!blogId) {
@@ -347,6 +354,24 @@ export default function EditBlogPage() {
                 <p className="text-xs text-gray-400 mt-1">PNG, JPG, WebP (max 10MB)</p>
               </button>
             )}
+            <div className="pt-2 border-t border-gray-200">
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                Veya Görsel URL'si
+              </label>
+              <input
+                type="url"
+                value={formData.imageUrl}
+                onChange={(e) => {
+                  setFormData({ ...formData, imageUrl: e.target.value });
+                  if (e.target.value) {
+                    setImagePreview(e.target.value);
+                    setSelectedFile(null);
+                  }
+                }}
+                placeholder="https://example.com/image.jpg"
+                className="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
+              />
+            </div>
           </div>
         </div>
       </form>

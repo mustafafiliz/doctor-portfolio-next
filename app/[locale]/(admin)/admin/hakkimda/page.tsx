@@ -1,12 +1,15 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import { Save, X, Plus, Trash2, Upload, Loader2, AlertCircle } from 'lucide-react';
 import { Editor } from '@/components/admin/Editor';
 import { websiteApi } from '@/lib/api';
 import type { AboutSection, Education, Experience } from '@/lib/types';
 
 export default function AdminAboutPage() {
+  const pathname = usePathname();
+  const currentLocale = pathname?.split('/')[1] || 'tr';
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [isLoading, setIsLoading] = useState(true);
@@ -77,8 +80,9 @@ export default function AdminAboutPage() {
       form.append('title', formData.title);
       form.append('subtitle', formData.subtitle);
       form.append('bio', formData.bio);
+      form.append('locale', currentLocale);
       
-      // Education array - her bir elemanı ayrı ayrı ekle (order field'ı ile)
+      // Education array - indexed format ile gönder (backend array bekliyor)
       formData.education.forEach((edu, index) => {
         form.append(`education[${index}][year]`, edu.year);
         form.append(`education[${index}][title]`, edu.title);
@@ -86,7 +90,7 @@ export default function AdminAboutPage() {
         form.append(`education[${index}][order]`, (edu.order ?? index).toString());
       });
       
-      // Experience array - her bir elemanı ayrı ayrı ekle (order field'ı ile)
+      // Experience array - indexed format ile gönder (backend array bekliyor)
       formData.experience.forEach((exp, index) => {
         form.append(`experience[${index}][years]`, exp.years);
         form.append(`experience[${index}][title]`, exp.title);
@@ -94,7 +98,7 @@ export default function AdminAboutPage() {
         form.append(`experience[${index}][order]`, (exp.order ?? index).toString());
       });
       
-      // Certifications array - her bir elemanı ayrı ayrı ekle
+      // Certifications array - indexed format ile gönder (backend array bekliyor)
       formData.certifications.forEach((cert, index) => {
         form.append(`certifications[${index}]`, cert);
       });
