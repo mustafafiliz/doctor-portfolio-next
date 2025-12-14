@@ -122,6 +122,7 @@ export interface Education {
   year: string;
   title: string;
   institution: string;
+  order?: number;
 }
 
 export interface Experience {
@@ -129,6 +130,7 @@ export interface Experience {
   years: string;
   title: string;
   institution: string;
+  order?: number;
 }
 
 export interface AboutSection {

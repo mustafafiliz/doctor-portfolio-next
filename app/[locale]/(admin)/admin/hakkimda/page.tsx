@@ -78,18 +78,20 @@ export default function AdminAboutPage() {
       form.append('subtitle', formData.subtitle);
       form.append('bio', formData.bio);
       
-      // Education array - her bir elemanı ayrı ayrı ekle
+      // Education array - her bir elemanı ayrı ayrı ekle (order field'ı ile)
       formData.education.forEach((edu, index) => {
         form.append(`education[${index}][year]`, edu.year);
         form.append(`education[${index}][title]`, edu.title);
         form.append(`education[${index}][institution]`, edu.institution);
+        form.append(`education[${index}][order]`, (edu.order ?? index).toString());
       });
       
-      // Experience array - her bir elemanı ayrı ayrı ekle
+      // Experience array - her bir elemanı ayrı ayrı ekle (order field'ı ile)
       formData.experience.forEach((exp, index) => {
         form.append(`experience[${index}][years]`, exp.years);
         form.append(`experience[${index}][title]`, exp.title);
         form.append(`experience[${index}][institution]`, exp.institution);
+        form.append(`experience[${index}][order]`, (exp.order ?? index).toString());
       });
       
       // Certifications array - her bir elemanı ayrı ayrı ekle
