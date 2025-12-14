@@ -40,6 +40,8 @@ export default async function LocaleLayout({
   const dictionary = await getDictionary(validLocale);
   const config = await getConfig();
 
+  console.log("config", config);
+
   return (
     <html lang={validLocale}>
       <head>

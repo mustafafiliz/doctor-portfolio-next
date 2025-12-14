@@ -222,7 +222,7 @@ export function Header() {
               {config.site?.logo ? (
                 <Image
                   src={config.site.logo}
-                  alt={config.site.name || "Logo"}
+                  alt={config.site.name || ""}
                   width={160}
                   height={44}
                   className="h-9 sm:h-10 lg:h-12 w-auto object-contain"
@@ -430,7 +430,7 @@ export function Header() {
                 {config.site?.logo ? (
                   <Image
                     src={config.site.logo}
-                    alt={config.site.name || "Logo"}
+                    alt={config.site.name || ""}
                     width={140}
                     height={38}
                     className="h-9 w-auto object-contain"

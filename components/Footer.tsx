@@ -45,7 +45,7 @@ export function Footer() {
               {config.site?.logo ? (
                 <Image
                   src={config.site.logo}
-                  alt={config.site?.name || 'Logo'}
+                  alt={config.site?.name || ''}
                   width={200}
                   height={54}
                   className="h-auto w-full max-w-[180px] sm:max-w-[200px] object-contain"
@@ -54,7 +54,7 @@ export function Footer() {
               ) : (
                 <Image
                   src="/images/logo.webp"
-                  alt={config.site?.name || 'Logo'}
+                  alt={config.site?.name || ''}
                   width={200}
                   height={54}
                   className="h-auto w-full max-w-[180px] sm:max-w-[200px] object-contain"
@@ -62,7 +62,7 @@ export function Footer() {
               )}
             </Link>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              {config.site?.tagline || 'Göz sağlığınız için profesyonel hizmet'}
+              {config.site?.tagline || ''}
             </p>
             {socialLinks.length > 0 && (
               <div className="flex space-x-3 sm:space-x-4">
@@ -158,7 +158,7 @@ export function Footer() {
         </div>
 
         <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t text-center text-xs sm:text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} {config.site?.name || 'Doktor Portfolio'}. Tüm hakları saklıdır.</p>
+          <p>&copy; {new Date().getFullYear()} {config.site?.name || ''}. Tüm hakları saklıdır.</p>
         </div>
       </div>
     </footer>

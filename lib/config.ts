@@ -51,18 +51,18 @@ export interface SiteConfig {
   };
 }
 
-// Default config - This can be replaced with an API call
-export const defaultConfig: SiteConfig = {
+// Empty config - No fallback values, only API data
+const emptyConfig: SiteConfig = {
   colors: {
-    primary: "#144793", // Dark blue
-    secondary: "#64748b", // Slate
-    accent: "#1e5ba8" // Lighter blue accent
+    primary: "",
+    secondary: "",
+    accent: ""
   },
   meta: {
-    siteName: "Doktor Portfolio",
-    defaultTitle: "Doktor Portfolio",
-    defaultDescription: "Doktor web sitesi",
-    defaultKeywords: "doktor, sağlık"
+    siteName: "",
+    defaultTitle: "",
+    defaultDescription: "",
+    defaultKeywords: ""
   },
   contact: {
     phone: "",
@@ -84,9 +84,10 @@ const API_BASE_URL =
 const WEBSITE_ID = process.env.NEXT_PUBLIC_WEBSITE_ID || "";
 
 // Function to fetch config from API (server-side)
+// NO FALLBACK VALUES - Only returns API data or empty strings
 export async function getConfig(): Promise<SiteConfig> {
   if (!WEBSITE_ID) {
-    return defaultConfig;
+    return emptyConfig;
   }
 
   try {
@@ -101,30 +102,26 @@ export async function getConfig(): Promise<SiteConfig> {
     );
 
     if (!response.ok) {
-      throw new Error("Failed to fetch config");
+      console.error("Failed to fetch config:", response.statusText);
+      return emptyConfig;
     }
 
     const data = await response.json();
 
     // Transform API response to match SiteConfig interface
+    // NO FALLBACK VALUES - Only use API data, empty string if not present
     return {
       colors: {
-        primary: data.colors?.primary || defaultConfig.colors.primary,
-        secondary: data.colors?.secondary || defaultConfig.colors.secondary,
-        accent: data.colors?.accent || defaultConfig.colors.accent
+        primary: data.colors?.primary || "",
+        secondary: data.colors?.secondary || "",
+        accent: data.colors?.accent || ""
       },
       meta: {
-        siteName: data.site?.name || defaultConfig.meta.siteName,
-        defaultTitle:
-          data.seo?.metaTitle ||
-          data.site?.name ||
-          defaultConfig.meta.defaultTitle,
+        siteName: data.site?.name || "",
+        defaultTitle: data.seo?.metaTitle || data.site?.name || "",
         defaultDescription:
-          data.seo?.metaDescription ||
-          data.site?.tagline ||
-          defaultConfig.meta.defaultDescription,
-        defaultKeywords:
-          data.seo?.keywords || defaultConfig.meta.defaultKeywords
+          data.seo?.metaDescription || data.site?.tagline || "",
+        defaultKeywords: data.seo?.keywords || ""
       },
       contact: {
         phone: data.contact?.phone || "",
@@ -146,7 +143,7 @@ export async function getConfig(): Promise<SiteConfig> {
     };
   } catch (error) {
     console.error("Failed to fetch config:", error);
-    return defaultConfig;
+    return emptyConfig;
   }
 }
 

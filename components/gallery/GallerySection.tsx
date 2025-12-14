@@ -60,12 +60,12 @@ export function GallerySection() {
       <a
         href={photo.url}
         data-fancybox="gallery"
-        data-caption={photo.title || 'Galeri fotoğrafı'}
+        data-caption={photo.title || ''}
         className={`group relative overflow-hidden rounded-sm bg-muted cursor-pointer hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] ${className}`}
       >
         <Image
           src={photo.url}
-          alt={photo.title || 'Galeri fotoğrafı'}
+          alt={photo.title || ''}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-110"
           unoptimized

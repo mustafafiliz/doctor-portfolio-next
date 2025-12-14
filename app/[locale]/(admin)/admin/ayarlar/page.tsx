@@ -371,13 +371,13 @@ export default function AdminSettingsPage() {
                     <div className="flex gap-2">
                       <input
                         type="color"
-                        value={settings.colors?.primary || '#144793'}
+                        value={settings.colors?.primary || ''}
                         onChange={(e) => setSettings({ ...settings, colors: { ...settings.colors, primary: e.target.value, accent: settings.colors?.accent || '' } })}
                         className="w-12 h-10 rounded-sm cursor-pointer"
                       />
                       <input
                         type="text"
-                        value={settings.colors?.primary || '#144793'}
+                        value={settings.colors?.primary || ''}
                         onChange={(e) => setSettings({ ...settings, colors: { ...settings.colors, primary: e.target.value, accent: settings.colors?.accent || '' } })}
                         className="flex-1 px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
                       />
@@ -388,13 +388,13 @@ export default function AdminSettingsPage() {
                     <div className="flex gap-2">
                       <input
                         type="color"
-                        value={settings.colors?.accent || '#1e5ba8'}
+                        value={settings.colors?.accent || ''}
                         onChange={(e) => setSettings({ ...settings, colors: { ...settings.colors, primary: settings.colors?.primary || '', accent: e.target.value } })}
                         className="w-12 h-10 rounded-sm cursor-pointer"
                       />
                       <input
                         type="text"
-                        value={settings.colors?.accent || '#1e5ba8'}
+                        value={settings.colors?.accent || ''}
                         onChange={(e) => setSettings({ ...settings, colors: { ...settings.colors, primary: settings.colors?.primary || '', accent: e.target.value } })}
                         className="flex-1 px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
                       />

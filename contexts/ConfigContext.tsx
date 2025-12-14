@@ -1,19 +1,47 @@
-'use client';
+"use client";
 
-import { createContext, useContext, ReactNode } from 'react';
-import { SiteConfig, defaultConfig } from '@/lib/config';
+import { createContext, useContext, ReactNode } from "react";
+import { SiteConfig } from "@/lib/config";
 
 interface ConfigContextType {
   config: SiteConfig;
 }
 
+// Empty config - No fallback values
+const emptyConfig: SiteConfig = {
+  colors: {
+    primary: "",
+    secondary: "",
+    accent: ""
+  },
+  meta: {
+    siteName: "",
+    defaultTitle: "",
+    defaultDescription: "",
+    defaultKeywords: ""
+  },
+  contact: {
+    phone: "",
+    mobile: "",
+    email: "",
+    address: "",
+    whatsapp: ""
+  },
+  social: {
+    facebook: "",
+    instagram: "",
+    linkedin: "",
+    twitter: ""
+  }
+};
+
 const ConfigContext = createContext<ConfigContextType>({
-  config: defaultConfig,
+  config: emptyConfig
 });
 
 export function ConfigProvider({
   children,
-  config,
+  config
 }: {
   children: ReactNode;
   config: SiteConfig;
@@ -28,9 +56,7 @@ export function ConfigProvider({
 export function useConfigContext() {
   const context = useContext(ConfigContext);
   if (!context) {
-    throw new Error('useConfigContext must be used within a ConfigProvider');
+    throw new Error("useConfigContext must be used within a ConfigProvider");
   }
   return context;
 }
-
-
