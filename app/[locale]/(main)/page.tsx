@@ -33,10 +33,8 @@ export default async function HomePage({
   const faqs = (faqsData.data || []).slice(0, 4); // İlk 4 soruyu al
   
   const specialtiesData = await getPublicSpecialties();
-  // Categories içindeki tüm specialties'i düzleştir
-  const allSpecialties = specialtiesData.categories.flatMap(
-    (category: SpecialtyCategory & { specialties?: Specialty[] }) => category.specialties || []
-  );
+  // Sadece kategorileri gönder
+  const categories = specialtiesData.categories || [];
 
   // Hakkımızda verisini çek
   const about = await getPublicAbout() as AboutSection | null;
@@ -45,7 +43,7 @@ export default async function HomePage({
     <div className="flex flex-col w-full max-w-full overflow-x-hidden">
       <HeroCarousel aboutBio={about?.bio} aboutImage={about?.image} />
       <SpecialtiesSection 
-        initialSpecialties={allSpecialties}
+        initialCategories={categories}
         currentLocale={currentLocale}
       />
       <HomeFAQSection faqs={faqs} />

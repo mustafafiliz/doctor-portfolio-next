@@ -11,40 +11,37 @@ import Image from 'next/image';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { getPublicSpecialties } from '@/lib/config';
-import type { Specialty } from '@/lib/types';
+import type { SpecialtyCategory } from '@/lib/types';
+
+interface CategoryWithSpecialties extends SpecialtyCategory {
+  specialties?: any[];
+}
 
 interface SpecialtiesSectionProps {
-  initialSpecialties?: Specialty[];
+  initialCategories?: CategoryWithSpecialties[];
   currentLocale?: Locale;
 }
 
 export function SpecialtiesSection({ 
-  initialSpecialties, 
+  initialCategories, 
   currentLocale: propLocale 
 }: SpecialtiesSectionProps = {} as SpecialtiesSectionProps) {
   const t = useTranslations('specialties');
   const pathname = usePathname();
   const currentLocale = propLocale || (pathname?.split('/')[1] || 'tr') as Locale;
 
-  const [specialties, setSpecialties] = useState<Specialty[]>(initialSpecialties || []);
-  const [isLoading, setIsLoading] = useState(!initialSpecialties);
+  const [categories, setCategories] = useState<CategoryWithSpecialties[]>(initialCategories || []);
+  const [isLoading, setIsLoading] = useState(!initialCategories);
 
   useEffect(() => {
-    // Eğer initialSpecialties yoksa client-side fetch yap
-    if (!initialSpecialties) {
+    // Eğer initialCategories yoksa client-side fetch yap
+    if (!initialCategories) {
       const fetchSpecialties = async () => {
         try {
           const data = await getPublicSpecialties();
-          // Categories içindeki tüm specialties'i düzleştir
-          const allSpecialties: Specialty[] = [];
-          if (data.categories) {
-            data.categories.forEach((category: { specialties?: Specialty[] }) => {
-              if (category.specialties) {
-                allSpecialties.push(...category.specialties);
-              }
-            });
+          if (data.categories && Array.isArray(data.categories)) {
+            setCategories(data.categories);
           }
-          setSpecialties(allSpecialties);
         } catch (error) {
           // Hata durumunda sessizce devam et
         } finally {
@@ -54,7 +51,7 @@ export function SpecialtiesSection({
 
       fetchSpecialties();
     }
-  }, [initialSpecialties]);
+  }, [initialCategories]);
 
   const plugin = Autoplay({
     delay: 4000,
@@ -73,8 +70,8 @@ export function SpecialtiesSection({
     );
   }
 
-  if (specialties.length === 0) {
-    return null; // Uzmanlık yoksa section'ı gösterme
+  if (categories.length === 0) {
+    return null; // Kategori yoksa section'ı gösterme
   }
 
   return (
@@ -102,39 +99,26 @@ export function SpecialtiesSection({
           }}
         >
           <CarouselContent className="-ml-2 sm:-ml-4">
-            {specialties.map((specialty) => {
+            {categories.map((category) => {
               return (
-                <CarouselItem key={specialty._id} className="pl-2 sm:pl-4 basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                  <Link href={`/${currentLocale}/${specialty.slug}`}>
+                <CarouselItem key={category._id} className="pl-2 sm:pl-4 basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                  <Link href={`/${currentLocale}/uzmanlik/${category.slug}`}>
                     <div className="group bg-white rounded-sm shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 block flex flex-col h-full">
-                      {/* Image */}
-                      <div className="relative overflow-hidden">
-                        <div className="w-full h-52 relative bg-muted overflow-hidden">
-                          {specialty.image ? (
-                            <Image
-                              src={specialty.image}
-                              alt={specialty.title}
-                              fill
-                              className="object-cover transform group-hover:scale-105 transition-transform duration-300"
-                              unoptimized
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
-                              <span className="text-primary font-semibold">{specialty.title.charAt(0)}</span>
-                            </div>
-                          )}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        </div>
-                      </div>
-                      
                       {/* Content */}
                       <div className="p-4 sm:p-6 flex flex-col flex-1">
                         <h2 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-gray-800 line-clamp-2 min-h-[3rem] sm:min-h-[3.5rem] group-hover:text-primary transition-colors duration-200">
-                          {specialty.title}
+                          {category.title || category.name}
                         </h2>
-                        <p className="text-gray-600 line-clamp-3 mb-3 sm:mb-4 text-xs sm:text-sm leading-relaxed min-h-[3.5rem] sm:min-h-[4.5rem] flex-1">
-                          {specialty.description}
-                        </p>
+                        {category.description && (
+                          <p className="text-gray-600 line-clamp-3 mb-3 sm:mb-4 text-xs sm:text-sm leading-relaxed min-h-[3.5rem] sm:min-h-[4.5rem] flex-1">
+                            {category.description}
+                          </p>
+                        )}
+                        {category.specialties && category.specialties.length > 0 && (
+                          <p className="text-xs text-muted-foreground mt-auto">
+                            {category.specialties.length} {category.specialties.length === 1 ? 'uzmanlık' : 'uzmanlık'}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </Link>
