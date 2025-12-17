@@ -131,14 +131,14 @@ export default function AdminSpecialtiesPage() {
             className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-600 text-white rounded-sm hover:bg-gray-700 transition-colors"
           >
             <Plus size={20} />
-            <span>Yeni Kategori</span>
+            <span>Yeni Uzmanlık</span>
           </Link>
           <Link
             href={`/${currentLocale}/admin/uzmanliklar/yeni`}
             className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#144793] text-white rounded-sm hover:bg-[#0f3a7a] transition-colors"
           >
             <Plus size={20} />
-            <span>Yeni Uzmanlık</span>
+            <span>Yeni Uzmanlık Yazısı</span>
           </Link>
         </div>
       </div>

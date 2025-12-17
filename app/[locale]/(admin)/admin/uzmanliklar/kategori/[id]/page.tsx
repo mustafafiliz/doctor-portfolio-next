@@ -132,7 +132,7 @@ export default function EditCategoryPage() {
             <ArrowLeft size={20} />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">Kategoriyi Düzenle</h1>
+            <h1 className="text-2xl font-bold text-gray-800">Uzmanlık Düzenle</h1>
             <p className="text-gray-500 text-sm mt-1">{formData.title}</p>
           </div>
         </div>

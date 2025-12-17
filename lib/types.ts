@@ -181,6 +181,8 @@ export interface Blog {
   tags?: string[];
   status: 'draft' | 'published';
   locale?: string;
+  metaTitle?: string;
+  metaDescription?: string;
   publishedAt?: string;
   views?: number;
   createdAt: string;
@@ -196,6 +198,8 @@ export interface CreateBlogRequest {
   categoryId?: string;
   tags?: string[];
   status?: 'draft' | 'published';
+  metaTitle?: string;
+  metaDescription?: string;
 }
 
 export interface UpdateBlogRequest extends Partial<CreateBlogRequest> {}
