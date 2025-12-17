@@ -221,7 +221,7 @@ export default function NewSpecialtyPage() {
               </label>
               <div className="flex items-center">
                 <span className="px-3 py-2.5 bg-gray-100 border border-r-0 border-gray-300 rounded-l-sm text-sm text-gray-500">
-                  /uzmanlik/
+                  {typeof window !== 'undefined' ? window.location.origin : ''}/
                 </span>
                 <input
                   type="text"
