@@ -238,14 +238,14 @@ export function ContactForm() {
 
           <div className="space-y-2">
             <Label htmlFor="subject" className="text-xs sm:text-sm font-semibold">
-              {t('subject')}
+              {t('subject')} (Opsiyonel)
             </Label>
             <Input
               id="subject"
               value={formData.subject}
               onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
               className="h-11 sm:h-12 bg-background/50 border-border/50 focus:border-primary transition-all text-sm sm:text-base"
-              placeholder="Konu (Opsiyonel)"
+              placeholder="Konu"
             />
           </div>
         </div>
