@@ -21,6 +21,8 @@ export default function AdminSettingsPage() {
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [faviconFile, setFaviconFile] = useState<File | null>(null);
   const [faviconPreview, setFaviconPreview] = useState<string | null>(null);
+  const [isDraggingLogo, setIsDraggingLogo] = useState(false);
+  const [isDraggingFavicon, setIsDraggingFavicon] = useState(false);
 
   useEffect(() => {
     fetchSettings();
@@ -184,6 +186,58 @@ export default function AdminSettingsPage() {
     }
   };
 
+  const handleLogoDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDraggingLogo(true);
+  };
+
+  const handleLogoDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDraggingLogo(false);
+  };
+
+  const handleLogoDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDraggingLogo(false);
+
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      setLogoFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => setLogoPreview(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleFaviconDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDraggingFavicon(true);
+  };
+
+  const handleFaviconDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDraggingFavicon(false);
+  };
+
+  const handleFaviconDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDraggingFavicon(false);
+
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      setFaviconFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => setFaviconPreview(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
   const addWorkingHour = () => {
     if (!settings || !newWorkingHour.day || !newWorkingHour.hours) return;
     setSettings({
@@ -309,14 +363,22 @@ export default function AdminSettingsPage() {
                       </button>
                     </div>
                   ) : (
-                    <button
-                      type="button"
+                    <div
+                      onDragOver={handleLogoDragOver}
+                      onDragLeave={handleLogoDragLeave}
+                      onDrop={handleLogoDrop}
                       onClick={() => logoInputRef.current?.click()}
-                      className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-sm hover:bg-gray-50"
+                      className={`flex items-center gap-2 px-4 py-2 border rounded-sm cursor-pointer transition-colors ${
+                        isDraggingLogo
+                          ? 'border-[#144793] bg-blue-50'
+                          : 'border-gray-300 hover:bg-gray-50'
+                      }`}
                     >
-                      <Upload size={18} />
-                      Logo Yükle
-                    </button>
+                      <Upload size={18} className={isDraggingLogo ? 'text-[#144793]' : ''} />
+                      <span className={isDraggingLogo ? 'text-[#144793] font-medium' : ''}>
+                        {isDraggingLogo ? 'Logo buraya bırakın' : 'Logo Yükle'}
+                      </span>
+                    </div>
                   )}
                 </div>
                 <div>
@@ -334,14 +396,22 @@ export default function AdminSettingsPage() {
                       </button>
                     </div>
                   ) : (
-                    <button
-                      type="button"
+                    <div
+                      onDragOver={handleFaviconDragOver}
+                      onDragLeave={handleFaviconDragLeave}
+                      onDrop={handleFaviconDrop}
                       onClick={() => faviconInputRef.current?.click()}
-                      className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-sm hover:bg-gray-50"
+                      className={`flex items-center gap-2 px-4 py-2 border rounded-sm cursor-pointer transition-colors ${
+                        isDraggingFavicon
+                          ? 'border-[#144793] bg-blue-50'
+                          : 'border-gray-300 hover:bg-gray-50'
+                      }`}
                     >
-                      <Upload size={18} />
-                      Favicon Yükle
-                    </button>
+                      <Upload size={18} className={isDraggingFavicon ? 'text-[#144793]' : ''} />
+                      <span className={isDraggingFavicon ? 'text-[#144793] font-medium' : ''}>
+                        {isDraggingFavicon ? 'Favicon buraya bırakın' : 'Favicon Yükle'}
+                      </span>
+                    </div>
                   )}
                 </div>
               </div>

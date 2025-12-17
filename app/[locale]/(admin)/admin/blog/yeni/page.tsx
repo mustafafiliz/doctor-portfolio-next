@@ -17,6 +17,7 @@ export default function NewBlogPage() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
   
   const [formData, setFormData] = useState({
     title: '',
@@ -54,6 +55,34 @@ export default function NewBlogPage() {
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) {
       setSelectedFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -244,15 +273,23 @@ export default function NewBlogPage() {
                 </button>
               </div>
             ) : (
-              <button
-                type="button"
+              <div
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full border-2 border-dashed border-gray-300 rounded-sm p-6 text-center hover:border-[#144793] transition-colors"
+                className={`w-full border-2 border-dashed rounded-sm p-6 text-center cursor-pointer transition-colors ${
+                  isDragging
+                    ? 'border-[#144793] bg-blue-50'
+                    : 'border-gray-300 hover:border-[#144793]'
+                }`}
               >
-                <Upload size={32} className="mx-auto text-gray-400 mb-2" />
-                <p className="text-sm text-gray-500">Görsel yüklemek için tıklayın</p>
+                <Upload size={32} className={`mx-auto mb-2 ${isDragging ? 'text-[#144793]' : 'text-gray-400'}`} />
+                <p className={`text-sm ${isDragging ? 'text-[#144793] font-medium' : 'text-gray-500'}`}>
+                  {isDragging ? 'Görseli buraya bırakın' : 'Görsel yüklemek için tıklayın veya sürükleyin'}
+                </p>
                 <p className="text-xs text-gray-400 mt-1">PNG, JPG, WebP (max 10MB)</p>
-              </button>
+              </div>
             )}
             <div className="pt-2 border-t border-gray-200">
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
