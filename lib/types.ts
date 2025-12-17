@@ -303,7 +303,7 @@ export interface GalleryListResponse {
 }
 
 export interface ReorderGalleryRequest {
-  items: { _id: string; order: number }[];
+  items: { id: string; order: number }[];
 }
 
 // ============ FAQ Types ============
@@ -326,7 +326,7 @@ export interface CreateFAQRequest {
 export interface UpdateFAQRequest extends Partial<CreateFAQRequest> {}
 
 export interface ReorderFAQRequest {
-  items: { _id: string; order: number }[];
+  items: { id: string; order: number }[];
 }
 
 // ============ Contact Types ============

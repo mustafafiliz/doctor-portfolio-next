@@ -131,7 +131,7 @@ export default function AdminFaqPage() {
     // Update on server
     try {
       await faqApi.reorder({
-        items: newFaqs.map((faq) => ({ _id: faq._id, order: faq.order })),
+        items: newFaqs.map((faq) => ({ id: faq._id, order: faq.order })),
       });
     } catch (err) {
       // Revert on error
