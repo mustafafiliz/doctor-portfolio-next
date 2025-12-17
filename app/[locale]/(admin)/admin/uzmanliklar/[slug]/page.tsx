@@ -4,6 +4,13 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter, useParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save, Eye, Trash2, X, Upload, Loader2, AlertCircle } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Editor } from '@/components/admin/Editor';
 import { specialtyApi } from '@/lib/api';
 import type { SpecialtyCategory } from '@/lib/types';
@@ -49,13 +56,18 @@ export default function EditSpecialtyPage() {
         ]);
         
         setSpecialtyId(specialtyData._id); // Update ve delete için _id'yi sakla
+        // categoryId obje olarak gelebilir, _id'yi al
+        const categoryIdValue = typeof specialtyData.categoryId === 'object' && specialtyData.categoryId !== null
+          ? specialtyData.categoryId._id
+          : (specialtyData.categoryId || '');
+        
         setFormData({
           title: specialtyData.title,
           slug: specialtyData.slug,
           description: specialtyData.description || '',
           content: specialtyData.content,
           image: specialtyData.image || '',
-          categoryId: specialtyData.categoryId || '',
+          categoryId: categoryIdValue,
           imageUrl: specialtyData.image || '',
           locale: specialtyData.locale || currentLocale,
           order: specialtyData.order || 0,
@@ -175,15 +187,20 @@ export default function EditSpecialtyPage() {
           form.append('order', String(Number(formData.order)));
         }
         if (formData.categoryId) {
-          form.append('categoryId', formData.categoryId);
+          // categoryId'nin string olduğundan emin ol
+          const categoryIdValue = typeof formData.categoryId === 'string' 
+            ? formData.categoryId 
+            : String(formData.categoryId);
+          form.append('categoryId', categoryIdValue);
         }
         if (selectedFile) {
           form.append('image', selectedFile);
         } else if (formData.imageUrl && !formData.image) {
           form.append('imageUrl', formData.imageUrl);
         }
-        if (formData.relatedSlugs.length > 0) {
-          form.append('relatedSlugs', JSON.stringify(formData.relatedSlugs));
+        if (formData.relatedSlugs && formData.relatedSlugs.length > 0) {
+          // relatedSlugs'u tek bir string olarak gönder (virgülle ayrılmış)
+          form.append('relatedSlugs', formData.relatedSlugs.join(','));
         }
         await specialtyApi.update(specialtyId, form);
       } else {
@@ -199,13 +216,16 @@ export default function EditSpecialtyPage() {
           jsonData.order = Number(formData.order);
         }
         if (formData.categoryId) {
-          jsonData.categoryId = formData.categoryId;
+          // categoryId'nin string olduğundan emin ol
+          jsonData.categoryId = typeof formData.categoryId === 'string' 
+            ? formData.categoryId 
+            : String(formData.categoryId);
         }
         if (formData.imageUrl) {
           jsonData.imageUrl = formData.imageUrl;
         }
-        if (formData.relatedSlugs.length > 0) {
-          jsonData.relatedSlugs = formData.relatedSlugs;
+        if (formData.relatedSlugs && formData.relatedSlugs.length > 0) {
+          jsonData.relatedSlugs = formData.relatedSlugs.join(',');
         }
         await specialtyApi.updateJson(specialtyId, jsonData);
       }
@@ -373,19 +393,22 @@ export default function EditSpecialtyPage() {
 
           {/* Category */}
           <div className="bg-white rounded-sm border border-gray-200 p-6 space-y-4">
-            <h3 className="font-medium text-gray-800">Kategori</h3>
-            <select
-              value={formData.categoryId}
-              onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none bg-white"
+            <h3 className="font-medium text-gray-800">Uzmanlık</h3>
+            <Select
+              value={formData.categoryId || undefined}
+              onValueChange={(value) => setFormData({ ...formData, categoryId: value })}
             >
-              <option value="">Kategori Seçin</option>
-              {categories.map((category) => (
-                <option key={category._id} value={category._id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="w-full h-11 border-gray-300 focus:ring-2 focus:ring-[#144793]">
+                <SelectValue placeholder="Uzmanlık Seçin" />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map((category) => (
+                  <SelectItem key={category._id} value={category._id}>
+                    {category.title || category.name || category._id}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Order */}

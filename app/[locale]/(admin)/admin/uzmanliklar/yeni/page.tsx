@@ -134,15 +134,20 @@ export default function NewSpecialtyPage() {
           form.append('order', String(Number(formData.order)));
         }
         if (formData.categoryId) {
-          form.append('categoryId', formData.categoryId);
+          // categoryId'nin string olduğundan emin ol
+          const categoryIdValue = typeof formData.categoryId === 'string' 
+            ? formData.categoryId 
+            : String(formData.categoryId);
+          form.append('categoryId', categoryIdValue);
         }
         if (selectedFile) {
           form.append('image', selectedFile);
         } else if (formData.imageUrl) {
           form.append('imageUrl', formData.imageUrl);
         }
-        if (formData.relatedSlugs.length > 0) {
-          form.append('relatedSlugs', JSON.stringify(formData.relatedSlugs));
+        if (formData.relatedSlugs && formData.relatedSlugs.length > 0) {
+          // relatedSlugs'u tek bir string olarak gönder (virgülle ayrılmış)
+          form.append('relatedSlugs', formData.relatedSlugs.join(','));
         }
         await specialtyApi.create(form);
       } else {
@@ -158,9 +163,12 @@ export default function NewSpecialtyPage() {
           jsonData.order = Number(formData.order);
         }
         if (formData.categoryId) {
-          jsonData.categoryId = formData.categoryId;
+          // categoryId'nin string olduğundan emin ol
+          jsonData.categoryId = typeof formData.categoryId === 'string' 
+            ? formData.categoryId 
+            : String(formData.categoryId);
         }
-        if (formData.relatedSlugs.length > 0) {
+        if (formData.relatedSlugs && formData.relatedSlugs.length > 0) {
           jsonData.relatedSlugs = formData.relatedSlugs;
         }
         await specialtyApi.createJson(jsonData);
