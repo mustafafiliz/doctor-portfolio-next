@@ -57,9 +57,9 @@ export default function EditSpecialtyPage() {
         
         setSpecialtyId(specialtyData._id); // Update ve delete için _id'yi sakla
         // categoryId obje olarak gelebilir, _id'yi al
-        const categoryIdValue = typeof specialtyData.categoryId === 'object' && specialtyData.categoryId !== null
-          ? specialtyData.categoryId._id
-          : (specialtyData.categoryId || '');
+        const categoryIdValue = typeof specialtyData.categoryId === 'object' && specialtyData.categoryId !== null && '_id' in specialtyData.categoryId
+          ? (specialtyData.categoryId as { _id: string })._id
+          : (typeof specialtyData.categoryId === 'string' ? specialtyData.categoryId : '');
         
         setFormData({
           title: specialtyData.title,
