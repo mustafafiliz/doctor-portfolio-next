@@ -8,7 +8,7 @@ import { type Locale } from '@/lib/i18n';
 import { getRoute } from '@/lib/routes';
 import Autoplay from 'embla-carousel-autoplay';
 import Image from 'next/image';
-import { ArrowRight, Loader2 } from 'lucide-react';
+import { ArrowRight, Loader2, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { getPublicSpecialties } from '@/lib/config';
 import type { SpecialtyCategory } from '@/lib/types';
@@ -104,16 +104,36 @@ export function SpecialtiesSection({
                 <CarouselItem key={category._id} className="pl-2 sm:pl-4 basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
                   <Link href={`/${currentLocale}/uzmanlik/${category.slug}`}>
                     <div className="group bg-white rounded-sm shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 h-full flex flex-col">
+                      {/* Image */}
+                      {category.image ? (
+                        <div className="aspect-video relative overflow-hidden bg-gray-100">
+                          <Image
+                            src={category.image}
+                            alt={category.title || category.name || ''}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            unoptimized
+                          />
+                        </div>
+                      ) : (
+                        <div className="aspect-video bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
+                          <span className="text-4xl text-primary/30">{(category.title || category.name || '').charAt(0)}</span>
+                        </div>
+                      )}
                       {/* Content */}
                       <div className="p-4 sm:p-6 flex flex-col h-full">
                         <h2 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-gray-800 group-hover:text-primary transition-colors duration-200">
                           {category.title || category.name}
                         </h2>
                         {category.description && (
-                          <p className="text-gray-600 line-clamp-3 text-xs sm:text-sm leading-relaxed flex-1">
+                          <p className="text-gray-600 line-clamp-3 text-xs sm:text-sm leading-relaxed flex-1 mb-3 sm:mb-4">
                             {category.description}
                           </p>
                         )}
+                        <span className="inline-flex items-center gap-1 text-primary text-sm font-medium mt-auto">
+                          Devamını Oku
+                          <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                        </span>
                       </div>
                     </div>
                   </Link>

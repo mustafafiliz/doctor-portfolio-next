@@ -434,7 +434,7 @@ export default function EditSpecialtyPage() {
               onChange={handleFileSelect}
               className="hidden"
             />
-            {imagePreview ? (
+            {imagePreview && (
               <div className="relative">
                 <img
                   src={imagePreview}
@@ -444,30 +444,29 @@ export default function EditSpecialtyPage() {
                 <button
                   type="button"
                   onClick={handleRemoveImage}
-                  className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-sm hover:bg-red-600"
+                  className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-sm hover:bg-red-600 transition-colors"
                 >
                   <X size={16} />
                 </button>
               </div>
-            ) : (
-              <div
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
-                onClick={() => fileInputRef.current?.click()}
-                className={`w-full border-2 border-dashed rounded-sm p-6 text-center cursor-pointer transition-colors ${
-                  isDragging
-                    ? 'border-[#144793] bg-blue-50'
-                    : 'border-gray-300 hover:border-[#144793]'
-                }`}
-              >
-                <Upload size={32} className={`mx-auto mb-2 ${isDragging ? 'text-[#144793]' : 'text-gray-400'}`} />
-                <p className={`text-sm ${isDragging ? 'text-[#144793] font-medium' : 'text-gray-500'}`}>
-                  {isDragging ? 'Görseli buraya bırakın' : 'Görsel yüklemek için tıklayın veya sürükleyin'}
-                </p>
-                <p className="text-xs text-gray-400 mt-1">PNG, JPG, WebP (max 10MB)</p>
-              </div>
             )}
+            <div
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              onClick={() => fileInputRef.current?.click()}
+              className={`w-full border-2 border-dashed rounded-sm p-6 text-center cursor-pointer transition-colors ${
+                isDragging
+                  ? 'border-[#144793] bg-blue-50'
+                  : 'border-gray-300 hover:border-[#144793]'
+              }`}
+            >
+              <Upload size={32} className={`mx-auto mb-2 ${isDragging ? 'text-[#144793]' : 'text-gray-400'}`} />
+              <p className={`text-sm ${isDragging ? 'text-[#144793] font-medium' : 'text-gray-500'}`}>
+                {isDragging ? 'Görseli buraya bırakın' : imagePreview ? 'Görseli değiştirmek için tıklayın veya sürükleyin' : 'Görsel yüklemek için tıklayın veya sürükleyin'}
+              </p>
+              <p className="text-xs text-gray-400 mt-1">PNG, JPG, WebP (max 10MB)</p>
+            </div>
             <div className="pt-2 border-t border-gray-200">
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
                 Veya Görsel URL'si

@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter, useParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Save, Trash2, Loader2, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Save, Trash2, Loader2, AlertCircle, X, Upload } from 'lucide-react';
 import { specialtyApi } from '@/lib/api';
 import type { SpecialtyCategory } from '@/lib/types';
 
@@ -14,16 +14,22 @@ export default function EditCategoryPage() {
   const currentLocale = pathname?.split('/')[1] || 'tr';
   const categoryId = params.id as string;
   
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
   
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
     description: '',
     order: 0,
+    image: '',
+    imageUrl: '',
   });
 
   useEffect(() => {
@@ -39,7 +45,13 @@ export default function EditCategoryPage() {
             slug: category.slug || '',
             description: category.description || '',
             order: category.order || 0,
+            image: category.image || '',
+            imageUrl: category.image || '',
           });
+          
+          if (category.image) {
+            setImagePreview(category.image);
+          }
         } else {
           setError('Kategori bulunamadı');
         }
@@ -78,18 +90,86 @@ export default function EditCategoryPage() {
     });
   };
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setSelectedFile(null);
+    setImagePreview(null);
+    setFormData({ ...formData, image: '', imageUrl: '' });
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
     setError(null);
 
     try {
-      await specialtyApi.updateCategory(categoryId, {
-        title: formData.title,
-        slug: formData.slug || generateSlug(formData.title),
-        description: formData.description || undefined,
-        order: formData.order,
-      });
+      // Image varsa FormData, yoksa JSON gönder
+      if (selectedFile || (formData.imageUrl && !formData.image)) {
+        const form = new FormData();
+        form.append('title', formData.title);
+        form.append('slug', formData.slug || generateSlug(formData.title));
+        if (formData.description) {
+          form.append('description', formData.description);
+        }
+        if (formData.order !== undefined && formData.order !== null) {
+          form.append('order', String(Number(formData.order)));
+        }
+        if (selectedFile) {
+          form.append('image', selectedFile);
+        } else if (formData.imageUrl && !formData.image) {
+          form.append('imageUrl', formData.imageUrl);
+        }
+        await specialtyApi.updateCategoryWithImage(categoryId, form);
+      } else {
+        await specialtyApi.updateCategory(categoryId, {
+          title: formData.title,
+          slug: formData.slug || generateSlug(formData.title),
+          description: formData.description || undefined,
+          order: formData.order,
+        });
+      }
       router.push(`/${currentLocale}/admin/uzmanliklar`);
     } catch (err) {
       setError('Kategori güncellenirken bir hata oluştu');
@@ -222,6 +302,71 @@ export default function EditCategoryPage() {
               min="0"
             />
             <p className="text-xs text-gray-500 mt-1">Kategorilerin görüntülenme sırası (düşük sayı önce gösterilir)</p>
+          </div>
+
+          {/* Featured Image */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              Görsel
+            </label>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
+            {imagePreview && (
+              <div className="relative mb-3">
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="w-full h-40 object-cover rounded-sm"
+                />
+                <button
+                  type="button"
+                  onClick={handleRemoveImage}
+                  className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-sm hover:bg-red-600 transition-colors"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            )}
+            <div
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              onClick={() => fileInputRef.current?.click()}
+              className={`w-full border-2 border-dashed rounded-sm p-6 text-center cursor-pointer transition-colors ${
+                isDragging
+                  ? 'border-[#144793] bg-blue-50'
+                  : 'border-gray-300 hover:border-[#144793]'
+              }`}
+            >
+              <Upload size={32} className={`mx-auto mb-2 ${isDragging ? 'text-[#144793]' : 'text-gray-400'}`} />
+              <p className={`text-sm ${isDragging ? 'text-[#144793] font-medium' : 'text-gray-500'}`}>
+                {isDragging ? 'Görseli buraya bırakın' : imagePreview ? 'Görseli değiştirmek için tıklayın veya sürükleyin' : 'Görsel yüklemek için tıklayın veya sürükleyin'}
+              </p>
+              <p className="text-xs text-gray-400 mt-1">PNG, JPG, WebP (max 10MB)</p>
+            </div>
+            <div className="pt-3 mt-3 border-t border-gray-200">
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                Veya Görsel URL'si
+              </label>
+              <input
+                type="url"
+                value={formData.imageUrl}
+                onChange={(e) => {
+                  setFormData({ ...formData, imageUrl: e.target.value });
+                  if (e.target.value) {
+                    setImagePreview(e.target.value);
+                    setSelectedFile(null);
+                  }
+                }}
+                placeholder="https://example.com/image.jpg"
+                className="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
+              />
+            </div>
           </div>
 
           {/* Submit Button */}

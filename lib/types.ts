@@ -219,6 +219,7 @@ export interface SpecialtyCategory {
   title?: string;
   slug: string;
   description?: string;
+  image?: string;
   order?: number;
   websiteId: string;
   specialtyCount?: number;

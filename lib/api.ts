@@ -310,6 +310,12 @@ export const specialtyApi = {
       body: JSON.stringify(data)
     }),
 
+  createCategoryWithImage: (data: FormData): Promise<SpecialtyCategory> =>
+    apiFetch("/specialty/category", {
+      method: "POST",
+      body: data
+    }),
+
   updateCategory: (
     id: string,
     data: {
@@ -322,6 +328,15 @@ export const specialtyApi = {
     apiFetch(`/specialty/category/${id}`, {
       method: "PUT",
       body: JSON.stringify(data)
+    }),
+
+  updateCategoryWithImage: (
+    id: string,
+    data: FormData
+  ): Promise<SpecialtyCategory> =>
+    apiFetch(`/specialty/category/${id}`, {
+      method: "PUT",
+      body: data
     }),
 
   deleteCategory: (id: string): Promise<void> =>
