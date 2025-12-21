@@ -8,7 +8,7 @@ import { type Locale } from '@/lib/i18n';
 import { getRoute } from '@/lib/routes';
 import Autoplay from 'embla-carousel-autoplay';
 import Image from 'next/image';
-import { ArrowRight, Loader2, Stethoscope } from 'lucide-react';
+import { ArrowRight, Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { getPublicSpecialties } from '@/lib/config';
 import type { SpecialtyCategory } from '@/lib/types';
@@ -104,79 +104,50 @@ export function SpecialtiesSection({
           }}
         >
           <CarouselContent className="-ml-4">
-            {categories.map((category, index) => {
-              const numberStr = String(index + 1).padStart(2, '0');
-              const hasImage = !!category.image;
+            {categories.map((category) => {
+              const categoryTitle = category.title || category.name || '';
               
               return (
                 <CarouselItem key={category._id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
                   <Link href={`/${currentLocale}/uzmanlik/${category.slug}`} className="block h-full">
-                    <div className={`group relative bg-white rounded-sm border border-gray-100 hover:border-primary/30 hover:shadow-xl transition-all duration-300 h-full overflow-hidden ${hasImage ? '' : 'p-8'}`}>
-                      
-                      {hasImage ? (
-                        <>
-                          {/* Image Card Layout */}
-                          <div className="relative aspect-[4/3] overflow-hidden">
-                            <Image
-                              src={category.image!}
-                              alt={category.title || category.name || ''}
-                              fill
-                              className="object-cover group-hover:scale-105 transition-transform duration-500"
-                              unoptimized
-                            />
-                            {/* Number Badge on Image */}
-                            <div className="absolute top-3 right-3 w-10 h-10 rounded-full bg-white/90 flex items-center justify-center text-lg font-bold text-primary shadow-lg">
-                              {numberStr}
-                            </div>
+                    <div className="group relative bg-white rounded-sm border border-gray-100 hover:border-primary/30 hover:shadow-xl transition-all duration-300 h-full overflow-hidden">
+                      {/* Image Section */}
+                      <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+                        {category.image ? (
+                          <Image
+                            src={category.image}
+                            alt={categoryTitle}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            unoptimized
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-primary/10 to-primary/20 flex items-center justify-center">
+                            <span className="text-6xl font-bold text-primary/20">{categoryTitle.charAt(0)}</span>
                           </div>
-                          {/* Content Below Image */}
-                          <div className="p-5">
-                            <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
-                              {category.title || category.name}
-                            </h3>
-                            {category.description && (
-                              <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">
-                                {category.description}
-                              </p>
-                            )}
-                            <span className="inline-flex items-center gap-2 text-primary font-medium text-sm mt-3">
-                              İncele
-                              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                            </span>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          {/* Icon Card Layout (No Image) */}
-                          {/* Number Badge */}
-                          <div className="absolute top-4 right-4 text-5xl font-bold text-gray-100 group-hover:text-primary/10 transition-colors select-none">
-                            {numberStr}
-                          </div>
+                        )}
+                      </div>
 
-                          {/* Icon */}
-                          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
-                            <Stethoscope className="w-7 h-7 text-primary group-hover:text-white transition-colors" />
-                          </div>
+                      {/* Content Section */}
+                      <div className="p-5">
+                        {/* Title */}
+                        <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                          {categoryTitle}
+                        </h3>
 
-                          {/* Title */}
-                          <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary transition-colors">
-                            {category.title || category.name}
-                          </h3>
+                        {/* Description */}
+                        {category.description && (
+                          <p className="text-gray-600 text-sm leading-relaxed line-clamp-2 mb-3">
+                            {category.description}
+                          </p>
+                        )}
 
-                          {/* Description */}
-                          {category.description && (
-                            <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
-                              {category.description}
-                            </p>
-                          )}
-
-                          {/* Link Arrow */}
-                          <span className="inline-flex items-center gap-2 text-primary font-medium text-sm mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                            İncele
-                            <ArrowRight className="w-4 h-4" />
-                          </span>
-                        </>
-                      )}
+                        {/* Link Arrow */}
+                        <span className="inline-flex items-center gap-2 text-primary font-medium text-sm">
+                          Devamını Oku
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </span>
+                      </div>
                     </div>
                   </Link>
                 </CarouselItem>
