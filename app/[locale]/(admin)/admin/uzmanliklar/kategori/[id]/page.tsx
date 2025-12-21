@@ -83,11 +83,11 @@ export default function EditCategoryPage() {
   };
 
   const handleTitleChange = (title: string) => {
-    setFormData(prev => ({
-      ...prev,
+    setFormData({
+      ...formData,
       title,
-      slug: prev.slug || generateSlug(title),
-    }));
+      slug: formData.slug || generateSlug(title),
+    });
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,7 +133,7 @@ export default function EditCategoryPage() {
   const handleRemoveImage = () => {
     setSelectedFile(null);
     setImagePreview(null);
-    setFormData(prev => ({ ...prev, image: '', imageUrl: '' }));
+    setFormData({ ...formData, image: '', imageUrl: '' });
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -266,7 +266,7 @@ export default function EditCategoryPage() {
               <input
                 type="text"
                 value={formData.slug}
-                onChange={(e) => setFormData(prev => ({ ...prev, slug: e.target.value }))}
+                onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                 className="flex-1 px-4 py-2.5 border border-gray-300 rounded-r-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
                 placeholder="kategori-slug"
               />
@@ -281,7 +281,7 @@ export default function EditCategoryPage() {
             </label>
             <textarea
               value={formData.description}
-              onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               rows={4}
               className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none resize-none"
               placeholder="Kategori açıklaması..."
@@ -296,7 +296,7 @@ export default function EditCategoryPage() {
             <input
               type="number"
               value={formData.order}
-              onChange={(e) => setFormData(prev => ({ ...prev, order: parseInt(e.target.value) || 0 }))}
+              onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
               className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
               placeholder="0"
               min="0"
@@ -357,10 +357,9 @@ export default function EditCategoryPage() {
                 type="url"
                 value={formData.imageUrl}
                 onChange={(e) => {
-                  const value = e.target.value;
-                  setFormData(prev => ({ ...prev, imageUrl: value }));
-                  if (value) {
-                    setImagePreview(value);
+                  setFormData({ ...formData, imageUrl: e.target.value });
+                  if (e.target.value) {
+                    setImagePreview(e.target.value);
                     setSelectedFile(null);
                   }
                 }}
