@@ -80,7 +80,7 @@ export default function EditSpecialtyPage() {
         
         setCategories(categoriesData || []);
       } catch (err) {
-        setError('Uzmanlık alanı yüklenirken bir hata oluştu');
+        setError('Uzmanlık alanı yüklenirken bir hata oluştu.');
       } finally {
         setIsLoading(false);
       }
