@@ -15,6 +15,13 @@ import {
   AlertCircle,
   X,
 } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { specialtyApi } from '@/lib/api';
 import type { Specialty, SpecialtyCategory } from '@/lib/types';
 
@@ -220,21 +227,25 @@ export default function AdminSpecialtiesPage() {
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
             />
           </div>
-          <select
+          <Select
             value={categoryFilter}
-            onChange={(e) => {
-              setCategoryFilter(e.target.value);
+            onValueChange={(value) => {
+              setCategoryFilter(value);
               setPage(1);
             }}
-            className="px-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none bg-white"
           >
-            <option value="all">Tüm Kategoriler</option>
-            {categories.map((category) => (
-              <option key={category._id} value={category._id}>
-                {category.title || category.name}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full sm:w-[200px] h-11 border-gray-300 focus:ring-2 focus:ring-[#144793]">
+              <SelectValue placeholder="Tüm Kategoriler" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tüm Kategoriler</SelectItem>
+              {categories.map((category) => (
+                <SelectItem key={category._id} value={category._id}>
+                  {category.title || category.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
 

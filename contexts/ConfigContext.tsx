@@ -31,7 +31,8 @@ const emptyConfig: SiteConfig = {
     facebook: "",
     instagram: "",
     linkedin: "",
-    twitter: ""
+    twitter: "",
+    youtube: ""
   }
 };
 

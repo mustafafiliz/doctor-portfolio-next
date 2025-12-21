@@ -15,6 +15,13 @@ import {
   Loader2,
   AlertCircle,
 } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { blogApi } from '@/lib/api';
 import type { Blog } from '@/lib/types';
 
@@ -124,18 +131,22 @@ export default function AdminBlogPage() {
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
             />
           </div>
-          <select
+          <Select
             value={statusFilter}
-            onChange={(e) => {
-              setStatusFilter(e.target.value as typeof statusFilter);
+            onValueChange={(value) => {
+              setStatusFilter(value as typeof statusFilter);
               setPage(1);
             }}
-            className="px-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none bg-white"
           >
-            <option value="all">Tüm Durumlar</option>
-            <option value="published">Yayında</option>
-            <option value="draft">Taslak</option>
-          </select>
+            <SelectTrigger className="w-full sm:w-[200px] h-11 border-gray-300 focus:ring-2 focus:ring-[#144793]">
+              <SelectValue placeholder="Tüm Durumlar" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tüm Durumlar</SelectItem>
+              <SelectItem value="published">Yayında</SelectItem>
+              <SelectItem value="draft">Taslak</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 

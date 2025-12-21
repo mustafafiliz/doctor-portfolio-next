@@ -5,7 +5,6 @@ import { useConfig } from "@/hooks/useConfig";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Container } from "@/components/Container";
 import { getRoute } from "@/lib/routes";
 import type { Locale } from "@/lib/i18n";
 
@@ -19,89 +18,85 @@ export function HeroCarousel({ aboutBio, aboutImage }: HeroCarouselProps) {
   const pathname = usePathname();
   const currentLocale = (pathname?.split('/')[1] || 'tr') as Locale;
 
-  // NO FALLBACK VALUES - Only use API data
   const heroTitle = config.hero?.title || "";
   const heroSubtitle = config.hero?.subtitle || "";
   const heroDescription = config.hero?.description || "";
   const heroCta = config.hero?.ctaText || "";
   const heroCtaUrl = config.hero?.ctaUrl || "";
   
-  // Öncelik: About image > Hero image
   const heroImage = aboutImage || config.hero?.image || "";
 
-  // Hakkımızda bio'sundan özet çıkar (HTML tag'lerini temizle ve ilk 200 karakteri al)
   const getBioSummary = (bio: string | null | undefined): string => {
     if (!bio) return heroDescription;
     
-    // HTML tag'lerini temizle
     const textContent = bio.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
     
-    // İlk 200 karakteri al ve son kelimeyi tamamla
-    if (textContent.length <= 200) return textContent;
+    if (textContent.length <= 250) return textContent;
     
-    const truncated = textContent.substring(0, 200);
+    const truncated = textContent.substring(0, 250);
     const lastSpace = truncated.lastIndexOf(' ');
     return lastSpace > 0 ? truncated.substring(0, lastSpace) + '...' : truncated + '...';
   };
 
-  // Öncelik sırası: Hakkımızda bio > Hero description
   const displayDescription = aboutBio ? getBioSummary(aboutBio) : heroDescription;
 
   return (
-    <section className="relative w-full from-background via-muted/20 to-background py-4 sm:py-6 md:py-8 lg:py-10">
-      <div className="container mx-auto px-4 sm:px-6">
-        <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-12 items-center">
-          {/* Image Section - Left - %40 genişlik */}
-          {heroImage && (
-            <div className="relative order-2 lg:order-1 w-full lg:w-[40%] lg:shrink-0">
-              <div
-                className="relative rounded-sm overflow-hidden w-full"
-                style={{ aspectRatio: "3/4" }}
-              >
-                <Image
-                  src={heroImage}
-                  alt={heroTitle || ""}
-                  fill
-                  className="object-cover object-top"
-                  priority
-                  unoptimized={heroImage.startsWith("http")}
-                />
-              </div>
-            </div>
-          )}
+    <section className="relative w-full min-h-[500px] lg:min-h-[600px]">
+      <div className="flex flex-col lg:flex-row">
+        {/* Image Section - Left - Full height, flush to edge */}
+        {heroImage && (
+          <div className="relative w-full lg:w-[45%] h-[400px] lg:h-auto lg:min-h-[600px]">
+            <Image
+              src={heroImage}
+              alt={heroTitle || ""}
+              fill
+              className="object-cover object-top"
+              priority
+              unoptimized={heroImage.startsWith("http")}
+            />
+          </div>
+        )}
 
-          {/* Content Section - Right - %60 genişlik */}
-          <div className="order-1 lg:order-2 lg:w-[60%] space-y-4 sm:space-y-6 lg:space-y-8">
+        {/* Content Section - Right - With background color */}
+        <div 
+          className="w-full lg:w-[55%] flex items-center"
+          style={{ backgroundColor: config.colors.primary + '10' }}
+        >
+          <div className="px-6 sm:px-10 lg:px-16 py-12 lg:py-16 max-w-2xl">
             {/* Title */}
             {heroTitle && (
-              <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-tight">
-                <span className="block animate-fade-in-up">{heroTitle}</span>
-                {heroSubtitle && (
-                  <span className="block text-base sm:text-lg md:text-xl lg:text-2xl mt-2 sm:mt-3 font-semibold text-primary">
-                    {heroSubtitle}
-                  </span>
-                )}
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight mb-4">
+                {heroTitle}
               </h1>
             )}
 
-            {/* Summary */}
+            {/* Subtitle */}
+            {heroSubtitle && (
+              <p 
+                className="text-lg sm:text-xl lg:text-2xl font-semibold mb-6"
+                style={{ color: config.colors.primary }}
+              >
+                {heroSubtitle}
+              </p>
+            )}
+
+            {/* Description */}
             {displayDescription && (
-              <p className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed animate-fade-in-up delay-200">
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-8">
                 {displayDescription}
               </p>
             )}
 
             {/* CTA Buttons */}
-            <div className="pt-2 sm:pt-4 animate-fade-in-up delay-300 flex flex-col sm:flex-row gap-3 sm:gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               {heroCta && heroCtaUrl && (
                 <Link href={heroCtaUrl}>
                   <Button
                     size="lg"
-                    variant="outline"
-                    className="group h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg font-semibold border-2 transition-all duration-300 hover:scale-105 hover:bg-primary hover:text-white w-full sm:w-auto"
+                    className="h-12 px-8 text-base font-semibold transition-all duration-300 hover:opacity-90 w-full sm:w-auto"
                     style={{
-                      borderColor: config.colors.primary,
-                      color: config.colors.primary
+                      backgroundColor: config.colors.primary,
+                      color: 'white'
                     }}
                   >
                     {heroCta}
@@ -111,11 +106,8 @@ export function HeroCarousel({ aboutBio, aboutImage }: HeroCarouselProps) {
               <Link href={`/${currentLocale}${getRoute('about', currentLocale)}`}>
                 <Button
                   size="lg"
-                  className="group h-12 sm:h-14 px-6 sm:px-8 text-base sm:text-lg font-semibold transition-all duration-300 hover:scale-105 w-full sm:w-auto"
-                  style={{
-                    backgroundColor: config.colors.primary,
-                    color: 'white'
-                  }}
+                  variant="outline"
+                  className="h-12 px-8 text-base font-semibold border-2 transition-all duration-300 hover:bg-gray-900 hover:text-white hover:border-gray-900 w-full sm:w-auto"
                 >
                   Hakkımda
                 </Button>
@@ -124,52 +116,6 @@ export function HeroCarousel({ aboutBio, aboutImage }: HeroCarouselProps) {
           </div>
         </div>
       </div>
-
-      {/* CSS Animations */}
-      <style jsx>{`
-        @keyframes fade-in-up {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-20px);
-          }
-        }
-
-        .animate-fade-in-up {
-          animation: fade-in-up 1s ease-out forwards;
-        }
-
-        .delay-200 {
-          animation-delay: 0.2s;
-          opacity: 0;
-        }
-
-        .delay-300 {
-          animation-delay: 0.4s;
-          opacity: 0;
-        }
-
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-
-        .animate-float-delayed {
-          animation: float 8s ease-in-out infinite;
-        }
-      `}</style>
     </section>
   );
 }

@@ -8,7 +8,7 @@ import { type Locale } from '@/lib/i18n';
 import { getRoute } from '@/lib/routes';
 import Autoplay from 'embla-carousel-autoplay';
 import Image from 'next/image';
-import { ArrowRight, Loader2, ChevronRight } from 'lucide-react';
+import { ArrowRight, Loader2, Stethoscope } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { getPublicSpecialties } from '@/lib/config';
 import type { SpecialtyCategory } from '@/lib/types';
@@ -34,7 +34,6 @@ export function SpecialtiesSection({
   const [isLoading, setIsLoading] = useState(!initialCategories);
 
   useEffect(() => {
-    // Eğer initialCategories yoksa client-side fetch yap
     if (!initialCategories) {
       const fetchSpecialties = async () => {
         try {
@@ -54,14 +53,14 @@ export function SpecialtiesSection({
   }, [initialCategories]);
 
   const plugin = Autoplay({
-    delay: 4000,
+    delay: 5000,
     stopOnInteraction: false,
   });
 
   if (isLoading) {
     return (
-      <section className="py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-b from-background via-muted/30 to-background relative overflow-hidden">
-        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+      <section className="py-16 md:py-24 bg-white">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-center min-h-[300px]">
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
           </div>
@@ -71,22 +70,28 @@ export function SpecialtiesSection({
   }
 
   if (categories.length === 0) {
-    return null; // Kategori yoksa section'ı gösterme
+    return null;
   }
 
   return (
-    <section className="py-12 sm:py-16 md:py-24 lg:py-32 bg-gradient-to-b from-background via-muted/30 to-background relative overflow-hidden">
-      {/* Decorative background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
-      
+    <section className="py-16 md:py-24 bg-white relative">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
+          backgroundSize: '40px 40px'
+        }} />
+      </div>
+
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        <div className="mb-8 sm:mb-12">
-          <div className="text-center">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
-              {t('title')}
-            </h2>
-            <p className="text-base sm:text-lg text-muted-foreground">{t('subtitle')}</p>
-          </div>
+        {/* Section Header */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            {t('title')}
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            {t('subtitle')}
+          </p>
         </div>
 
         {/* Carousel */}
@@ -98,43 +103,80 @@ export function SpecialtiesSection({
             loop: true,
           }}
         >
-          <CarouselContent className="-ml-2 sm:-ml-4">
-            {categories.map((category) => {
+          <CarouselContent className="-ml-4">
+            {categories.map((category, index) => {
+              const numberStr = String(index + 1).padStart(2, '0');
+              const hasImage = !!category.image;
+              
               return (
-                <CarouselItem key={category._id} className="pl-2 sm:pl-4 basis-full sm:basis-1/2 md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                  <Link href={`/${currentLocale}/uzmanlik/${category.slug}`}>
-                    <div className="group bg-white rounded-sm shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 h-full flex flex-col">
-                      {/* Image */}
-                      {category.image ? (
-                        <div className="aspect-video relative overflow-hidden bg-gray-100">
-                          <Image
-                            src={category.image}
-                            alt={category.title || category.name || ''}
-                            fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-300"
-                            unoptimized
-                          />
-                        </div>
+                <CarouselItem key={category._id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
+                  <Link href={`/${currentLocale}/uzmanlik/${category.slug}`} className="block h-full">
+                    <div className={`group relative bg-white rounded-sm border border-gray-100 hover:border-primary/30 hover:shadow-xl transition-all duration-300 h-full overflow-hidden ${hasImage ? '' : 'p-8'}`}>
+                      
+                      {hasImage ? (
+                        <>
+                          {/* Image Card Layout */}
+                          <div className="relative aspect-[4/3] overflow-hidden">
+                            <Image
+                              src={category.image!}
+                              alt={category.title || category.name || ''}
+                              fill
+                              className="object-cover group-hover:scale-105 transition-transform duration-500"
+                              unoptimized
+                            />
+                            {/* Number Badge on Image */}
+                            <div className="absolute top-3 right-3 w-10 h-10 rounded-full bg-white/90 flex items-center justify-center text-lg font-bold text-primary shadow-lg">
+                              {numberStr}
+                            </div>
+                          </div>
+                          {/* Content Below Image */}
+                          <div className="p-5">
+                            <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
+                              {category.title || category.name}
+                            </h3>
+                            {category.description && (
+                              <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">
+                                {category.description}
+                              </p>
+                            )}
+                            <span className="inline-flex items-center gap-2 text-primary font-medium text-sm mt-3">
+                              İncele
+                              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            </span>
+                          </div>
+                        </>
                       ) : (
-                        <div className="aspect-video bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
-                          <span className="text-4xl text-primary/30">{(category.title || category.name || '').charAt(0)}</span>
-                        </div>
+                        <>
+                          {/* Icon Card Layout (No Image) */}
+                          {/* Number Badge */}
+                          <div className="absolute top-4 right-4 text-5xl font-bold text-gray-100 group-hover:text-primary/10 transition-colors select-none">
+                            {numberStr}
+                          </div>
+
+                          {/* Icon */}
+                          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
+                            <Stethoscope className="w-7 h-7 text-primary group-hover:text-white transition-colors" />
+                          </div>
+
+                          {/* Title */}
+                          <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary transition-colors">
+                            {category.title || category.name}
+                          </h3>
+
+                          {/* Description */}
+                          {category.description && (
+                            <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
+                              {category.description}
+                            </p>
+                          )}
+
+                          {/* Link Arrow */}
+                          <span className="inline-flex items-center gap-2 text-primary font-medium text-sm mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                            İncele
+                            <ArrowRight className="w-4 h-4" />
+                          </span>
+                        </>
                       )}
-                      {/* Content */}
-                      <div className="p-4 sm:p-6 flex flex-col h-full">
-                        <h2 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-gray-800 group-hover:text-primary transition-colors duration-200">
-                          {category.title || category.name}
-                        </h2>
-                        {category.description && (
-                          <p className="text-gray-600 line-clamp-3 text-xs sm:text-sm leading-relaxed flex-1 mb-3 sm:mb-4">
-                            {category.description}
-                          </p>
-                        )}
-                        <span className="inline-flex items-center gap-1 text-primary text-sm font-medium mt-auto">
-                          Devamını Oku
-                          <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                        </span>
-                      </div>
                     </div>
                   </Link>
                 </CarouselItem>
@@ -142,20 +184,20 @@ export function SpecialtiesSection({
             })}
           </CarouselContent>
           
-          <div className="mt-6 sm:mt-8 flex justify-center gap-3 sm:gap-4">
-            <CarouselPrevious className="relative static translate-y-0 h-8 w-8 sm:h-10 sm:w-10" />
-            <CarouselNext className="relative static translate-y-0 h-8 w-8 sm:h-10 sm:w-10" />
+          <div className="mt-8 flex justify-center gap-4">
+            <CarouselPrevious className="relative static translate-y-0 h-10 w-10 border-2 border-primary text-primary hover:bg-primary hover:text-white" />
+            <CarouselNext className="relative static translate-y-0 h-10 w-10 border-2 border-primary text-primary hover:bg-primary hover:text-white" />
           </div>
         </Carousel>
 
-        {/* Tümünü Gör Butonu */}
-        <div className="mt-6 sm:mt-8 text-center">
+        {/* View All Button */}
+        <div className="mt-10 text-center">
           <Link
             href={`/${currentLocale}${getRoute('specialties', currentLocale)}`}
-            className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-sm bg-gradient-to-r from-primary via-primary/90 to-accent text-primary-foreground text-sm sm:text-base font-semibold shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 hover:scale-105"
+            className="inline-flex items-center gap-2 px-8 py-3 rounded-sm bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
           >
-            Tümünü Gör
-            <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
+            Tümünü Göster
+            <ArrowRight className="h-5 w-5" />
           </Link>
         </div>
       </div>

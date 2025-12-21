@@ -25,6 +25,7 @@ export interface SiteConfig {
     instagram?: string;
     linkedin?: string;
     twitter?: string;
+    youtube?: string;
   };
   site?: {
     name?: string;
@@ -75,7 +76,8 @@ const emptyConfig: SiteConfig = {
     facebook: "",
     instagram: "",
     linkedin: "",
-    twitter: ""
+    twitter: "",
+    youtube: ""
   }
 };
 
@@ -133,7 +135,8 @@ export async function getConfig(): Promise<SiteConfig> {
         facebook: data.social?.facebook || "",
         instagram: data.social?.instagram || "",
         linkedin: data.social?.linkedin || "",
-        twitter: data.social?.twitter || ""
+        twitter: data.social?.twitter || "",
+        youtube: data.social?.youtube || ""
       },
       site: data.site || {},
       workingHours: data.workingHours || [],

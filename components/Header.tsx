@@ -5,8 +5,8 @@ import Image from "next/image";
 import { useTranslations } from "@/components/I18nProvider";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { Menu, X, ChevronDown, Phone, MapPin, Facebook, Instagram, Linkedin, Twitter, Youtube, Mail } from "lucide-react";
+import { useState, useEffect } from "react";
 import { locales, type Locale } from "@/lib/i18n";
 import { useConfig } from "@/hooks/useConfig";
 import { getRoute } from "@/lib/routes";
@@ -17,50 +17,57 @@ interface CategoryWithSpecialties extends SpecialtyCategory {
   specialties?: Specialty[];
 }
 
+// Telefon numarasını formatla
+const formatPhone = (phone: string): string => {
+  // Sadece rakamları al
+  const digits = phone.replace(/\D/g, '');
+  
+  // Türk telefon formatı: +90 (5XX) XXX XX XX
+  if (digits.length >= 10) {
+    const countryCode = digits.startsWith('90') ? '+90' : (digits.startsWith('0') ? '+90' : '+90');
+    const cleanDigits = digits.startsWith('90') ? digits.slice(2) : (digits.startsWith('0') ? digits.slice(1) : digits);
+    
+    if (cleanDigits.length >= 10) {
+      return `${countryCode} (${cleanDigits.slice(0, 3)}) ${cleanDigits.slice(3, 6)} ${cleanDigits.slice(6, 8)} ${cleanDigits.slice(8, 10)}`;
+    }
+  }
+  
+  return phone;
+};
+
 export function Header() {
   const t = useTranslations("nav");
   const pathname = usePathname();
   const { config } = useConfig();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [specialtiesOpen, setSpecialtiesOpen] = useState(false);
   const [mobileSpecialtiesOpen, setMobileSpecialtiesOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [specialtyCategories, setSpecialtyCategories] = useState<
     CategoryWithSpecialties[]
   >([]);
   const [isLoadingSpecialties, setIsLoadingSpecialties] = useState(true);
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const currentLocale = (pathname?.split("/")[1] || "tr") as Locale;
+
+  // Social media links
+  const socialLinks = [
+    { icon: Facebook, url: config.social?.facebook, label: 'Facebook' },
+    { icon: Instagram, url: config.social?.instagram, label: 'Instagram' },
+    { icon: Linkedin, url: config.social?.linkedin, label: 'LinkedIn' },
+    { icon: Twitter, url: config.social?.twitter, label: 'Twitter' },
+    { icon: Youtube, url: config.social?.youtube, label: 'YouTube' },
+  ].filter(link => link.url);
 
   // Uzmanlıkları kategorilere göre grupla
   const groupSpecialtiesByCategory = (
     categories: CategoryWithSpecialties[]
   ): CategoryWithSpecialties[] => {
-    // Kategorileri order'a göre sırala
     const sortedCategories = [...categories].sort((a, b) => {
       const orderA = a.order ?? 999;
       const orderB = b.order ?? 999;
       return orderA - orderB;
     });
 
-    // Her kategori içindeki uzmanlıkları da order'a göre sırala
-    const result = sortedCategories.map((category) => {
-      const sortedSpecialties = category.specialties
-        ? [...category.specialties].sort((a, b) => {
-            const orderA = a.order ?? 999;
-            const orderB = b.order ?? 999;
-            return orderA - orderB;
-          })
-        : [];
-
-      return {
-        ...category,
-        specialties: sortedSpecialties
-      };
-    });
-
-    return result;
+    return sortedCategories;
   };
 
   // API'den uzmanlık verilerini çek
@@ -68,23 +75,17 @@ export function Header() {
     const fetchSpecialties = async () => {
       try {
         const data = await getPublicSpecialties();
-
-        // API direkt array döndürüyorsa veya categories içinde array varsa
         let categories: CategoryWithSpecialties[] = [];
 
         if (Array.isArray(data)) {
-          // API direkt array döndürüyor
           categories = data;
         } else if (data.categories && Array.isArray(data.categories)) {
-          // API { categories: [...] } formatında döndürüyor
           categories = data.categories;
         } else {
           categories = [];
         }
 
-        // Kategorilere göre grupla ve sırala
         const groupedCategories = groupSpecialtiesByCategory(categories);
-
         setSpecialtyCategories(groupedCategories);
       } catch (error) {
         // Hata durumunda sessizce devam et
@@ -94,21 +95,6 @@ export function Header() {
     };
 
     fetchSpecialties();
-  }, []);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setSpecialtiesOpen(false);
-        setActiveCategory(null);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // Prevent body scroll when drawer is open
@@ -123,71 +109,114 @@ export function Header() {
     };
   }, [mobileMenuOpen]);
 
-  const navItems = [
-    { key: "home" as const, label: t("home"), hasDropdown: false },
-    { key: "about" as const, label: t("about"), hasDropdown: false },
-    { key: "specialties" as const, label: t("specialties"), hasDropdown: true },
-    { key: "gallery" as const, label: t("gallery"), hasDropdown: false },
-    { key: "contact" as const, label: t("contact"), hasDropdown: false },
-    { key: "blog" as const, label: t("blog"), hasDropdown: false }
-  ];
-
   const basePath = pathname?.replace(/^\/(tr|en)/, "") || "";
 
   const isActive = (route: string) => {
     if (route === "/") {
       return basePath === "" || basePath === "/";
     }
-    return basePath === route;
+    return basePath.startsWith(route);
   };
-
-  const NavLink = ({
-    route,
-    children,
-    className,
-    onClick
-  }: {
-    route: string;
-    children: React.ReactNode;
-    className?: string;
-    onClick?: () => void;
-  }) => (
-    <Link
-      href={`/${currentLocale}${route}`}
-      className={className}
-      onClick={onClick}
-    >
-      {children}
-    </Link>
-  );
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full max-w-full border-y border-white overflow-visible">
-        {/* Minimalist background - only on desktop */}
-        <div className="absolute inset-0 z-0 bg-background/95 backdrop-blur-sm border-b border-border/30 lg:bg-gradient-to-r lg:from-background lg:via-background/95 lg:to-background lg:backdrop-blur-2xl lg:border-border/50" />
+      {/* Top Bar - Desktop Only */}
+      <div className="hidden lg:block bg-[#0f0f1a] text-white border-b border-white/10">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-between h-10">
+            {/* Left Side - Address & Languages */}
+            <div className="flex items-center gap-6">
+              {config.contact.address && (
+                <div className="flex items-center gap-2 text-xs text-white/70">
+                  <MapPin className="h-3.5 w-3.5 text-primary" />
+                  <span className="truncate max-w-[300px]">{config.contact.address}</span>
+                </div>
+              )}
+              {/* Language Switcher */}
+              <div className="flex items-center gap-1 border-l border-white/20 pl-4">
+                {locales.map((locale) => {
+                  const isActiveLocale = currentLocale === locale;
+                  return (
+                    <button
+                      key={locale}
+                      onClick={() => {
+                        window.location.href = `/${locale}${basePath}`;
+                      }}
+                      className={`flex items-center gap-1.5 px-2 py-1 text-xs transition-colors ${
+                        isActiveLocale
+                          ? "text-white font-medium"
+                          : "text-white/60 hover:text-white"
+                      }`}
+                    >
+                      <span className="w-5 h-3.5 rounded-sm overflow-hidden bg-white/20 flex items-center justify-center text-[10px] font-bold">
+                        {locale.toUpperCase()}
+                      </span>
+                      <span>{locale === 'tr' ? 'Türkçe' : 'English'}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
-        {/* Desktop only animated effects */}
-        <div
-          className="hidden lg:block absolute inset-0 z-0 opacity-30 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 animate-gradient"
-          style={{
-            backgroundSize: "200% 200%",
-            animation: "gradient 8s ease infinite"
-          }}
-        />
-        <div className="hidden lg:block absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/5 to-transparent animate-shimmer" />
+            {/* Right Side - Phone, Social, Contact */}
+            <div className="flex items-center gap-4">
+              {/* Phone */}
+              {config.contact.phone && (
+                <a 
+                  href={`tel:${config.contact.phone}`}
+                  className="flex items-center gap-2 text-sm font-medium text-white hover:text-primary transition-colors"
+                >
+                  <Phone className="h-4 w-4 text-primary" />
+                  {formatPhone(config.contact.phone)}
+                </a>
+              )}
 
-        <div className="container mx-auto px-4 sm:px-6 relative z-20 h-14 sm:h-16 lg:h-18">
+              {/* Social Media */}
+              {socialLinks.length > 0 && (
+                <div className="flex items-center gap-1 border-l border-white/20 pl-4">
+                  {socialLinks.map((social, index) => {
+                    const Icon = social.icon;
+                    return (
+                      <a
+                        key={index}
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-7 h-7 rounded-full flex items-center justify-center text-white/70 hover:text-primary transition-colors"
+                        aria-label={social.label}
+                      >
+                        <Icon className="h-3.5 w-3.5" />
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Contact Button */}
+              <Link
+                href={`/${currentLocale}/iletisim`}
+                className="bg-primary text-white text-xs font-medium px-4 py-1.5 rounded-sm hover:bg-primary/90 transition-colors"
+              >
+                İletişim
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Header */}
+      <header className="sticky top-0 z-50 w-full bg-background border-b border-border/30 shadow-sm">
+        <div className="container mx-auto px-4 sm:px-6 h-14 lg:h-16">
           <div className="flex h-full items-center justify-between">
             {/* Logo Section */}
-            <Link href={`/${currentLocale}`} className="flex items-center">
+            <Link href={`/${currentLocale}`} className="flex items-center flex-shrink-0">
               {config.site?.logo ? (
                 <Image
                   src={config.site.logo}
                   alt={config.site.name || ""}
                   width={160}
                   height={44}
-                  className="h-9 sm:h-10 lg:h-12 w-auto object-contain"
+                  className="h-8 lg:h-10 w-auto object-contain"
                   priority
                 />
               ) : (
@@ -196,154 +225,82 @@ export function Header() {
                   alt="Logo"
                   width={160}
                   height={44}
-                  className="h-9 sm:h-10 lg:h-12 w-auto object-contain"
+                  className="h-8 lg:h-10 w-auto object-contain"
                   priority
                 />
               )}
             </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-1 xl:gap-2 h-full relative">
-              {navItems.map((item) => {
-                const route = getRoute(item.key, currentLocale);
-                const active = isActive(route);
+            {/* Desktop Navigation - Kategoriler direkt gösteriliyor */}
+            <nav className="hidden lg:flex items-center h-full">
+              {/* Anasayfa */}
+              <Link
+                href={`/${currentLocale}`}
+                className={`relative px-4 h-full flex items-center text-sm font-medium transition-all duration-200 border-b-2 ${
+                  isActive("/") && basePath === ""
+                    ? "border-primary text-primary"
+                    : "border-transparent text-foreground hover:text-primary hover:border-primary/50"
+                }`}
+              >
+                {t("home")}
+              </Link>
 
-                // Uzmanlıklar için dropdown
-                if (item.hasDropdown && item.key === "specialties") {
-                  return (
-                    <div
-                      key={item.key}
-                      className="relative h-full z-[60]"
-                      ref={dropdownRef}
-                    >
-                      <button
-                        onClick={() => {
-                          setSpecialtiesOpen(!specialtiesOpen);
-                          setActiveCategory(null);
-                        }}
-                        className={`relative px-4 xl:px-5 h-full flex items-center gap-1 text-sm xl:text-base font-semibold transition-all duration-300 ${
-                          active || specialtiesOpen
-                            ? "bg-primary text-white"
-                            : "text-muted-foreground hover:text-foreground"
-                        }`}
-                      >
-                        <span>{item.label}</span>
-                        <ChevronDown
-                          className={`h-3 w-3 transition-transform duration-200 ${
-                            specialtiesOpen ? "rotate-180" : ""
-                          }`}
-                        />
-                      </button>
+              {/* Kategoriler - Direkt gösteriliyor */}
+              {!isLoadingSpecialties && specialtyCategories.slice(0, 5).map((category) => (
+                <Link
+                  key={category._id}
+                  href={`/${currentLocale}/uzmanlik/${category.slug}`}
+                  className={`relative px-4 h-full flex items-center text-sm font-medium transition-all duration-200 border-b-2 ${
+                    isActive(`/uzmanlik/${category.slug}`)
+                      ? "border-primary text-primary"
+                      : "border-transparent text-foreground hover:text-primary hover:border-primary/50"
+                  }`}
+                >
+                  {category.title || category.name}
+                </Link>
+              ))}
 
-                      {/* Dropdown Menu */}
-                      {specialtiesOpen && (
-                            <div className="absolute top-full left-0 mt-2 bg-background border border-border/50 rounded-sm shadow-xl min-w-[220px] z-[60]">
-                              {isLoadingSpecialties ? (
-                                <div className="px-4 py-3 text-sm text-muted-foreground">
-                                  Yükleniyor...
-                                </div>
-                              ) : specialtyCategories.length > 0 ? (
-                                <>
-                                  {specialtyCategories.map((category) => (
-                                      <div
-                                        key={category._id}
-                                        className="relative z-[60]"
-                                        onMouseEnter={() => {
-                                          setActiveCategory(category._id);
-                                        }}
-                                        onMouseLeave={() => {
-                                          setActiveCategory(null);
-                                        }}
-                                      >
-                                        <Link
-                                          href={`/${currentLocale}/uzmanlik/${category.slug}`}
-                                          className="w-full flex items-center justify-between px-4 py-3 text-sm text-foreground hover:bg-primary/10 hover:text-primary transition-colors"
-                                          onClick={() => {
-                                            setSpecialtiesOpen(false);
-                                            setActiveCategory(null);
-                                          }}
-                                        >
-                                          <span>
-                                            {category.title || category.name}
-                                          </span>
-                                          {category.specialties &&
-                                            category.specialties.length > 0 && (
-                                              <ChevronRight className="h-4 w-4" />
-                                            )}
-                                        </Link>
-
-                                        {/* Sub-menu */}
-                                        {activeCategory === category._id &&
-                                          category.specialties &&
-                                          category.specialties.length > 0 && (
-                                            <div className="absolute left-full top-0 ml-0.5 bg-background border border-border/50 rounded-sm shadow-xl min-w-[200px] z-[70]">
-                                              {category.specialties.map(
-                                                (specialty) => (
-                                                  <Link
-                                                    key={specialty._id}
-                                                    href={`/${currentLocale}/${specialty.slug}`}
-                                                    className="block px-4 py-2.5 text-sm text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors"
-                                                    onClick={() => {
-                                                      setSpecialtiesOpen(false);
-                                                      setActiveCategory(null);
-                                                    }}
-                                                  >
-                                                    {specialty.title}
-                                                  </Link>
-                                                )
-                                              )}
-                                            </div>
-                                          )}
-                                      </div>
-                                    ))}
-                                    {/* Tümünü Gör linki */}
-                                    <div className="border-t border-border/30">
-                                    <Link
-                                      href={`/${currentLocale}${route}`}
-                                      className="block px-4 py-3 text-sm font-medium text-primary hover:bg-primary/10 transition-colors"
-                                      onClick={() => {
-                                        setSpecialtiesOpen(false);
-                                        setActiveCategory(null);
-                                      }}
-                                    >
-                                      Tümünü Gör →
-                                    </Link>
-                                  </div>
-                                </>
-                              ) : (
-                                <div className="px-4 py-3 text-sm text-muted-foreground">
-                                  Henüz kategori eklenmemiş.
-                                </div>
-                              )}
-                            </div>
-                          )}
-                    </div>
-                  );
-                }
-
-                return (
-                  <NavLink
-                    key={item.key}
-                    route={route}
-                    className={`relative px-4 xl:px-5 h-full flex items-center text-sm xl:text-base font-semibold transition-all duration-300 ${
-                      active
-                        ? "bg-primary text-white"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {item.label}
-                  </NavLink>
-                );
-              })}
+              {/* Galeri */}
+              <Link
+                href={`/${currentLocale}${getRoute("gallery", currentLocale)}`}
+                className={`relative px-4 h-full flex items-center text-sm font-medium transition-all duration-200 border-b-2 ${
+                  isActive(getRoute("gallery", currentLocale))
+                    ? "border-primary text-primary"
+                    : "border-transparent text-foreground hover:text-primary hover:border-primary/50"
+                }`}
+              >
+                {t("gallery")}
+              </Link>
             </nav>
 
-            {/* Right Section */}
-            <div className="flex items-center gap-2">
-              <LanguageSwitcher />
+            {/* Mobile Menu Button */}
+            <div className="flex items-center gap-2 lg:hidden">
+              {/* Mobile Language Switcher */}
+              <div className="flex items-center gap-0.5 bg-muted/50 rounded-sm p-0.5">
+                {locales.map((locale) => {
+                  const isActiveLocale = currentLocale === locale;
+                  return (
+                    <button
+                      key={locale}
+                      onClick={() => {
+                        window.location.href = `/${locale}${basePath}`;
+                      }}
+                      className={`px-2 py-1 text-xs font-medium rounded-sm transition-colors ${
+                        isActiveLocale
+                          ? "bg-primary text-white"
+                          : "text-muted-foreground"
+                      }`}
+                    >
+                      {locale.toUpperCase()}
+                    </button>
+                  );
+                })}
+              </div>
+
               <Button
                 variant="ghost"
                 size="icon"
-                className="lg:hidden h-9 w-9"
+                className="h-10 w-10"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label="Menu"
               >
@@ -358,19 +315,17 @@ export function Header() {
         </div>
       </header>
 
-      {/* Mobile Drawer Overlay */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <>
-          {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
             onClick={() => setMobileMenuOpen(false)}
           />
 
-          {/* Drawer */}
-          <div className="fixed top-0 right-0 h-full w-full bg-background border-l border-border/30 shadow-2xl z-50 lg:hidden transform transition-transform duration-300 ease-out translate-x-0">
+          <div className="fixed top-0 right-0 h-full w-full max-w-sm bg-background border-l border-border shadow-2xl z-50 lg:hidden">
             {/* Drawer Header */}
-            <div className="flex items-center justify-between p-4 border-b border-border/30">
+            <div className="flex items-center justify-between p-4 border-b border-border">
               <Link
                 href={`/${currentLocale}`}
                 className="flex items-center"
@@ -380,24 +335,24 @@ export function Header() {
                   <Image
                     src={config.site.logo}
                     alt={config.site.name || ""}
-                    width={140}
-                    height={38}
-                    className="h-9 w-auto object-contain"
+                    width={120}
+                    height={32}
+                    className="h-8 w-auto object-contain"
                   />
                 ) : (
                   <Image
                     src="/images/logo.webp"
                     alt="Logo"
-                    width={140}
-                    height={38}
-                    className="h-9 w-auto object-contain"
+                    width={120}
+                    height={32}
+                    className="h-8 w-auto object-contain"
                   />
                 )}
               </Link>
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8"
+                className="h-9 w-9"
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="Close menu"
               >
@@ -407,231 +362,138 @@ export function Header() {
 
             {/* Drawer Content */}
             <div className="overflow-y-auto h-[calc(100vh-65px)]">
-              <nav className="flex flex-col p-3 gap-0.5">
-                {navItems.map((item) => {
-                  const route = getRoute(item.key, currentLocale);
-                  const active = isActive(route);
+              {/* Contact Info */}
+              <div className="p-4 border-b border-border bg-muted/30">
+                {config.contact.phone && (
+                  <a 
+                    href={`tel:${config.contact.phone}`}
+                    className="flex items-center gap-3 text-sm font-medium text-foreground mb-2"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Phone className="h-4 w-4 text-primary" />
+                    </div>
+                    {formatPhone(config.contact.phone)}
+                  </a>
+                )}
+                {config.contact.email && (
+                  <a 
+                    href={`mailto:${config.contact.email}`}
+                    className="flex items-center gap-3 text-sm text-muted-foreground"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+                      <Mail className="h-4 w-4" />
+                    </div>
+                    {config.contact.email}
+                  </a>
+                )}
+              </div>
 
-                  // Uzmanlıklar için accordion
-                  if (item.hasDropdown && item.key === "specialties") {
-                    return (
-                      <div key={item.key}>
-                        <button
-                          onClick={() =>
-                            setMobileSpecialtiesOpen(!mobileSpecialtiesOpen)
-                          }
-                          className={`relative w-full px-4 py-3 rounded-sm text-base font-medium transition-colors duration-200 flex items-center justify-between ${
-                            active || mobileSpecialtiesOpen
-                              ? "text-primary bg-primary/10"
-                              : "text-foreground hover:bg-muted/30"
-                          }`}
-                        >
-                          {(active || mobileSpecialtiesOpen) && (
-                            <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary rounded-r-sm" />
-                          )}
-                          <span>{item.label}</span>
-                          <ChevronDown
-                            className={`h-4 w-4 transition-transform duration-200 ${
-                              mobileSpecialtiesOpen ? "rotate-180" : ""
-                            }`}
-                          />
-                        </button>
+              <nav className="flex flex-col p-4 gap-1">
+                {/* Anasayfa */}
+                <Link
+                  href={`/${currentLocale}`}
+                  className={`px-4 py-3 rounded-sm text-base font-medium transition-colors ${
+                    isActive("/") && basePath === ""
+                      ? "text-primary bg-primary/10"
+                      : "text-foreground hover:bg-muted/50"
+                  }`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {t("home")}
+                </Link>
 
-                        {/* Mobile Accordion Content */}
-                        {mobileSpecialtiesOpen && !isLoadingSpecialties && (
-                          <div className="ml-4 mt-1 border-l border-border/30 pl-4">
-                            {specialtyCategories.length > 0 ? (
-                              <>
-                                {specialtyCategories.map((category) => (
-                                  <div key={category._id} className="mb-3">
-                                    <Link
-                                      href={`/${currentLocale}/uzmanlik/${category.slug}`}
-                                      className="text-sm font-semibold text-foreground py-2 block hover:text-primary transition-colors"
-                                      onClick={() => {
-                                        setMobileMenuOpen(false);
-                                        setMobileSpecialtiesOpen(false);
-                                      }}
-                                    >
-                                      {category.title || category.name}
-                                    </Link>
-                                    {category.specialties &&
-                                      category.specialties.length > 0 && (
-                                        <div className="flex flex-col gap-1 pl-3 border-l border-border/30">
-                                          {category.specialties.map(
-                                            (specialty) => (
-                                              <Link
-                                                key={specialty._id}
-                                                href={`/${currentLocale}/${specialty.slug}`}
-                                                className="text-sm text-muted-foreground hover:text-primary py-1.5 transition-colors"
-                                                onClick={() => {
-                                                  setMobileMenuOpen(false);
-                                                  setMobileSpecialtiesOpen(
-                                                    false
-                                                  );
-                                                }}
-                                              >
-                                                {specialty.title}
-                                              </Link>
-                                            )
-                                          )}
-                                        </div>
-                                      )}
-                                  </div>
-                                ))}
-                                {/* Tümünü Gör */}
-                                <Link
-                                  href={`/${currentLocale}${route}`}
-                                  className="block text-sm font-medium text-primary py-2 border-t border-border/30 mt-2"
-                                  onClick={() => {
-                                    setMobileMenuOpen(false);
-                                    setMobileSpecialtiesOpen(false);
-                                  }}
-                                >
-                                  Tümünü Gör →
-                                </Link>
-                              </>
-                            ) : (
-                              <div className="text-sm text-muted-foreground py-2">
-                                Henüz kategori eklenmemiş.
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  }
-
-                  return (
-                    <NavLink
-                      key={item.key}
-                      route={route}
-                      className={`relative px-4 py-3 rounded-sm text-base font-medium transition-colors duration-200 ${
-                        active
-                          ? "text-primary bg-primary/10"
-                          : "text-foreground hover:bg-muted/30"
+                {/* Uzmanlıklar Accordion */}
+                <div>
+                  <button
+                    onClick={() => setMobileSpecialtiesOpen(!mobileSpecialtiesOpen)}
+                    className={`w-full px-4 py-3 rounded-sm text-base font-medium transition-colors flex items-center justify-between ${
+                      mobileSpecialtiesOpen
+                        ? "text-primary bg-primary/10"
+                        : "text-foreground hover:bg-muted/50"
+                    }`}
+                  >
+                    <span>{t("specialties")}</span>
+                    <ChevronDown
+                      className={`h-4 w-4 transition-transform duration-200 ${
+                        mobileSpecialtiesOpen ? "rotate-180" : ""
                       }`}
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {active && (
-                        <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary rounded-r-sm" />
+                    />
+                  </button>
+
+                  {mobileSpecialtiesOpen && !isLoadingSpecialties && (
+                    <div className="ml-4 mt-2 border-l-2 border-primary/20 pl-4 space-y-1">
+                      {specialtyCategories.length > 0 ? (
+                        specialtyCategories.map((category) => (
+                          <Link
+                            key={category._id}
+                            href={`/${currentLocale}/uzmanlik/${category.slug}`}
+                            className="text-sm font-medium text-foreground py-2 block hover:text-primary transition-colors"
+                            onClick={() => {
+                              setMobileMenuOpen(false);
+                              setMobileSpecialtiesOpen(false);
+                            }}
+                          >
+                            {category.title || category.name}
+                          </Link>
+                        ))
+                      ) : (
+                        <div className="text-sm text-muted-foreground py-2">
+                          Henüz kategori eklenmemiş.
+                        </div>
                       )}
-                      <span className="block">{item.label}</span>
-                    </NavLink>
-                  );
-                })}
+                    </div>
+                  )}
+                </div>
+
+                {/* Galeri */}
+                <Link
+                  href={`/${currentLocale}${getRoute("gallery", currentLocale)}`}
+                  className={`px-4 py-3 rounded-sm text-base font-medium transition-colors ${
+                    isActive(getRoute("gallery", currentLocale))
+                      ? "text-primary bg-primary/10"
+                      : "text-foreground hover:bg-muted/50"
+                  }`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {t("gallery")}
+                </Link>
+
+                {/* Contact Button */}
+                <Link
+                  href={`/${currentLocale}/iletisim`}
+                  className="mt-4 bg-primary text-white text-center font-medium px-4 py-3 rounded-sm hover:bg-primary/90 transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {t("contact")}
+                </Link>
               </nav>
 
-              {/* Language Switcher in Drawer */}
-              <div className="p-4 border-t border-border/30 mt-2">
-                <div className="flex gap-2">
-                  {locales.map((locale) => {
-                    const isActiveLocale = currentLocale === locale;
-                    return (
-                      <Button
-                        key={locale}
-                        variant={isActiveLocale ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => {
-                          window.location.href = `/${locale}${basePath}`;
-                        }}
-                        className={`flex-1 text-sm ${
-                          isActiveLocale
-                            ? "bg-primary text-primary-foreground"
-                            : ""
-                        }`}
-                      >
-                        {locale.toUpperCase()}
-                      </Button>
-                    );
-                  })}
+              {/* Social Media */}
+              {socialLinks.length > 0 && (
+                <div className="p-4 border-t border-border mt-auto">
+                  <div className="flex justify-center gap-2">
+                    {socialLinks.map((social, index) => {
+                      const Icon = social.icon;
+                      return (
+                        <a
+                          key={index}
+                          href={social.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-white transition-colors"
+                          aria-label={social.label}
+                        >
+                          <Icon className="h-4 w-4" />
+                        </a>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </>
       )}
-
-      {/* CSS Animations - Desktop only */}
-      <style jsx>{`
-        @keyframes gradient {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-
-        @keyframes shimmer {
-          0% {
-            transform: translateX(-100%);
-          }
-          100% {
-            transform: translateX(100%);
-          }
-        }
-
-        @keyframes slideInRight {
-          from {
-            transform: translateX(100%);
-            opacity: 0;
-          }
-          to {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
-
-        .animate-gradient {
-          animation: gradient 8s ease infinite;
-        }
-
-        .animate-shimmer {
-          animation: shimmer 3s ease-in-out infinite;
-        }
-      `}</style>
     </>
-  );
-}
-
-function LanguageSwitcher() {
-  const pathname = usePathname();
-  const currentLocale = (pathname?.split("/")[1] || "tr") as Locale;
-  const basePath = pathname?.replace(/^\/(tr|en)/, "") || "";
-
-  const switchLocale = (locale: Locale) => {
-    window.location.href = `/${locale}${basePath}`;
-  };
-
-  return (
-    <div className="hidden lg:flex items-center gap-1 bg-gradient-to-r from-muted/50 via-muted/40 to-muted/50 backdrop-blur-xl rounded-sm p-1 border border-border/50 shadow-lg shadow-primary/5">
-      {locales.map((locale) => {
-        const isActive = currentLocale === locale;
-        return (
-          <Button
-            key={locale}
-            variant="ghost"
-            size="sm"
-            onClick={() => switchLocale(locale)}
-            className={`relative px-4 py-2 text-xs font-bold rounded-sm transition-all duration-300 overflow-hidden ${
-              isActive
-                ? "text-primary-foreground shadow-md shadow-primary/30"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            {isActive && (
-              <>
-                <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-accent rounded-sm" />
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/30 via-accent/30 to-primary/30 blur-md opacity-50" />
-              </>
-            )}
-            <span className="relative z-10">{locale.toUpperCase()}</span>
-          </Button>
-        );
-      })}
-    </div>
   );
 }

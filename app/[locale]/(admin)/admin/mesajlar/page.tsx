@@ -14,6 +14,13 @@ import {
   Phone,
   Calendar,
 } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { contactApi } from '@/lib/api';
 import type { ContactMessage } from '@/lib/types';
 
@@ -190,15 +197,19 @@ export default function AdminMessagesPage() {
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
             />
           </div>
-          <select
+          <Select
             value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value as typeof filterStatus)}
-            className="px-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none bg-white"
+            onValueChange={(value) => setFilterStatus(value as typeof filterStatus)}
           >
-            <option value="all">Tümü</option>
-            <option value="unread">Okunmamış</option>
-            <option value="read">Okunmuş</option>
-          </select>
+            <SelectTrigger className="w-full sm:w-[200px] h-11 border-gray-300 focus:ring-2 focus:ring-[#144793]">
+              <SelectValue placeholder="Tümü" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tümü</SelectItem>
+              <SelectItem value="unread">Okunmamış</SelectItem>
+              <SelectItem value="read">Okunmuş</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 

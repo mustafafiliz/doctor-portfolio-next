@@ -8,21 +8,52 @@ import { usePathname } from 'next/navigation';
 import { type Locale } from '@/lib/i18n';
 import { getRoute } from '@/lib/routes';
 import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin, Twitter, Youtube } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { getPublicSpecialties } from '@/lib/config';
+import type { SpecialtyCategory, Specialty } from '@/lib/types';
 
-function NavLink({ href, currentLocale, children, className }: { href: string; currentLocale: Locale; children: React.ReactNode; className?: string }) {
-  const fullHref = href === '/' ? `/${currentLocale}` : `/${currentLocale}${href}`;
-  return (
-    <Link href={fullHref} className={className}>
-      {children}
-    </Link>
-  );
+interface CategoryWithSpecialties extends SpecialtyCategory {
+  specialties?: Specialty[];
 }
+
+// Telefon numarasını formatla
+const formatPhone = (phone: string): string => {
+  const digits = phone.replace(/\D/g, '');
+  
+  if (digits.length >= 10) {
+    const countryCode = digits.startsWith('90') ? '+90' : (digits.startsWith('0') ? '+90' : '+90');
+    const cleanDigits = digits.startsWith('90') ? digits.slice(2) : (digits.startsWith('0') ? digits.slice(1) : digits);
+    
+    if (cleanDigits.length >= 10) {
+      return `${countryCode} (${cleanDigits.slice(0, 3)}) ${cleanDigits.slice(3, 6)} ${cleanDigits.slice(6, 8)} ${cleanDigits.slice(8, 10)}`;
+    }
+  }
+  
+  return phone;
+};
 
 export function Footer() {
   const t = useTranslations('nav');
   const { config } = useConfig();
   const pathname = usePathname();
   const currentLocale = (pathname?.split('/')[1] || 'tr') as Locale;
+  const [categories, setCategories] = useState<CategoryWithSpecialties[]>([]);
+
+  // Fetch categories with specialties
+  useEffect(() => {
+    const fetchSpecialties = async () => {
+      try {
+        const data = await getPublicSpecialties();
+        const cats = Array.isArray(data) ? data : (data.categories || []);
+        // Order'a göre sırala
+        const sortedCats = cats.sort((a: CategoryWithSpecialties, b: CategoryWithSpecialties) => (a.order || 0) - (b.order || 0));
+        setCategories(sortedCats);
+      } catch (error) {
+        // Silently fail
+      }
+    };
+    fetchSpecialties();
+  }, []);
 
   // Social media links from config
   const socialLinks = [
@@ -30,17 +61,67 @@ export function Footer() {
     { icon: Instagram, url: config.social?.instagram, label: 'Instagram' },
     { icon: Linkedin, url: config.social?.linkedin, label: 'LinkedIn' },
     { icon: Twitter, url: config.social?.twitter, label: 'Twitter' },
+    { icon: Youtube, url: config.social?.youtube, label: 'YouTube' },
   ].filter(link => link.url);
 
   return (
-    <footer className="border-t bg-gradient-to-b from-background to-muted/30 relative overflow-x-hidden max-w-full w-full">
-      {/* Decorative elements */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-5" />
-      
-      <div className="container mx-auto px-4 sm:px-6 py-12 sm:py-16 relative z-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
-          {/* Brand Section */}
-          <div className="space-y-3 sm:space-y-4">
+    <footer className="bg-[#1a1a2e] text-white relative overflow-hidden">
+      {/* Top Contact Section */}
+      <section className="bg-[#0f0f1a] border-b border-white/10">
+        <div className="container mx-auto px-4 sm:px-6 py-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            {/* Social Media */}
+            <div className="flex items-center gap-4">
+              <span className="text-sm font-medium text-white/80">Beni Takip Edin</span>
+              {socialLinks.length > 0 && (
+                <div className="flex gap-2">
+                  {socialLinks.map((social, index) => {
+                    const Icon = social.icon;
+                    return (
+                      <a 
+                        key={index}
+                        href={social.url} 
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={social.label}
+                        className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors"
+                      >
+                        <Icon className="h-4 w-4" />
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Info Text */}
+            <p className="text-sm text-white/60 text-center">
+              Bilgilendirici postlar, videolar ve çok daha fazlası...
+            </p>
+
+            {/* Phone */}
+            {config.contact.phone && (
+              <a 
+                href={`tel:${config.contact.phone}`}
+                className="flex items-center gap-2 text-white hover:text-primary transition-colors"
+              >
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                  <Phone className="h-5 w-5 text-primary" />
+                </div>
+                <span className="font-semibold">{formatPhone(config.contact.phone)}</span>
+              </a>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Main Footer Content */}
+      <div className="container mx-auto px-4 sm:px-6 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+          
+          {/* Brand & Contact Section */}
+          <div className="lg:col-span-3 space-y-6">
+            {/* Logo & Brand */}
             <Link href={`/${currentLocale}`} className="inline-block">
               {config.site?.logo ? (
                 <Image
@@ -48,98 +129,31 @@ export function Footer() {
                   alt={config.site?.name || ''}
                   width={200}
                   height={54}
-                  className="h-auto w-full max-w-[180px] sm:max-w-[200px] object-contain"
+                  className="h-auto w-full max-w-[200px] object-contain brightness-0 invert"
                   unoptimized
                 />
               ) : (
-                <Image
-                  src="/images/logo.webp"
-                  alt={config.site?.name || ''}
-                  width={200}
-                  height={54}
-                  className="h-auto w-full max-w-[180px] sm:max-w-[200px] object-contain"
-                />
+                <div className="text-xl font-bold">
+                  <span className="text-white">{config.site?.name || ''}</span>
+                  <span className="block text-sm font-normal text-white/60 mt-1">
+                    {config.site?.tagline || ''}
+                  </span>
+                </div>
               )}
             </Link>
-            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              {config.site?.tagline || ''}
-            </p>
-            {socialLinks.length > 0 && (
-              <div className="flex space-x-3 sm:space-x-4">
-                {socialLinks.map((social, index) => {
-                  const Icon = social.icon;
-                  return (
-                    <a 
-                      key={index}
-                      href={social.url} 
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={social.label}
-                      className="w-9 h-9 sm:w-10 sm:h-10 rounded-sm bg-muted flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
-                    >
-                      <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
-                    </a>
-                  );
-                })}
-              </div>
-            )}
-          </div>
 
-          {/* Navigation */}
-          <div>
-            <h4 className="text-xs sm:text-sm font-semibold mb-3 sm:mb-4">Menü</h4>
-            <nav className="flex flex-col space-y-2 sm:space-y-3">
-              <NavLink href={getRoute('home', currentLocale)} currentLocale={currentLocale} className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors">
-                {t('home')}
-              </NavLink>
-              <NavLink href={getRoute('about', currentLocale)} currentLocale={currentLocale} className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors">
-                {t('about')}
-              </NavLink>
-              <NavLink href={getRoute('specialties', currentLocale)} currentLocale={currentLocale} className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors">
-                {t('specialties')}
-              </NavLink>
-              <NavLink href={getRoute('gallery', currentLocale)} currentLocale={currentLocale} className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors">
-                {t('gallery')}
-              </NavLink>
-              <NavLink href={getRoute('faq', currentLocale)} currentLocale={currentLocale} className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors">
-                {t('faq')}
-              </NavLink>
-              <NavLink href={getRoute('contact', currentLocale)} currentLocale={currentLocale} className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors">
-                {t('contact')}
-              </NavLink>
-            </nav>
-          </div>
-
-          {/* Contact Info */}
-          <div>
-            <h4 className="text-xs sm:text-sm font-semibold mb-3 sm:mb-4">İletişim</h4>
-            <div className="flex flex-col space-y-2 sm:space-y-3 text-xs sm:text-sm text-muted-foreground">
+            {/* Contact Info */}
+            <div className="space-y-3 text-sm">
               {config.contact.address && (
-                <div className="flex items-start space-x-2 sm:space-x-3">
-                  <MapPin className="h-4 w-4 sm:h-5 sm:w-5 mt-0.5 flex-shrink-0" style={{ color: config.colors.primary }} />
-                  <span className="leading-relaxed">{config.contact.address}</span>
-                </div>
-              )}
-              {config.contact.phone && (
-                <div className="flex items-center space-x-2 sm:space-x-3">
-                  <Phone className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" style={{ color: config.colors.primary }} />
-                  <a href={`tel:${config.contact.phone}`} className="hover:text-primary transition-colors break-all">
-                    {config.contact.phone}
-                  </a>
-                </div>
-              )}
-              {config.contact.mobile && (
-                <div className="flex items-center space-x-2 sm:space-x-3">
-                  <Phone className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" style={{ color: config.colors.primary }} />
-                  <a href={`tel:${config.contact.mobile}`} className="hover:text-primary transition-colors break-all">
-                    {config.contact.mobile}
-                  </a>
+                <div className="flex items-start gap-2 text-white/70">
+                  <span className="font-medium text-white">Adres:</span>
+                  <span>{config.contact.address}</span>
                 </div>
               )}
               {config.contact.email && (
-                <div className="flex items-center space-x-2 sm:space-x-3">
-                  <Mail className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" style={{ color: config.colors.primary }} />
-                  <a href={`mailto:${config.contact.email}`} className="hover:text-primary transition-colors break-all">
+                <div className="flex items-center gap-2 text-white/70">
+                  <span className="font-medium text-white">E-Posta:</span>
+                  <a href={`mailto:${config.contact.email}`} className="hover:text-primary transition-colors">
                     {config.contact.email}
                   </a>
                 </div>
@@ -147,18 +161,114 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Legal */}
-          <div>
-            <h4 className="text-xs sm:text-sm font-semibold mb-3 sm:mb-4">Yasal Uyarı</h4>
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              Web sitemizin içeriği, ziyaretçiyi bilgilendirmeye yönelik hazırlanmıştır. 
-              Sitede yer alan bilgiler, hiçbir zaman bir hekim tedavisinin ya da konsültasyonunun yerini alamaz.
-            </p>
+          {/* Categories & Specialties Links */}
+          <div className="lg:col-span-9">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 lg:gap-8">
+              {/* Dynamic Categories */}
+              {categories.slice(0, 5).map((category) => (
+                <div key={category._id}>
+                  <Link 
+                    href={`/${currentLocale}/uzmanlik/${category.slug}`}
+                    className="text-sm font-semibold text-white hover:text-primary transition-colors block mb-4"
+                  >
+                    {category.title || category.name}
+                  </Link>
+                  {category.specialties && category.specialties.length > 0 && (
+                    <ul className="space-y-2">
+                      {category.specialties.slice(0, 5).map((specialty) => (
+                        <li key={specialty._id}>
+                          <Link
+                            href={`/${currentLocale}/${specialty.slug}`}
+                            className="text-xs text-white/60 hover:text-primary transition-colors block leading-relaxed"
+                          >
+                            {specialty.title}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))}
+
+              {/* Blog Section */}
+              <div>
+                <Link 
+                  href={`/${currentLocale}/blog`}
+                  className="text-sm font-semibold text-white hover:text-primary transition-colors block mb-4"
+                >
+                  Blog
+                </Link>
+                <ul className="space-y-2">
+                  <li>
+                    <Link
+                      href={`/${currentLocale}/blog`}
+                      className="text-xs text-white/60 hover:text-primary transition-colors block leading-relaxed"
+                    >
+                      Tüm Yazılar
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Hakkımda Section */}
+              <div>
+                <Link 
+                  href={`/${currentLocale}/hakkimda`}
+                  className="text-sm font-semibold text-white hover:text-primary transition-colors block mb-4"
+                >
+                  Hakkımda
+                </Link>
+                <ul className="space-y-2">
+                  <li>
+                    <Link
+                      href={`/${currentLocale}/hakkimda`}
+                      className="text-xs text-white/60 hover:text-primary transition-colors block leading-relaxed"
+                    >
+                      {config.site?.name || 'Hakkımda'}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={`/${currentLocale}/galeri`}
+                      className="text-xs text-white/60 hover:text-primary transition-colors block leading-relaxed"
+                    >
+                      Galeri
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={`/${currentLocale}/sik-sorulan-sorular`}
+                      className="text-xs text-white/60 hover:text-primary transition-colors block leading-relaxed"
+                    >
+                      S.S.S.
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href={`/${currentLocale}/iletisim`}
+                      className="text-xs text-white/60 hover:text-primary transition-colors block leading-relaxed"
+                    >
+                      İletişim
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t text-center text-xs sm:text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} {config.site?.name || ''}. Tüm hakları saklıdır.</p>
+      {/* Copyright Section */}
+      <div className="border-t border-white/10">
+        <div className="container mx-auto px-4 sm:px-6 py-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-white/50">
+            <p>
+              Copyright © {new Date().getFullYear()} <span className="text-white/70">{config.site?.name || ''}</span>. Tüm Hakları Saklıdır!
+            </p>
+            <p className="text-white/40">
+              Web sitemizin içeriği bilgilendirme amaçlıdır, tedavi yerine geçmez.
+            </p>
+          </div>
         </div>
       </div>
     </footer>

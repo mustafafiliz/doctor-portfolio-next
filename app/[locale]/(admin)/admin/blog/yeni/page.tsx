@@ -4,6 +4,13 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save, Image as ImageIcon, X, Upload, Loader2 } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Editor } from '@/components/admin/Editor';
 import { blogApi } from '@/lib/api';
 
@@ -263,14 +270,18 @@ export default function NewBlogPage() {
               <label className="block text-sm font-medium text-gray-700 mb-1.5">
                 Durum
               </label>
-              <select
+              <Select
                 value={formData.status}
-                onChange={(e) => setFormData({ ...formData, status: e.target.value as 'draft' | 'published' })}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none bg-white"
+                onValueChange={(value) => setFormData({ ...formData, status: value as 'draft' | 'published' })}
               >
-                <option value="draft">Taslak</option>
-                <option value="published">Yayında</option>
-              </select>
+                <SelectTrigger className="w-full h-11 border-gray-300 focus:ring-2 focus:ring-[#144793]">
+                  <SelectValue placeholder="Durum Seçin" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="draft">Taslak</SelectItem>
+                  <SelectItem value="published">Yayında</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div className="flex gap-2 pt-2">
               <button

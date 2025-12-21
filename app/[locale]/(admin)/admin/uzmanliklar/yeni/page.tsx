@@ -4,6 +4,13 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save, X, Upload, Loader2, AlertCircle } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Editor } from '@/components/admin/Editor';
 import { specialtyApi } from '@/lib/api';
 import type { SpecialtyCategory } from '@/lib/types';
@@ -287,19 +294,22 @@ export default function NewSpecialtyPage() {
 
           {/* Category */}
           <div className="bg-white rounded-sm border border-gray-200 p-6 space-y-4">
-            <h3 className="font-medium text-gray-800">Kategori</h3>
-            <select
-              value={formData.categoryId}
-              onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none bg-white"
+            <h3 className="font-medium text-gray-800">Uzmanlık</h3>
+            <Select
+              value={formData.categoryId || undefined}
+              onValueChange={(value) => setFormData({ ...formData, categoryId: value })}
             >
-              <option value="">Kategori Seçin</option>
-              {categories.map((category) => (
-                <option key={category._id} value={category._id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="w-full h-11 border-gray-300 focus:ring-2 focus:ring-[#144793]">
+                <SelectValue placeholder="Uzmanlık Seçin" />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map((category) => (
+                  <SelectItem key={category._id} value={category._id}>
+                    {category.title || category.name || category._id}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Order */}

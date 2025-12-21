@@ -29,7 +29,7 @@ export function SummarySection() {
                 Profesyonel Hizmet
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
               {t('title')}
             </h2>
           </div>

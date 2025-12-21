@@ -77,7 +77,7 @@ export function GallerySection({ initialPhotos }: GallerySectionProps) {
     return (
       <Container className="py-12 sm:py-16 md:py-20 lg:py-24">
         <div className="text-center mb-8 sm:mb-12">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 text-gray-900">
             {t('title')}
           </h1>
         </div>
@@ -91,7 +91,7 @@ export function GallerySection({ initialPhotos }: GallerySectionProps) {
   return (
     <Container className="py-12 sm:py-16 md:py-20 lg:py-24">
       <div className="text-center mb-8 sm:mb-12">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 text-gray-900">
           {t('title')}
         </h1>
       </div>
