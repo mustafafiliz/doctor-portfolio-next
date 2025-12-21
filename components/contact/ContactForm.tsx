@@ -10,6 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Send, Loader2 } from 'lucide-react';
 import { contactApi } from '@/lib/api';
 import { getWebsiteId } from '@/lib/config';
+import { IMaskInput } from 'react-imask';
 
 export function ContactForm() {
   const t = useTranslations('contact.form');
@@ -19,7 +20,7 @@ export function ContactForm() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '0',
+    phone: '',
     subject: '',
     message: '',
   });
@@ -45,10 +46,11 @@ export function ContactForm() {
       const websiteId = getWebsiteId();
       
       if (websiteId) {
+        const cleanPhone = getCleanPhoneNumber(formData.phone);
         await contactApi.submit(websiteId, {
           name: formData.name,
           email: formData.email,
-          phone: formData.phone || undefined,
+          phone: cleanPhone ? `90${cleanPhone}` : undefined,
           subject: formData.subject || undefined,
           message: formData.message,
         });
@@ -65,7 +67,7 @@ export function ContactForm() {
       setFormData({
         name: '',
         email: '',
-        phone: '0',
+        phone: '',
         subject: '',
         message: '',
       });
@@ -93,73 +95,9 @@ export function ContactForm() {
     }
   };
 
-  // Türkiye telefon numarası formatlama fonksiyonu
-  const formatPhoneNumber = (value: string, previousValue: string): string => {
-    // Sadece rakamları al
-    const numbers = value.replace(/\D/g, '');
-    
-    // Eğer boşsa veya sadece 0 varsa, 0 döndür
-    if (numbers.length === 0 || numbers === '0') {
-      return '0';
-    }
-    
-    // Her zaman 0 ile başlamalı
-    let digits = numbers.startsWith('0') ? numbers : `0${numbers}`;
-    
-    // Tekrarlayan 0'ları engelle (000 gibi)
-    // İlk karakter 0 olmalı, sonrasında tekrarlayan 0'ları temizle
-    if (digits.length > 1) {
-      // İlk 0'ı koru, sonrasındaki tekrarlayan 0'ları temizle
-      const firstZero = digits[0];
-      const rest = digits.slice(1);
-      // Tekrarlayan 0'ları kaldır (ama ilk rakam 0'dan sonra gelen ilk rakam 0 olabilir, onu koru)
-      const cleanedRest = rest.replace(/^0+/, ''); // Başta tekrarlayan 0'ları kaldır
-      digits = firstZero + cleanedRest;
-    }
-    
-    // Maksimum 11 haneli (0 + 10 rakam)
-    if (digits.length > 11) {
-      digits = digits.slice(0, 11);
-    }
-    
-    // Formatlama
-    if (digits.length <= 1) return '0';
-    if (digits.length <= 4) return digits;
-    if (digits.length <= 7) return `${digits.slice(0, 4)} ${digits.slice(4)}`;
-    if (digits.length <= 9) return `${digits.slice(0, 4)} ${digits.slice(4, 7)} ${digits.slice(7)}`;
-    return `${digits.slice(0, 4)} ${digits.slice(4, 7)} ${digits.slice(7, 9)} ${digits.slice(9, 11)}`;
-  };
-
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const previousValue = formData.phone;
-    const formatted = formatPhoneNumber(value, previousValue);
-    setFormData({ ...formData, phone: formatted });
-  };
-
-  const handlePhoneKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const input = e.currentTarget;
-    const cursorPosition = input.selectionStart || 0;
-    
-    // Eğer cursor pozisyonu 0'ın üzerindeyse ve kullanıcı Backspace veya Delete tuşuna basarsa
-    if ((e.key === 'Backspace' || e.key === 'Delete') && cursorPosition <= 1) {
-      e.preventDefault();
-      return;
-    }
-    
-    // Sadece rakam, boşluk ve kontrol tuşlarına izin ver
-    const allowedKeys = ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
-    const isNumber = /[0-9]/.test(e.key);
-    const isSpecial = allowedKeys.includes(e.key);
-    
-    if (!isNumber && !isSpecial) {
-      e.preventDefault();
-    }
-    
-    // Eğer kullanıcı 0 yazmaya çalışıyorsa ve cursor pozisyonu 0'dan sonra değilse engelle
-    if (e.key === '0' && cursorPosition === 0) {
-      e.preventDefault();
-    }
+  // Telefon numarasını API için temizle (sadece rakamlar)
+  const getCleanPhoneNumber = (phone: string) => {
+    return phone.replace(/\D/g, '');
   };
 
   return (
@@ -208,32 +146,19 @@ export function ContactForm() {
             <Label htmlFor="phone" className="text-xs sm:text-sm font-semibold">
               {t('phone')} *
             </Label>
-            <Input
+            <IMaskInput
               id="phone"
-              type="tel"
-              required
-              value={formData.phone || '0'}
-              onChange={handlePhoneChange}
-              onKeyDown={handlePhoneKeyDown}
-              onFocus={(e) => {
-                // Eğer alan boşsa, 0 ekle
-                if (!formData.phone || formData.phone === '') {
-                  setFormData({ ...formData, phone: '0' });
-                }
-                // Cursor'ı sona al
-                setTimeout(() => {
-                  e.target.setSelectionRange(e.target.value.length, e.target.value.length);
-                }, 0);
+              mask="(500) 000 00 00"
+              definitions={{
+                '5': /[5]/,
+                '0': /[0-9]/,
               }}
-              maxLength={14} // 0XXX XXX XX XX formatı için maksimum uzunluk
-              className="h-11 sm:h-12 bg-background/50 border-border/50 focus:border-primary transition-all text-sm sm:text-base"
-              placeholder="(5XX) XXX XX XX"
+              value={formData.phone}
+              unmask={false}
+              onAccept={(value: string) => setFormData({ ...formData, phone: value })}
+              placeholder="(5__) ___ __ __"
+              className="flex h-11 sm:h-12 w-full rounded-md border border-border/50 bg-background/50 px-3 py-2 text-sm sm:text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 focus:border-primary transition-all"
             />
-            {formData.phone && formData.phone !== '0' && (
-              <p className="text-xs text-muted-foreground">
-                Format: 0(5XX) XXX XX XX
-              </p>
-            )}
           </div>
 
           <div className="space-y-2">

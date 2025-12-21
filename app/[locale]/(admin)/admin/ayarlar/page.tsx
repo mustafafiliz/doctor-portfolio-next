@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Save, Plus, Trash2, Globe, Mail, Phone, MapPin, Clock, Loader2, AlertCircle, Upload, X } from 'lucide-react';
 import { websiteApi } from '@/lib/api';
 import type { WebsiteSettings, WorkingHour } from '@/lib/types';
+import { IMaskInput } from 'react-imask';
 
 export default function AdminSettingsPage() {
   const logoInputRef = useRef<HTMLInputElement>(null);
@@ -488,16 +489,19 @@ export default function AdminSettingsPage() {
                     value={settings.contact?.email || ''}
                     onChange={(e) => setSettings({ ...settings, contact: { ...settings.contact, email: e.target.value, phone: settings.contact?.phone || '', address: settings.contact?.address || '' } })}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
+                    placeholder="ornek@email.com"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">
                     <Phone size={16} className="inline mr-1" /> Telefon
                   </label>
-                  <input
-                    type="tel"
-                    value={settings.contact?.phone || ''}
-                    onChange={(e) => setSettings({ ...settings, contact: { ...settings.contact, phone: e.target.value, email: settings.contact?.email || '', address: settings.contact?.address || '' } })}
+                  <IMaskInput
+                    mask="+{90} (000) 000 00 00"
+                    value={settings.contact?.phone?.replace(/^90/, '') || ''}
+                    unmask={true}
+                    onAccept={(value: string) => setSettings({ ...settings, contact: { ...settings.contact, phone: value ? `90${value}` : '', email: settings.contact?.email || '', address: settings.contact?.address || '' } })}
+                    placeholder="+90 (___) ___ __ __"
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
                   />
                 </div>
@@ -506,10 +510,12 @@ export default function AdminSettingsPage() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">WhatsApp</label>
-                  <input
-                    type="tel"
-                    value={settings.contact?.whatsapp || ''}
-                    onChange={(e) => setSettings({ ...settings, contact: { ...settings.contact, whatsapp: e.target.value, email: settings.contact?.email || '', phone: settings.contact?.phone || '', address: settings.contact?.address || '' } })}
+                  <IMaskInput
+                    mask="+{90} (000) 000 00 00"
+                    value={settings.contact?.whatsapp?.replace(/^90/, '') || ''}
+                    unmask={true}
+                    onAccept={(value: string) => setSettings({ ...settings, contact: { ...settings.contact, whatsapp: value ? `90${value}` : '', email: settings.contact?.email || '', phone: settings.contact?.phone || '', address: settings.contact?.address || '' } })}
+                    placeholder="+90 (___) ___ __ __"
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
                   />
                 </div>
@@ -522,6 +528,7 @@ export default function AdminSettingsPage() {
                     value={settings.contact?.address || ''}
                     onChange={(e) => setSettings({ ...settings, contact: { ...settings.contact, address: e.target.value, email: settings.contact?.email || '', phone: settings.contact?.phone || '' } })}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
+                    placeholder="Adres bilgisi"
                   />
                 </div>
               </div>

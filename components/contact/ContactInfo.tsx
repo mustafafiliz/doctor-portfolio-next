@@ -5,6 +5,23 @@ import { useConfig } from "@/hooks/useConfig";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import Link from "next/link";
 
+// Telefon numarasını formatla: 905551234567 -> +90 (555) 123 45 67
+const formatPhoneNumber = (phoneNumber: string | undefined) => {
+  if (!phoneNumber) return '';
+  const cleaned = ('' + phoneNumber).replace(/\D/g, '');
+  // Türkiye formatı: 90 555 123 45 67
+  const match = cleaned.match(/^(\d{2})(\d{3})(\d{3})(\d{2})(\d{2})$/);
+  if (match) {
+    return `+${match[1]} (${match[2]}) ${match[3]} ${match[4]} ${match[5]}`;
+  }
+  // 10 haneli format: 555 123 45 67
+  const match10 = cleaned.match(/^(\d{3})(\d{3})(\d{2})(\d{2})$/);
+  if (match10) {
+    return `(${match10[1]}) ${match10[2]} ${match10[3]} ${match10[4]}`;
+  }
+  return phoneNumber;
+};
+
 export function ContactInfo() {
   const t = useTranslations("contact.info");
   const { config } = useConfig();
@@ -31,16 +48,16 @@ export function ContactInfo() {
     {
       icon: Phone,
       title: t("phone"),
-      content: config.contact.phone,
-      link: `tel:${config.contact.phone}`,
+      content: formatPhoneNumber(config.contact.phone),
+      link: `tel:${config.contact.phone?.replace(/\D/g, '')}`,
       isLink: true,
       show: !!config.contact.phone
     },
     {
       icon: Phone,
       title: t("mobile"),
-      content: config.contact.mobile,
-      link: `tel:${config.contact.mobile}`,
+      content: formatPhoneNumber(config.contact.mobile),
+      link: `tel:${config.contact.mobile?.replace(/\D/g, '')}`,
       isLink: true,
       show: !!config.contact.mobile
     },
