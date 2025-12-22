@@ -129,11 +129,19 @@ export default function NewSpecialtyPage() {
     setError(null);
 
     try {
+      // Slug boşsa title'dan otomatik üret
+      const finalSlug = formData.slug.trim() || generateSlug(formData.title);
+      if (!finalSlug) {
+        setError('Başlık veya slug alanı doldurulmalıdır');
+        setIsLoading(false);
+        return;
+      }
+
       // Image varsa FormData, yoksa JSON gönder
       if (selectedFile || formData.imageUrl) {
         const form = new FormData();
         form.append('title', formData.title);
-        form.append('slug', formData.slug);
+        form.append('slug', finalSlug);
         form.append('description', formData.description);
         form.append('content', formData.content);
         form.append('locale', formData.locale);
@@ -161,7 +169,7 @@ export default function NewSpecialtyPage() {
         // Image yoksa JSON gönder (order number olarak gider)
         const jsonData: any = {
           title: formData.title,
-          slug: formData.slug,
+          slug: finalSlug,
           description: formData.description,
           content: formData.content,
           locale: formData.locale,

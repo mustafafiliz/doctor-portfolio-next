@@ -14,7 +14,6 @@ import {
   Italic,
   Underline as UnderlineIcon,
   Strikethrough,
-  Heading1,
   Heading2,
   Heading3,
   List,
@@ -52,7 +51,7 @@ export function Editor({ content, onChange, placeholder = 'İçeriği buraya yaz
         heading: false,
       }),
       Heading.configure({
-        levels: [1, 2, 3],
+        levels: [2, 3],
       }),
       Link.configure({
         openOnClick: false,
@@ -67,6 +66,7 @@ export function Editor({ content, onChange, placeholder = 'İçeriği buraya yaz
       }),
       TextAlign.configure({
         types: ['heading', 'paragraph'],
+        defaultAlignment: 'left',
       }),
       Placeholder.configure({
         placeholder,
@@ -168,21 +168,26 @@ export function Editor({ content, onChange, placeholder = 'İçeriği buraya yaz
 
         {/* Headings */}
         <ToolbarButton
-          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-          isActive={editor.isActive('heading', { level: 1 })}
-          title="Başlık 1"
-        >
-          <Heading1 size={18} />
-        </ToolbarButton>
-        <ToolbarButton
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+          onClick={() => {
+            if (editor.isActive('heading', { level: 2 })) {
+              editor.chain().focus().setParagraph().run();
+            } else {
+              editor.chain().focus().setHeading({ level: 2 }).run();
+            }
+          }}
           isActive={editor.isActive('heading', { level: 2 })}
           title="Başlık 2"
         >
           <Heading2 size={18} />
         </ToolbarButton>
         <ToolbarButton
-          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+          onClick={() => {
+            if (editor.isActive('heading', { level: 3 })) {
+              editor.chain().focus().setParagraph().run();
+            } else {
+              editor.chain().focus().setHeading({ level: 3 }).run();
+            }
+          }}
           isActive={editor.isActive('heading', { level: 3 })}
           title="Başlık 3"
         >
@@ -382,11 +387,6 @@ export function Editor({ content, onChange, placeholder = 'İçeriği buraya yaz
           float: left;
           height: 0;
           pointer-events: none;
-        }
-        .ProseMirror h1 {
-          font-size: 2em;
-          font-weight: 700;
-          margin-bottom: 0.5em;
         }
         .ProseMirror h2 {
           font-size: 1.5em;
