@@ -20,6 +20,7 @@ export default function NewCategoryPage() {
     description: '',
     order: 0,
   });
+  const [isSlugManuallyEdited, setIsSlugManuallyEdited] = useState(false);
 
   const generateSlug = (title: string) => {
     return title
@@ -40,7 +41,16 @@ export default function NewCategoryPage() {
     setFormData({
       ...formData,
       title,
-      slug: formData.slug || generateSlug(title),
+      // Slug manuel olarak düzenlenmemişse otomatik üret
+      slug: isSlugManuallyEdited ? formData.slug : generateSlug(title),
+    });
+  };
+
+  const handleSlugChange = (slug: string) => {
+    setIsSlugManuallyEdited(true);
+    setFormData({
+      ...formData,
+      slug,
     });
   };
 
@@ -50,9 +60,17 @@ export default function NewCategoryPage() {
     setError(null);
 
     try {
+      // Slug boşsa title'dan otomatik üret
+      const finalSlug = formData.slug.trim() || generateSlug(formData.title);
+      if (!finalSlug) {
+        setError('Başlık veya slug alanı doldurulmalıdır');
+        setIsLoading(false);
+        return;
+      }
+
       await specialtyApi.createCategory({
         title: formData.title,
-        slug: formData.slug || generateSlug(formData.title),
+        slug: finalSlug,
         description: formData.description || undefined,
         order: formData.order,
       });
@@ -116,7 +134,7 @@ export default function NewCategoryPage() {
               <input
                 type="text"
                 value={formData.slug}
-                onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                onChange={(e) => handleSlugChange(e.target.value)}
                 className="flex-1 px-4 py-2.5 border border-gray-300 rounded-r-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
                 placeholder="kategori-slug"
               />
