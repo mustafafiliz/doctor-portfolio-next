@@ -55,14 +55,41 @@ export function Footer() {
     fetchSpecialties();
   }, []);
 
-  // Social media links from config
+  // Social media links from config - only show if URL exists, is not empty, and is not just a base domain
+  const isValidSocialUrl = (url: string | undefined): boolean => {
+    if (!url || url.trim() === '') return false;
+    const trimmed = url.trim();
+    // Check if URL is just a base domain (e.g., "https://facebook.com/" or "https://www.facebook.com/")
+    const baseDomains = [
+      'facebook.com',
+      'instagram.com',
+      'linkedin.com',
+      'twitter.com',
+      'x.com',
+      'youtube.com',
+    ];
+    try {
+      const urlObj = new URL(trimmed);
+      const hostname = urlObj.hostname.replace(/^www\./, '');
+      const pathname = urlObj.pathname.replace(/\/$/, ''); // Remove trailing slash
+      // If it's a base domain and has no meaningful path (just "/" or empty), it's invalid
+      const isBaseDomain = baseDomains.some(domain => hostname === domain);
+      if (isBaseDomain && (pathname === '' || pathname === '/')) {
+        return false;
+      }
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   const socialLinks = [
     { icon: Facebook, url: config.social?.facebook, label: 'Facebook' },
     { icon: Instagram, url: config.social?.instagram, label: 'Instagram' },
     { icon: Linkedin, url: config.social?.linkedin, label: 'LinkedIn' },
     { icon: Twitter, url: config.social?.twitter, label: 'Twitter' },
     { icon: Youtube, url: config.social?.youtube, label: 'YouTube' },
-  ].filter(link => link.url);
+  ].filter(link => isValidSocialUrl(link.url));
 
   return (
     <footer className="bg-[#1a1a2e] text-white relative overflow-hidden">

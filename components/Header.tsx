@@ -21,17 +21,17 @@ interface CategoryWithSpecialties extends SpecialtyCategory {
 const formatPhone = (phone: string): string => {
   // Sadece rakamları al
   const digits = phone.replace(/\D/g, '');
-  
+
   // Türk telefon formatı: +90 (5XX) XXX XX XX
   if (digits.length >= 10) {
     const countryCode = digits.startsWith('90') ? '+90' : (digits.startsWith('0') ? '+90' : '+90');
     const cleanDigits = digits.startsWith('90') ? digits.slice(2) : (digits.startsWith('0') ? digits.slice(1) : digits);
-    
+
     if (cleanDigits.length >= 10) {
       return `${countryCode} (${cleanDigits.slice(0, 3)}) ${cleanDigits.slice(3, 6)} ${cleanDigits.slice(6, 8)} ${cleanDigits.slice(8, 10)}`;
     }
   }
-  
+
   return phone;
 };
 
@@ -48,14 +48,41 @@ export function Header() {
 
   const currentLocale = (pathname?.split("/")[1] || "tr") as Locale;
 
-  // Social media links
+  // Social media links - only show if URL exists, is not empty, and is not just a base domain
+  const isValidSocialUrl = (url: string | undefined): boolean => {
+    if (!url || url.trim() === '') return false;
+    const trimmed = url.trim();
+    // Check if URL is just a base domain (e.g., "https://facebook.com/" or "https://www.facebook.com/")
+    const baseDomains = [
+      'facebook.com',
+      'instagram.com',
+      'linkedin.com',
+      'twitter.com',
+      'x.com',
+      'youtube.com',
+    ];
+    try {
+      const urlObj = new URL(trimmed);
+      const hostname = urlObj.hostname.replace(/^www\./, '');
+      const pathname = urlObj.pathname.replace(/\/$/, ''); // Remove trailing slash
+      // If it's a base domain and has no meaningful path (just "/" or empty), it's invalid
+      const isBaseDomain = baseDomains.some(domain => hostname === domain);
+      if (isBaseDomain && (pathname === '' || pathname === '/')) {
+        return false;
+      }
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   const socialLinks = [
     { icon: Facebook, url: config.social?.facebook, label: 'Facebook' },
     { icon: Instagram, url: config.social?.instagram, label: 'Instagram' },
     { icon: Linkedin, url: config.social?.linkedin, label: 'LinkedIn' },
     { icon: Twitter, url: config.social?.twitter, label: 'Twitter' },
     { icon: Youtube, url: config.social?.youtube, label: 'YouTube' },
-  ].filter(link => link.url);
+  ].filter(link => isValidSocialUrl(link.url));
 
   // Uzmanlıkları kategorilere göre grupla
   const groupSpecialtiesByCategory = (
@@ -142,11 +169,10 @@ export function Header() {
                       onClick={() => {
                         window.location.href = `/${locale}${basePath}`;
                       }}
-                      className={`flex items-center gap-1.5 px-2 py-1 text-xs transition-colors ${
-                        isActiveLocale
-                          ? "text-white font-medium"
-                          : "text-white/60 hover:text-white"
-                      }`}
+                      className={`flex items-center gap-1.5 px-2 py-1 text-xs transition-colors ${isActiveLocale
+                        ? "text-white font-medium"
+                        : "text-white/60 hover:text-white"
+                        }`}
                     >
                       <span className="w-5 h-3.5 rounded-sm overflow-hidden bg-white/20 flex items-center justify-center text-[10px] font-bold">
                         {locale.toUpperCase()}
@@ -162,7 +188,7 @@ export function Header() {
             <div className="flex items-center gap-4">
               {/* Phone */}
               {config.contact.phone && (
-                <a 
+                <a
                   href={`tel:${config.contact.phone}`}
                   className="flex items-center gap-2 text-sm font-medium text-white hover:text-primary transition-colors"
                 >
@@ -236,11 +262,10 @@ export function Header() {
               {/* Anasayfa */}
               <Link
                 href={`/${currentLocale}`}
-                className={`relative px-4 h-full flex items-center text-sm font-medium transition-all duration-200 border-b-2 ${
-                  isActive("/") && basePath === ""
-                    ? "border-primary text-primary"
-                    : "border-transparent text-foreground hover:text-primary hover:border-primary/50"
-                }`}
+                className={`relative px-4 h-full flex items-center text-sm font-medium transition-all duration-200 border-b-2 ${isActive("/") && basePath === ""
+                  ? "border-primary text-primary"
+                  : "border-transparent text-foreground hover:text-primary hover:border-primary/50"
+                  }`}
               >
                 {t("home")}
               </Link>
@@ -250,11 +275,10 @@ export function Header() {
                 <Link
                   key={category._id}
                   href={`/${currentLocale}/uzmanlik/${category.slug}`}
-                  className={`relative px-4 h-full flex items-center text-sm font-medium transition-all duration-200 border-b-2 ${
-                    isActive(`/uzmanlik/${category.slug}`)
-                      ? "border-primary text-primary"
-                      : "border-transparent text-foreground hover:text-primary hover:border-primary/50"
-                  }`}
+                  className={`relative px-4 h-full flex items-center text-sm font-medium transition-all duration-200 border-b-2 ${isActive(`/uzmanlik/${category.slug}`)
+                    ? "border-primary text-primary"
+                    : "border-transparent text-foreground hover:text-primary hover:border-primary/50"
+                    }`}
                 >
                   {category.title || category.name}
                 </Link>
@@ -263,11 +287,10 @@ export function Header() {
               {/* Galeri */}
               <Link
                 href={`/${currentLocale}${getRoute("gallery", currentLocale)}`}
-                className={`relative px-4 h-full flex items-center text-sm font-medium transition-all duration-200 border-b-2 ${
-                  isActive(getRoute("gallery", currentLocale))
-                    ? "border-primary text-primary"
-                    : "border-transparent text-foreground hover:text-primary hover:border-primary/50"
-                }`}
+                className={`relative px-4 h-full flex items-center text-sm font-medium transition-all duration-200 border-b-2 ${isActive(getRoute("gallery", currentLocale))
+                  ? "border-primary text-primary"
+                  : "border-transparent text-foreground hover:text-primary hover:border-primary/50"
+                  }`}
               >
                 {t("gallery")}
               </Link>
@@ -285,11 +308,10 @@ export function Header() {
                       onClick={() => {
                         window.location.href = `/${locale}${basePath}`;
                       }}
-                      className={`px-2 py-1 text-xs font-medium rounded-sm transition-colors ${
-                        isActiveLocale
-                          ? "bg-primary text-white"
-                          : "text-muted-foreground"
-                      }`}
+                      className={`px-2 py-1 text-xs font-medium rounded-sm transition-colors ${isActiveLocale
+                        ? "bg-primary text-white"
+                        : "text-muted-foreground"
+                        }`}
                     >
                       {locale.toUpperCase()}
                     </button>
@@ -365,7 +387,7 @@ export function Header() {
               {/* Contact Info */}
               <div className="p-4 border-b border-border bg-muted/30">
                 {config.contact.phone && (
-                  <a 
+                  <a
                     href={`tel:${config.contact.phone}`}
                     className="flex items-center gap-3 text-sm font-medium text-foreground mb-2"
                   >
@@ -376,7 +398,7 @@ export function Header() {
                   </a>
                 )}
                 {config.contact.email && (
-                  <a 
+                  <a
                     href={`mailto:${config.contact.email}`}
                     className="flex items-center gap-3 text-sm text-muted-foreground"
                   >
@@ -392,11 +414,10 @@ export function Header() {
                 {/* Anasayfa */}
                 <Link
                   href={`/${currentLocale}`}
-                  className={`px-4 py-3 rounded-sm text-base font-medium transition-colors ${
-                    isActive("/") && basePath === ""
-                      ? "text-primary bg-primary/10"
-                      : "text-foreground hover:bg-muted/50"
-                  }`}
+                  className={`px-4 py-3 rounded-sm text-base font-medium transition-colors ${isActive("/") && basePath === ""
+                    ? "text-primary bg-primary/10"
+                    : "text-foreground hover:bg-muted/50"
+                    }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {t("home")}
@@ -406,17 +427,15 @@ export function Header() {
                 <div>
                   <button
                     onClick={() => setMobileSpecialtiesOpen(!mobileSpecialtiesOpen)}
-                    className={`w-full px-4 py-3 rounded-sm text-base font-medium transition-colors flex items-center justify-between ${
-                      mobileSpecialtiesOpen
-                        ? "text-primary bg-primary/10"
-                        : "text-foreground hover:bg-muted/50"
-                    }`}
+                    className={`w-full px-4 py-3 rounded-sm text-base font-medium transition-colors flex items-center justify-between ${mobileSpecialtiesOpen
+                      ? "text-primary bg-primary/10"
+                      : "text-foreground hover:bg-muted/50"
+                      }`}
                   >
                     <span>{t("specialties")}</span>
                     <ChevronDown
-                      className={`h-4 w-4 transition-transform duration-200 ${
-                        mobileSpecialtiesOpen ? "rotate-180" : ""
-                      }`}
+                      className={`h-4 w-4 transition-transform duration-200 ${mobileSpecialtiesOpen ? "rotate-180" : ""
+                        }`}
                     />
                   </button>
 
@@ -448,11 +467,10 @@ export function Header() {
                 {/* Galeri */}
                 <Link
                   href={`/${currentLocale}${getRoute("gallery", currentLocale)}`}
-                  className={`px-4 py-3 rounded-sm text-base font-medium transition-colors ${
-                    isActive(getRoute("gallery", currentLocale))
-                      ? "text-primary bg-primary/10"
-                      : "text-foreground hover:bg-muted/50"
-                  }`}
+                  className={`px-4 py-3 rounded-sm text-base font-medium transition-colors ${isActive(getRoute("gallery", currentLocale))
+                    ? "text-primary bg-primary/10"
+                    : "text-foreground hover:bg-muted/50"
+                    }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {t("gallery")}
