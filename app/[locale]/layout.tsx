@@ -8,6 +8,7 @@ import "../globals.css";
 import { getConfig } from "@/lib/config";
 import { locales, type Locale } from "@/lib/i18n";
 import { getDictionary } from "./dictionaries";
+import type { Metadata } from "next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,6 +22,24 @@ const geistMono = Geist_Mono({
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const validLocale = locale as Locale;
+  const config = await getConfig();
+
+  return {
+    icons: config.site?.favicon ? {
+      icon: config.site.favicon,
+      shortcut: config.site.favicon,
+      apple: config.site.favicon,
+    } : undefined,
+  };
 }
 
 export default async function LocaleLayout({
