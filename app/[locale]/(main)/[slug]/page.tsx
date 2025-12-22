@@ -7,6 +7,7 @@ import { ChevronRight, ArrowLeft } from 'lucide-react';
 import { getPublicSpecialtyBySlug, getPublicSpecialties, getConfig } from '@/lib/config';
 import type { Specialty, SpecialtyCategory } from '@/lib/types';
 import type { Metadata } from 'next';
+import { SpecialtyContent } from '@/components/specialty/SpecialtyContent';
 
 // Rezerve edilmiş slug'lar (diğer sayfalar)
 const reservedSlugs = [
@@ -184,19 +185,9 @@ export default async function SpecialtyPage({
             </div>
           )}
 
-          {/* Description */}
-          {specialty.description && (
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-              {specialty.description}
-            </p>
-          )}
-
           {/* Content */}
           {specialty.content && (
-            <div
-              className="prose prose-lg max-w-none mb-12"
-              dangerouslySetInnerHTML={{ __html: specialty.content }}
-            />
+            <SpecialtyContent content={specialty.content} />
           )}
         </div>
       </Container>
