@@ -235,8 +235,8 @@ export function Header() {
         <div className="container mx-auto px-4 sm:px-6 h-14 lg:h-16">
           <div className="flex h-full items-center justify-between">
             {/* Logo Section */}
-            <Link href={`/${currentLocale}`} className="flex items-center flex-shrink-0">
-              {config.site?.logo ? (
+            {config.site?.logo && (
+              <Link href={`/${currentLocale}`} className="flex items-center shrink-0">
                 <Image
                   src={config.site.logo}
                   alt={config.site.name || ""}
@@ -245,17 +245,8 @@ export function Header() {
                   className="h-8 lg:h-10 w-auto object-contain"
                   priority
                 />
-              ) : (
-                <Image
-                  src="/images/logo.webp"
-                  alt="Logo"
-                  width={160}
-                  height={44}
-                  className="h-8 lg:h-10 w-auto object-contain"
-                  priority
-                />
-              )}
-            </Link>
+              </Link>
+            )}
 
             {/* Desktop Navigation - Kategoriler direkt gösteriliyor */}
             <nav className="hidden lg:flex items-center h-full">
@@ -348,12 +339,12 @@ export function Header() {
           <div className="fixed top-0 right-0 h-full w-full max-w-sm bg-background border-l border-border shadow-2xl z-50 lg:hidden">
             {/* Drawer Header */}
             <div className="flex items-center justify-between p-4 border-b border-border">
-              <Link
-                href={`/${currentLocale}`}
-                className="flex items-center"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {config.site?.logo ? (
+              {config.site?.logo ? (
+                <Link
+                  href={`/${currentLocale}`}
+                  className="flex items-center"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
                   <Image
                     src={config.site.logo}
                     alt={config.site.name || ""}
@@ -361,16 +352,10 @@ export function Header() {
                     height={32}
                     className="h-8 w-auto object-contain"
                   />
-                ) : (
-                  <Image
-                    src="/images/logo.webp"
-                    alt="Logo"
-                    width={120}
-                    height={32}
-                    className="h-8 w-auto object-contain"
-                  />
-                )}
-              </Link>
+                </Link>
+              ) : (
+                <div className="h-8" />
+              )}
               <Button
                 variant="ghost"
                 size="icon"
