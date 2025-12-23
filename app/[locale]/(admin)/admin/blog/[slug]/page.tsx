@@ -184,8 +184,29 @@ export default function EditBlogPage() {
       }
       await blogApi.update(blogId, form);
       router.push(`/${currentLocale}/admin/blog`);
-    } catch (err) {
-      setError('Blog yazısı güncellenirken bir hata oluştu');
+    } catch (err: any) {
+      // API'den gelen hata mesajını göster
+      const errorMessage = err?.message || '';
+      const isImageUpload = selectedFile || (formData.imageUrl && !formData.image);
+      
+      // 413 Request Entity Too Large veya failed to fetch (görsel yükleme sırasında)
+      if (err?.statusCode === 413 || 
+          (isImageUpload && (errorMessage.toLowerCase().includes('failed to fetch') || 
+                             errorMessage.toLowerCase().includes('network') ||
+                             !errorMessage))) {
+        setError('Görsel dosyası çok büyük. Lütfen daha küçük bir dosya seçin.');
+      } else if (err?.statusCode === 415) {
+        setError('Desteklenmeyen dosya formatı. Lütfen PNG, JPG veya WebP formatında bir görsel seçin.');
+      } else if (isImageUpload && (errorMessage.toLowerCase().includes('image') || 
+                                    errorMessage.toLowerCase().includes('görsel') ||
+                                    errorMessage.toLowerCase().includes('file') ||
+                                    errorMessage.toLowerCase().includes('upload'))) {
+        setError(`Görsel yüklenirken bir hata oluştu: ${errorMessage}`);
+      } else if (errorMessage) {
+        setError(errorMessage);
+      } else {
+        setError('Blog yazısı güncellenirken bir hata oluştu');
+      }
       setIsSaving(false);
     }
   };
@@ -261,7 +282,10 @@ export default function EditBlogPage() {
       {error && (
         <div className="flex items-center gap-2 bg-red-50 text-red-600 px-4 py-3 rounded-sm text-sm border border-red-100">
           <AlertCircle size={18} />
-          {error}
+          <span className="flex-1">{error}</span>
+          <button onClick={() => setError(null)} className="ml-auto hover:bg-red-100 rounded-sm p-1 transition-colors">
+            <X size={16} />
+          </button>
         </div>
       )}
 
