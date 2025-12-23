@@ -29,7 +29,7 @@ interface DashboardStats {
 export default function AdminDashboardPage() {
   const pathname = usePathname();
   const currentLocale = pathname?.split('/')[1] || 'tr';
-  
+
   const [stats, setStats] = useState<DashboardStats>({
     totalBlogs: 0,
     totalSpecialties: 0,
@@ -42,7 +42,7 @@ export default function AdminDashboardPage() {
 
   const quickActions = [
     { name: 'Yeni Blog Yazısı', href: `/${currentLocale}/admin/blog/yeni`, icon: FileText, color: 'bg-blue-500' },
-    { name: 'Yeni Uzmanlık', href: `/${currentLocale}/admin/uzmanliklar/yeni`, icon: Stethoscope, color: 'bg-green-500' },
+    { name: 'Yeni Uzmanlık Yazısı', href: `/${currentLocale}/admin/uzmanliklar/yeni`, icon: Stethoscope, color: 'bg-green-500' },
     { name: 'Fotoğraf Yükle', href: `/${currentLocale}/admin/galeri`, icon: Images, color: 'bg-purple-500' },
     { name: 'Yeni SSS', href: `/${currentLocale}/admin/faq`, icon: HelpCircle, color: 'bg-orange-500' },
   ];
@@ -51,7 +51,7 @@ export default function AdminDashboardPage() {
     const fetchDashboardData = async () => {
       setIsLoading(true);
       setError(null);
-      
+
       try {
         // Fetch all data in parallel
         const [blogsData, specialtiesData, galleryData, faqsData, contactData] = await Promise.all([
@@ -61,14 +61,14 @@ export default function AdminDashboardPage() {
           faqApi.list().catch(() => [] as any),
           contactApi.list().catch(() => ({ data: [], unreadCount: 0 })),
         ]);
-        
+
         // FAQ data type guard
-        const faqsArray = Array.isArray(faqsData) 
-          ? faqsData 
+        const faqsArray = Array.isArray(faqsData)
+          ? faqsData
           : (faqsData && typeof faqsData === 'object' && 'data' in faqsData && Array.isArray(faqsData.data))
             ? faqsData.data
             : [];
-        
+
         setStats({
           // total field'ı varsa onu kullan, yoksa data.length kullan
           totalBlogs: blogsData.total ?? (blogsData.data?.length || 0),

@@ -186,8 +186,16 @@ export default function EditCategoryPage() {
     try {
       await specialtyApi.deleteCategory(categoryId);
       router.push(`/${currentLocale}/admin/uzmanliklar`);
-    } catch (err) {
-      setError('Kategori silinirken bir hata oluştu');
+    } catch (err: any) {
+      // API'den gelen mesajı parse et ve Türkçe'ye çevir
+      const errorMessage = err?.message || '';
+      const match = errorMessage.match(/Cannot delete category with (\d+) specialties/i);
+      if (match && match[1]) {
+        const count = match[1];
+        setError(`Bu kategoride ${count} uzmanlık bulunmaktadır. Lütfen önce uzmanlıkları silin.`);
+      } else {
+        setError('Kategori silinirken bir hata oluştu');
+      }
       setIsDeleting(false);
     }
   };
