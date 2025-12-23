@@ -28,7 +28,7 @@ import type { Specialty, SpecialtyCategory } from '@/lib/types';
 export default function AdminSpecialtiesPage() {
   const pathname = usePathname();
   const currentLocale = pathname?.split('/')[1] || 'tr';
-  
+
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [specialties, setSpecialties] = useState<Specialty[]>([]);
@@ -55,7 +55,7 @@ export default function AdminSpecialtiesPage() {
         }),
         specialtyApi.listCategories(),
       ]);
-      
+
       setSpecialties(specialtiesData.data || []);
       setTotalPages(specialtiesData.totalPages || 1);
       setCategories(categoriesData || []);
@@ -107,8 +107,16 @@ export default function AdminSpecialtiesPage() {
       if (categoryFilter === id) {
         setCategoryFilter('all');
       }
-    } catch (err) {
-      setError('Kategori silinirken bir hata oluştu');
+    } catch (err: any) {
+      // API'den gelen mesajı parse et ve Türkçe'ye çevir
+      const errorMessage = err?.message || '';
+      const match = errorMessage.match(/Cannot delete category with (\d+) specialties/i);
+      if (match && match[1]) {
+        const count = match[1];
+        setError(`Bu kategoride ${count} uzmanlık bulunmaktadır. Lütfen önce uzmanlıkları silin.`);
+      } else {
+        setError('Kategori silinirken bir hata oluştu');
+      }
     } finally {
       setDeletingCategoryId(null);
     }
@@ -166,11 +174,10 @@ export default function AdminSpecialtiesPage() {
           {categories.map((category) => (
             <div
               key={category._id}
-              className={`relative group p-4 rounded-sm border transition-all ${
-                categoryFilter === category._id
-                  ? 'border-[#144793] bg-[#144793]/5'
-                  : 'border-gray-200 bg-white hover:border-[#144793]'
-              }`}
+              className={`relative group p-4 rounded-sm border transition-all ${categoryFilter === category._id
+                ? 'border-[#144793] bg-[#144793]/5'
+                : 'border-gray-200 bg-white hover:border-[#144793]'
+                }`}
             >
               <button
                 onClick={() => {

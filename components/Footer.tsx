@@ -19,16 +19,16 @@ interface CategoryWithSpecialties extends SpecialtyCategory {
 // Telefon numarasını formatla
 const formatPhone = (phone: string): string => {
   const digits = phone.replace(/\D/g, '');
-  
+
   if (digits.length >= 10) {
     const countryCode = digits.startsWith('90') ? '+90' : (digits.startsWith('0') ? '+90' : '+90');
     const cleanDigits = digits.startsWith('90') ? digits.slice(2) : (digits.startsWith('0') ? digits.slice(1) : digits);
-    
+
     if (cleanDigits.length >= 10) {
       return `${countryCode} (${cleanDigits.slice(0, 3)}) ${cleanDigits.slice(3, 6)} ${cleanDigits.slice(6, 8)} ${cleanDigits.slice(8, 10)}`;
     }
   }
-  
+
   return phone;
 };
 
@@ -105,9 +105,9 @@ export function Footer() {
                   {socialLinks.map((social, index) => {
                     const Icon = social.icon;
                     return (
-                      <a 
+                      <a
                         key={index}
-                        href={social.url} 
+                        href={social.url}
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={social.label}
@@ -128,7 +128,7 @@ export function Footer() {
 
             {/* Phone */}
             {config.contact.phone && (
-              <a 
+              <a
                 href={`tel:${config.contact.phone}`}
                 className="flex items-center gap-2 text-white hover:text-primary transition-colors"
               >
@@ -145,7 +145,7 @@ export function Footer() {
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 sm:px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-          
+
           {/* Brand & Contact Section */}
           <div className="lg:col-span-3 space-y-6">
             {/* Logo & Brand */}
@@ -156,7 +156,7 @@ export function Footer() {
                   alt={config.site?.name || ''}
                   width={200}
                   height={54}
-                  className="h-auto w-full max-w-[200px] object-contain brightness-0 invert"
+                  className="h-auto w-full max-w-[200px] object-contain"
                   unoptimized
                 />
               ) : (
@@ -194,7 +194,7 @@ export function Footer() {
               {/* Dynamic Categories */}
               {categories.slice(0, 5).map((category) => (
                 <div key={category._id}>
-                  <Link 
+                  <Link
                     href={`/${currentLocale}/uzmanlik/${category.slug}`}
                     className="text-sm font-semibold text-white hover:text-primary transition-colors block mb-4"
                   >
@@ -219,7 +219,7 @@ export function Footer() {
 
               {/* Blog Section */}
               <div>
-                <Link 
+                <Link
                   href={`/${currentLocale}/blog`}
                   className="text-sm font-semibold text-white hover:text-primary transition-colors block mb-4"
                 >
@@ -239,7 +239,7 @@ export function Footer() {
 
               {/* Hakkımda Section */}
               <div>
-                <Link 
+                <Link
                   href={`/${currentLocale}/hakkimda`}
                   className="text-sm font-semibold text-white hover:text-primary transition-colors block mb-4"
                 >
