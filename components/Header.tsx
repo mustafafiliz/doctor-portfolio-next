@@ -153,14 +153,8 @@ export function Header() {
           <div className="flex items-center justify-between h-10">
             {/* Left Side - Address & Languages */}
             <div className="flex items-center gap-6">
-              {config.contact.address && (
-                <div className="flex items-center gap-2 text-xs text-white/70">
-                  <MapPin className="h-3.5 w-3.5 text-primary" />
-                  <span className="truncate max-w-[300px]">{config.contact.address}</span>
-                </div>
-              )}
               {/* Language Switcher */}
-              <div className="flex items-center gap-1 border-l border-white/20 pl-4">
+              <div className="flex items-center gap-1">
                 {locales.map((locale) => {
                   const isActiveLocale = currentLocale === locale;
                   return (
