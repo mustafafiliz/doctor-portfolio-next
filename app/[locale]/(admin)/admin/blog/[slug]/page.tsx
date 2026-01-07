@@ -205,7 +205,7 @@ export default function EditBlogPage() {
       } else if (errorMessage) {
         setError(errorMessage);
       } else {
-        setError('Blog yazısı güncellenirken bir hata oluştu');
+      setError('Blog yazısı güncellenirken bir hata oluştu');
       }
       setIsSaving(false);
     }

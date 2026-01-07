@@ -163,12 +163,12 @@ export default function EditCategoryPage() {
         }
         await specialtyApi.updateCategoryWithImage(categoryId, form);
       } else {
-        await specialtyApi.updateCategory(categoryId, {
-          title: formData.title,
-          slug: formData.slug || generateSlug(formData.title),
-          description: formData.description || undefined,
-          order: formData.order,
-        });
+      await specialtyApi.updateCategory(categoryId, {
+        title: formData.title,
+        slug: formData.slug || generateSlug(formData.title),
+        description: formData.description || undefined,
+        order: formData.order,
+      });
       }
       router.push(`/${currentLocale}/admin/uzmanliklar`);
     } catch (err: any) {
@@ -192,7 +192,7 @@ export default function EditCategoryPage() {
       } else if (errorMessage) {
         setError(errorMessage);
       } else {
-        setError('Kategori güncellenirken bir hata oluştu');
+      setError('Kategori güncellenirken bir hata oluştu');
       }
       setIsSaving(false);
     }
@@ -215,7 +215,7 @@ export default function EditCategoryPage() {
         const count = match[1];
         setError(`Bu kategoride ${count} uzmanlık bulunmaktadır. Lütfen önce uzmanlıkları silin.`);
       } else {
-        setError('Kategori silinirken bir hata oluştu');
+      setError('Kategori silinirken bir hata oluştu');
       }
       setIsDeleting(false);
     }

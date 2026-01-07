@@ -5,20 +5,35 @@ import { useConfig } from "@/hooks/useConfig";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import Link from "next/link";
 
-// Telefon numarasını formatla: 905551234567 -> +90 (555) 123 45 67
+// Telefon numarasını formatla: 905551234567 -> +90 555 1234 567
 const formatPhoneNumber = (phoneNumber: string | undefined) => {
   if (!phoneNumber) return '';
-  const cleaned = ('' + phoneNumber).replace(/\D/g, '');
-  // Türkiye formatı: 90 555 123 45 67
-  const match = cleaned.match(/^(\d{2})(\d{3})(\d{3})(\d{2})(\d{2})$/);
-  if (match) {
-    return `+${match[1]} (${match[2]}) ${match[3]} ${match[4]} ${match[5]}`;
+  let cleaned = ('' + phoneNumber).replace(/\D/g, '');
+
+  // "90" ile başlıyorsa kaldır (ülke kodu)
+  if (cleaned.startsWith('90') && cleaned.length >= 9) {
+    cleaned = cleaned.slice(2);
   }
-  // 10 haneli format: 555 123 45 67
-  const match10 = cleaned.match(/^(\d{3})(\d{3})(\d{2})(\d{2})$/);
-  if (match10) {
-    return `(${match10[1]}) ${match10[2]} ${match10[3]} ${match10[4]}`;
+  // "0" ile başlıyorsa kaldır
+  else if (cleaned.startsWith('0')) {
+    cleaned = cleaned.slice(1);
   }
+
+  // 10 haneli numara: +90 XXX XXXX XXX
+  if (cleaned.length === 10) {
+    return `+90 ${cleaned.slice(0, 3)} ${cleaned.slice(3, 7)} ${cleaned.slice(7)}`;
+  }
+
+  // 7 haneli numara (444 numaraları vb): +90 XXX XXXX
+  if (cleaned.length === 7) {
+    return `+90 ${cleaned.slice(0, 3)} ${cleaned.slice(3)}`;
+  }
+
+  // Diğer uzunluklar için basit format
+  if (cleaned.length > 0) {
+    return `+90 ${cleaned}`;
+  }
+
   return phoneNumber;
 };
 
@@ -30,9 +45,9 @@ export function ContactInfo() {
   const workingHours = config.workingHours && config.workingHours.length > 0
     ? config.workingHours
     : [
-        { day: "Pazartesi - Cuma", hours: "09:00 - 18:00" },
-        { day: "Cumartesi", hours: "09:00 - 13:00" }
-      ];
+      { day: "Pazartesi - Cuma", hours: "09:00 - 18:00" },
+      { day: "Cumartesi", hours: "09:00 - 13:00" }
+    ];
 
   const contactItems = [
     {
@@ -101,7 +116,7 @@ export function ContactInfo() {
               </h3>
               {typeof item.content === "string" ? (
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed break-words">
-                  {item.content}
+                  {item.content.replace(' 90', '')}
                 </p>
               ) : (
                 item.content

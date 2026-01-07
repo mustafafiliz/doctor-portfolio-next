@@ -157,7 +157,7 @@ export default function NewBlogPage() {
       } else if (errorMessage) {
         setError(errorMessage);
       } else {
-        setError('Blog yazısı kaydedilirken bir hata oluştu');
+      setError('Blog yazısı kaydedilirken bir hata oluştu');
       }
       setIsLoading(false);
     }

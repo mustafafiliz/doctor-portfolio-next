@@ -210,7 +210,7 @@ export default function NewSpecialtyPage() {
       } else if (errorMessage) {
         setError(errorMessage);
       } else {
-        setError('Uzmanlık alanı kaydedilirken bir hata oluştu');
+      setError('Uzmanlık alanı kaydedilirken bir hata oluştu');
       }
       setIsLoading(false);
     }
@@ -335,11 +335,11 @@ export default function NewSpecialtyPage() {
                 <SelectValue placeholder="Uzmanlık Seçin" />
               </SelectTrigger>
               <SelectContent>
-                {categories.map((category) => (
+              {categories.map((category) => (
                   <SelectItem key={category._id} value={category._id}>
                     {category.title || category.name || category._id}
                   </SelectItem>
-                ))}
+              ))}
               </SelectContent>
             </Select>
           </div>

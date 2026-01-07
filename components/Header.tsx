@@ -19,17 +19,33 @@ interface CategoryWithSpecialties extends SpecialtyCategory {
 
 // Telefon numarasını formatla
 const formatPhone = (phone: string): string => {
+  if (!phone) return '';
+
   // Sadece rakamları al
-  const digits = phone.replace(/\D/g, '');
+  let digits = phone.replace(/\D/g, '');
 
-  // Türk telefon formatı: +90 (5XX) XXX XX XX
-  if (digits.length >= 10) {
-    const countryCode = digits.startsWith('90') ? '+90' : (digits.startsWith('0') ? '+90' : '+90');
-    const cleanDigits = digits.startsWith('90') ? digits.slice(2) : (digits.startsWith('0') ? digits.slice(1) : digits);
+  // "90" ile başlıyorsa kaldır (ülke kodu)
+  if (digits.startsWith('90') && digits.length >= 9) {
+    digits = digits.slice(2);
+  }
+  // "0" ile başlıyorsa kaldır
+  else if (digits.startsWith('0')) {
+    digits = digits.slice(1);
+  }
 
-    if (cleanDigits.length >= 10) {
-      return `${countryCode} (${cleanDigits.slice(0, 3)}) ${cleanDigits.slice(3, 6)} ${cleanDigits.slice(6, 8)} ${cleanDigits.slice(8, 10)}`;
-    }
+  // 10 haneli numara: +90 XXX XXXX XXX
+  if (digits.length === 10) {
+    return `+90 ${digits.slice(0, 3)} ${digits.slice(3, 7)} ${digits.slice(7)}`;
+  }
+
+  // 7 haneli numara (444 numaraları vb): +90 XXX XXXX
+  if (digits.length === 7) {
+    return `+90 ${digits.slice(0, 3)} ${digits.slice(3)}`;
+  }
+
+  // Diğer uzunluklar için basit format
+  if (digits.length > 0) {
+    return `+90 ${digits}`;
   }
 
   return phone;
@@ -183,11 +199,11 @@ export function Header() {
               {/* Phone */}
               {config.contact.phone && (
                 <a
-                  href={`tel:${config.contact.phone}`}
+                  href={`tel:${config.contact.phone.replace(' 90', '')}`}
                   className="flex items-center gap-2 text-sm font-medium text-white hover:text-primary transition-colors"
                 >
                   <Phone className="h-4 w-4 text-primary" />
-                  {formatPhone(config.contact.phone)}
+                  {formatPhone(config.contact.phone).replace(' 90', '')}
                 </a>
               )}
 
@@ -367,13 +383,13 @@ export function Header() {
               <div className="p-4 border-b border-border bg-muted/30">
                 {config.contact.phone && (
                   <a
-                    href={`tel:${config.contact.phone}`}
+                    href={`tel:${config.contact.phone.replace(' 90', '')}`}
                     className="flex items-center gap-3 text-sm font-medium text-foreground mb-2"
                   >
                     <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
                       <Phone className="h-4 w-4 text-primary" />
                     </div>
-                    {formatPhone(config.contact.phone)}
+                    {formatPhone(config.contact.phone).replace(' 90', '')}
                   </a>
                 )}
                 {config.contact.email && (
