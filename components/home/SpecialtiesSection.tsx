@@ -22,9 +22,9 @@ interface SpecialtiesSectionProps {
   currentLocale?: Locale;
 }
 
-export function SpecialtiesSection({ 
-  initialCategories, 
-  currentLocale: propLocale 
+export function SpecialtiesSection({
+  initialCategories,
+  currentLocale: propLocale
 }: SpecialtiesSectionProps = {} as SpecialtiesSectionProps) {
   const t = useTranslations('specialties');
   const pathname = usePathname();
@@ -82,13 +82,13 @@ export function SpecialtiesSection({
           backgroundSize: '40px 40px'
         }} />
       </div>
-      
+
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
         <div className="text-left mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              {t('title')}
-            </h2>
+            {t('title')}
+          </h2>
           <p className="text-gray-600 max-w-2xl">
             {t('subtitle')}
           </p>
@@ -106,7 +106,7 @@ export function SpecialtiesSection({
           <CarouselContent className="-ml-4">
             {categories.map((category) => {
               const categoryTitle = category.title || category.name || '';
-              
+
               return (
                 <CarouselItem key={category._id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
                   <Link href={`/${currentLocale}/uzmanlik/${category.slug}`} className="block h-full">
@@ -154,7 +154,7 @@ export function SpecialtiesSection({
               );
             })}
           </CarouselContent>
-          
+
           <div className="mt-8 flex justify-center gap-4">
             <CarouselPrevious className="relative static translate-y-0 h-10 w-10 border-2 border-primary text-primary hover:bg-primary hover:text-white" />
             <CarouselNext className="relative static translate-y-0 h-10 w-10 border-2 border-primary text-primary hover:bg-primary hover:text-white" />

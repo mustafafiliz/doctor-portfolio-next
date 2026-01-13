@@ -135,7 +135,7 @@ export function VideosSection({ initialVideos, limit, showViewAll = false }: Vid
 
               {item.title && (
                 <div className="px-1">
-                  <p className="text-sm font-semibold text-gray-900 line-clamp-2 group-hover:text-primary transition-colors cursor-pointer" onClick={() => openModal(idx)}>
+                  <p className="text-base font-semibold text-gray-900 line-clamp-2 group-hover:text-primary transition-colors cursor-pointer" onClick={() => openModal(idx)}>
                     {item.title}
                   </p>
                 </div>
