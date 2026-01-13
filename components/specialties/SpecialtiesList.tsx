@@ -26,17 +26,17 @@ interface SpecialtiesListProps {
   };
 }
 
-export function SpecialtiesList({ 
-  initialCategories, 
+export function SpecialtiesList({
+  initialCategories,
   currentLocale: propLocale,
-  config: propConfig 
+  config: propConfig
 }: SpecialtiesListProps = {} as SpecialtiesListProps) {
   const t = useTranslations('specialties');
   const pathname = usePathname();
   const currentLocale = propLocale || (pathname?.split('/')[1] || 'tr') as Locale;
   const { config: contextConfig } = useConfig();
   const config = propConfig || contextConfig;
-  
+
   const [categories, setCategories] = useState<CategoryWithSpecialties[]>(initialCategories || []);
   const [isLoading, setIsLoading] = useState(!initialCategories);
 
@@ -60,23 +60,10 @@ export function SpecialtiesList({
 
   const primaryColor = config.colors.primary;
 
-  // Tüm uzmanlıkları düzleştir
-  const allSpecialties: (Specialty & { categoryName?: string })[] = [];
-  categories.forEach((category) => {
-    if (category.specialties) {
-      category.specialties.forEach((specialty) => {
-        allSpecialties.push({
-          ...specialty,
-          categoryName: category.name
-        });
-      });
-    }
-  });
-
   if (isLoading) {
     return (
       <div>
-        <div 
+        <div
           className="py-6 sm:py-8"
           style={{ backgroundColor: primaryColor }}
         >
@@ -95,10 +82,11 @@ export function SpecialtiesList({
     );
   }
 
+  // Kategori listesini göster
   return (
     <div>
       {/* Breadcrumb Header */}
-      <div 
+      <div
         className="py-6 sm:py-8"
         style={{ backgroundColor: primaryColor }}
       >
@@ -119,26 +107,28 @@ export function SpecialtiesList({
         </Container>
       </div>
 
-      {/* Specialties Grid */}
+      {/* Categories Grid */}
       <Container className="py-12">
-        {allSpecialties.length === 0 ? (
+        {categories.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-muted-foreground">Henüz uzmanlık eklenmemiş.</p>
+            <p className="text-muted-foreground">Henüz uzmanlık kategorisi eklenmemiş.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {allSpecialties.map((specialty) => {
+            {categories.map((category) => {
+              const title = category.title || category.name;
+
               return (
                 <Link
-                  key={specialty._id}
-                  href={`/${currentLocale}/${specialty.slug}`}
+                  key={category._id}
+                  href={`/${currentLocale}/uzmanlik/${category.slug}`}
                   className="group bg-white border border-gray-200 rounded-sm overflow-hidden hover:border-primary hover:shadow-lg transition-all"
                 >
-                  {specialty.image ? (
+                  {category.image ? (
                     <div className="aspect-video relative overflow-hidden bg-gray-100">
                       <Image
-                        src={specialty.image}
-                        alt={specialty.title}
+                        src={category.image}
+                        alt={title}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                         unoptimized
@@ -146,29 +136,20 @@ export function SpecialtiesList({
                     </div>
                   ) : (
                     <div className="aspect-video bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
-                      <span className="text-4xl text-primary/30">{specialty.title.charAt(0)}</span>
+                      <span className="text-4xl text-primary/30">{title.charAt(0)}</span>
                     </div>
                   )}
                   <div className="p-4">
-                    {specialty.categoryName && (
-                      <span 
-                        className="text-xs font-medium px-2 py-1 rounded-sm"
-                        style={{ 
-                          backgroundColor: `${primaryColor}15`,
-                          color: primaryColor 
-                        }}
-                      >
-                        {specialty.categoryName}
-                      </span>
-                    )}
                     <h2 className="text-lg font-semibold text-gray-800 group-hover:text-primary transition-colors mt-3">
-                      {specialty.title}
+                      {title}
                     </h2>
-                    <p className="text-gray-600 text-sm mt-2 line-clamp-2">
-                      {specialty.description}
-                    </p>
+                    {category.description && (
+                      <p className="text-gray-600 text-sm mt-2 line-clamp-2">
+                        {category.description}
+                      </p>
+                    )}
                     <span className="inline-flex items-center gap-1 text-primary text-sm font-medium mt-4">
-                      Devamını Oku
+                      İncele
                       <ChevronRight size={16} />
                     </span>
                   </div>
