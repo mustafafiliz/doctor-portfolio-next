@@ -263,9 +263,9 @@ export function Header() {
               {/* Anasayfa */}
               <Link
                 href={`/${currentLocale}`}
-                className={`relative px-4 h-full flex items-center text-sm font-medium transition-all duration-200 border-b-2 ${isActive("/") && basePath === ""
-                  ? "border-primary text-primary"
-                  : "border-transparent text-foreground hover:text-primary hover:border-primary/50"
+                className={`relative px-4 h-full flex items-center text-lg font-semibold transition-all duration-200 border-b-2 ${isActive("/") && basePath === ""
+                  ? "border-transparent text-primary"
+                  : "border-transparent text-foreground hover:text-primary"
                   }`}
               >
                 {t("home")}
@@ -273,9 +273,9 @@ export function Header() {
 
               <Link
                 href={`/${currentLocale}${getRoute("about", currentLocale)}`}
-                className={`relative px-4 h-full flex items-center text-sm font-medium transition-all duration-200 border-b-2 ${isActive(getRoute("about", currentLocale)) && basePath === ""
-                  ? "border-primary text-primary"
-                  : "border-transparent text-foreground hover:text-primary hover:border-primary/50"
+                className={`relative px-4 h-full flex items-center text-lg font-semibold transition-all duration-200 border-b-2 ${isActive(getRoute("about", currentLocale)) && basePath === ""
+                  ? "border-transparent text-primary"
+                  : "border-transparent text-foreground hover:text-primary"
                   }`}
               >
                 {t("about")}
@@ -283,9 +283,9 @@ export function Header() {
 
               <Link
                 href={`/${currentLocale}${getRoute("blog", currentLocale)}`}
-                className={`relative px-4 h-full flex items-center text-sm font-medium transition-all duration-200 border-b-2 ${isActive(getRoute("blog", currentLocale))
-                  ? "border-primary text-primary"
-                  : "border-transparent text-foreground hover:text-primary hover:border-primary/50"
+                className={`relative px-4 h-full flex items-center text-lg font-semibold transition-all duration-200 border-b-2 ${isActive(getRoute("blog", currentLocale))
+                  ? "border-transparent text-primary"
+                  : "border-transparent text-foreground hover:text-primary"
                   }`}
               >
                 {t("blog")}
@@ -293,9 +293,9 @@ export function Header() {
 
               <Link
                 href={`/${currentLocale}${getRoute("videos", currentLocale)}`}
-                className={`relative px-4 h-full flex items-center text-sm font-medium transition-all duration-200 border-b-2 ${isActive(getRoute("videos", currentLocale))
-                  ? "border-primary text-primary"
-                  : "border-transparent text-foreground hover:text-primary hover:border-primary/50"
+                className={`relative px-4 h-full flex items-center text-lg font-semibold transition-all duration-200 border-b-2 ${isActive(getRoute("videos", currentLocale))
+                  ? "border-transparent text-primary"
+                  : "border-transparent text-foreground hover:text-primary"
                   }`}
               >
                 {t("videos")}

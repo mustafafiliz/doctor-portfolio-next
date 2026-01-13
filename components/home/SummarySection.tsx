@@ -1,60 +1,52 @@
 'use client';
 
+import Image from 'next/image';
 import { useTranslations } from '@/components/I18nProvider';
-import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { ArrowRight, Sparkles } from 'lucide-react';
-import { type Locale } from '@/lib/i18n';
-import { useConfig } from '@/hooks/useConfig';
-import { getRoute } from '@/lib/routes';
 
 export function SummarySection() {
-  const t = useTranslations('home');
-  const pathname = usePathname();
-  const currentLocale = (pathname?.split('/')[1] || 'tr') as Locale;
-  const { config } = useConfig();
+  const t = useTranslations('about');
 
   return (
-    <section className="py-20 md:py-32 bg-background relative overflow-hidden">
-      {/* Decorative background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
-      
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-sm bg-primary/10 mb-6">
-              <Sparkles className="h-4 w-4" style={{ color: config.colors.primary }} />
-              <span className="text-sm font-medium" style={{ color: config.colors.primary }}>
-                Profesyonel Hizmet
-              </span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
-              {t('title')}
+    <section className="py-16 md:py-24 !pb-5 bg-white">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="flex flex-col lg:flex-row items-stretch gap-0 overflow-hidden shadow-xl rounded-2xl">
+
+          {/* Left Side - Text Content */}
+          <div className="w-full lg:w-1/2 bg-primary text-white p-8 md:p-12 lg:p-16 flex flex-col justify-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-2">
+              Prof. Dr. Sirel Gür Güngör
             </h2>
-          </div>
-          
-          <div className="bg-card/50 backdrop-blur-sm rounded-sm p-8 md:p-12 border border-border/50 shadow-xl">
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-8 text-center">
-              {t('summary')}
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href={`/${currentLocale}${getRoute('about', currentLocale)}`}>
-                <Button 
-                  size="lg" 
-                  className="gap-2 rounded-sm px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
-                  style={{ 
-                    backgroundColor: config.colors.primary,
-                    color: 'white'
-                  }}
-                >
-                  {t('readMore')}
-                  <ArrowRight className="h-5 w-5" />
-                </Button>
-              </Link>
+            <h3 className="text-xl md:text-2xl font-medium opacity-90 mb-8">
+              Göz Hastalıkları Uzmanı
+            </h3>
+
+            <div className="space-y-6 text-base md:text-lg leading-relaxed opacity-90">
+              <p>
+                1997–2003 yılları arasında Ankara Üniversitesi Tıp Fakültesinde aldığım tıp eğitimini dönem birincisi olarak tamamladım. Ardından, 2003–2008 yılları arasında Başkent Üniversitesi Tıp Fakültesi Göz Hastalıkları Anabilim Dalında tıpta uzmanlık eğitimimi tamamlayarak göz hastalıkları uzmanı oldum.
+              </p>
+              <p>
+                2009–2011 yılları arasında, Çankırı Devlet Hastanesinde Devlet Hizmeti Yükümlülüğü kapsamında görev yaptım. 2011 yılında Başkent Üniversitesi Tıp Fakültesi Göz Hastalıkları A.B.D.’da Uzman Doktor olarak göreve başladım.
+              </p>
+              <p>
+                2012 yılında Öğretim Görevlisi, 2015 yılında Doktor Öğretim Üyesi, 2018 yılında Doçent oldum. 2023 tarihinde Profesör unvanı aldım. Akademik ve klinik çalışmalarımı özellikle üveit ve oküler inflamasyon hastalıkları, glokom, katarakt ve medikal retina alanlarında sürdürmekteyim.
+              </p>
+
+              <Link href="/hakkimda" className='underline font-semibold'>Devamını Oku</Link>
             </div>
           </div>
+
+          {/* Right Side - Image */}
+          <div className="w-full lg:w-1/2 relative min-h-[400px] lg:min-h-full">
+            <Image
+              src="/images/icons/dr-kadriye-ufuk-elgin-1.png"
+              alt="Prof. Dr. Sirel Gür Güngör"
+              fill
+              className="object-cover object-top"
+              unoptimized
+            />
+          </div>
+
         </div>
       </div>
     </section>

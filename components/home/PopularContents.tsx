@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { type Locale } from '@/lib/i18n';
 import type { Specialty, SpecialtyCategory } from '@/lib/types';
+import { getRoute } from '@/lib/routes';
 
 interface CategoryWithSpecialties extends SpecialtyCategory {
   specialties?: Specialty[];
@@ -15,9 +16,9 @@ interface PopularContentsProps {
   currentLocale?: Locale;
 }
 
-export function PopularContents({ 
+export function PopularContents({
   categories,
-  currentLocale: propLocale 
+  currentLocale: propLocale
 }: PopularContentsProps) {
   const pathname = usePathname();
   const currentLocale = propLocale || (pathname?.split('/')[1] || 'tr') as Locale;
@@ -46,11 +47,22 @@ export function PopularContents({
   return (
     <section className="py-16 md:py-24 bg-[#f8f9fa]">
       <div className="container mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        {/* Section Header - Top Right */}
+        <div className="flex flex-col items-start text-left mb-12">
+          <h2 className="text-3xl md:text-3xl font-bold text-gray-900 mb-4">
+            Blog Yazıları
+          </h2>
+          <p className="text-gray-600 max-w-2xl">
+            Göz sağlığı, hastalıkları ve tedavi yöntemleri hakkında merak ettiğiniz tüm konuları, güncel bilimsel veriler ışığında hazırladığım blog yazılarımda bulabilirsiniz.
+          </p>
+        </div>
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-4">
           {popularSpecialties.map((specialty) => (
-            <article 
-              key={specialty._id} 
-              className="group bg-white rounded-sm overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
+            <article
+              key={specialty._id}
+              className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
             >
               {/* Image */}
               <Link href={`/${currentLocale}/${specialty.slug}`}>
@@ -71,12 +83,12 @@ export function PopularContents({
 
                   {/* Category Badge - Top Right */}
                   {specialty.categoryName && specialty.categorySlug && (
-                    <span 
+                    <span
                       onClick={(e) => {
                         e.preventDefault();
                         window.location.href = `/${currentLocale}/uzmanlik/${specialty.categorySlug}`;
                       }}
-                      className="absolute top-3 right-3 bg-primary text-white text-xs font-medium px-3 py-1.5 rounded-sm hover:bg-primary/90 transition-colors cursor-pointer shadow-lg"
+                      className="absolute top-3 left-3 bg-primary text-white text-xs font-medium px-3 py-1.5 hover:bg-primary/90 transition-colors cursor-pointer shadow-lg"
                     >
                       {specialty.categoryName}
                     </span>
@@ -100,8 +112,17 @@ export function PopularContents({
             </article>
           ))}
         </div>
+
+        {/* View All Button */}
+        <div className="mt-12 text-center flex justify-center">
+          <Link
+            href={`/${currentLocale}${getRoute('blog', currentLocale)}`}
+            className="inline-flex items-center justify-center px-8 py-3 text-base font-medium text-white bg-primary hover:bg-primary/90 rounded-sm transition-colors duration-200 shadow-sm hover:shadow-md"
+          >
+            Tümünü Göster
+          </Link>
+        </div>
       </div>
     </section>
   );
 }
-

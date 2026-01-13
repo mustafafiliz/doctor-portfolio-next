@@ -1,14 +1,11 @@
 'use client';
 
 import { useTranslations } from '@/components/I18nProvider';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { type Locale } from '@/lib/i18n';
-import { getRoute } from '@/lib/routes';
-import Autoplay from 'embla-carousel-autoplay';
 import Image from 'next/image';
-import { ArrowRight, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { getPublicSpecialties } from '@/lib/config';
 import type { SpecialtyCategory } from '@/lib/types';
@@ -52,14 +49,9 @@ export function SpecialtiesSection({
     }
   }, [initialCategories]);
 
-  const plugin = Autoplay({
-    delay: 5000,
-    stopOnInteraction: false,
-  });
-
   if (isLoading) {
     return (
-      <section className="py-16 md:py-24 bg-white">
+      <section className="py-8 md:py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-center min-h-[300px]">
             <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -73,103 +65,57 @@ export function SpecialtiesSection({
     return null;
   }
 
-  return (
-    <section className="py-16 md:py-24 bg-white relative">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)`,
-          backgroundSize: '40px 40px'
-        }} />
-      </div>
+  console.log("categories", categories)
 
+  return (
+    <section className="py-8 md:py-16 bg-[#f8f9fa] relative">
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
-        <div className="text-left mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            {t('title')}
+        <div className="mb-12">
+          <h2 className="text-3xl md:text-3xl font-bold text-gray-900 mb-4">
+            Göz Hastalıkları Uzmanı Ankara
           </h2>
-          <p className="text-gray-600 max-w-2xl">
-            {t('subtitle')}
+          <p className="text-gray-600 leading-relaxed text-lg">
+            Ankara’da Göz Hastalıkları Uzmanı olarak kendi özel muayenehanemde aktif olarak görev yapmaktayım. Göz sağlığı alanında
+            tanı, tedavi ve takip süreçlerinin yanı sıra, üveit, glokom, katarakt, retina hastalıkları ve diğer göz rahatsızlıklarıyla ilgileniyorum.
+            Bilimsel ve etik ilkelere dayalı, hasta odaklı yaklaşımım ile akademik ve klinik tecrübemi birleştirerek hastalarıma güncel ve
+            güvenilir sağlık hizmeti sunmaktayım.
           </p>
         </div>
 
-        {/* Carousel */}
-        <Carousel
-          plugins={[plugin]}
-          className="w-full"
-          opts={{
-            align: 'start',
-            loop: true,
-          }}
-        >
-          <CarouselContent className="-ml-4">
-            {categories.map((category) => {
-              const categoryTitle = category.title || category.name || '';
+        {/* Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {categories.slice(0, 4).map((category) => {
+            const categoryTitle = category.title || category.name || '';
 
-              return (
-                <CarouselItem key={category._id} className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
-                  <Link href={`/${currentLocale}/uzmanlik/${category.slug}`} className="block h-full">
-                    <div className="group relative bg-white rounded-sm border border-gray-100 hover:border-primary/30 hover:shadow-xl transition-all duration-300 h-full overflow-hidden">
-                      {/* Image Section */}
-                      <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
-                        {category.image ? (
-                          <Image
-                            src={category.image}
-                            alt={categoryTitle}
-                            fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-500"
-                            unoptimized
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-gradient-to-br from-primary/10 to-primary/20 flex items-center justify-center">
-                            <span className="text-6xl font-bold text-primary/20">{categoryTitle.charAt(0)}</span>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Content Section */}
-                      <div className="p-5">
-                        {/* Title */}
-                        <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                          {categoryTitle}
-                        </h3>
-
-                        {/* Description */}
-                        {category.description && (
-                          <p className="text-gray-600 text-sm leading-relaxed line-clamp-2 mb-3">
-                            {category.description}
-                          </p>
-                        )}
-
-                        {/* Link Arrow */}
-                        <span className="inline-flex items-center gap-2 text-primary font-medium text-sm">
-                          Devamını Oku
-                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                </CarouselItem>
-              );
-            })}
-          </CarouselContent>
-
-          <div className="mt-8 flex justify-center gap-4">
-            <CarouselPrevious className="relative static translate-y-0 h-10 w-10 border-2 border-primary text-primary hover:bg-primary hover:text-white" />
-            <CarouselNext className="relative static translate-y-0 h-10 w-10 border-2 border-primary text-primary hover:bg-primary hover:text-white" />
-          </div>
-        </Carousel>
-
-        {/* View All Button */}
-        <div className="mt-10 text-center">
-          <Link
-            href={`/${currentLocale}${getRoute('specialties', currentLocale)}`}
-            className="inline-flex items-center gap-2 px-8 py-3 rounded-sm bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
-          >
-            Tümünü Göster
-            <ArrowRight className="h-5 w-5" />
-          </Link>
+            return (
+              <div key={category._id} className="flex flex-col group border border-gray-100 rounded-2xl px-6 py-6 bg-white">
+                <Link
+                  href={`/${currentLocale}/uzmanlik/${category.slug}`}
+                  className="flex items-center gap-4 mb-4"
+                  title={categoryTitle}
+                >
+                  <span className="shrink-0 relative w-[60px] h-[60px]">
+                    <Image
+                      src="/images/icons/icon-content.jpg"
+                      alt={categoryTitle}
+                      width={60}
+                      height={60}
+                      className="object-contain"
+                    />
+                  </span>
+                  <strong className="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
+                    {categoryTitle}
+                  </strong>
+                </Link>
+                {category.description && (
+                  <p className="text-gray-700 text-base leading-relaxed">
+                    {category.description}
+                  </p>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

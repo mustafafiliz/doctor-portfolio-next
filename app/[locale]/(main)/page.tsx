@@ -3,6 +3,7 @@ import { QuickLinks } from "@/components/home/QuickLinks";
 import { SpecialtiesSection } from "@/components/home/SpecialtiesSection";
 import { PopularContents } from "@/components/home/PopularContents";
 import { HomeFAQSection } from "@/components/home/FAQSection";
+import { SummarySection } from "@/components/home/SummarySection";
 import { VideosSection } from "@/components/videos/VideosSection";
 import { getConfig, getPublicFAQs, getPublicSpecialties, getPublicAbout } from "@/lib/config";
 import { VIDEOS_DATA } from "@/lib/data";
@@ -55,6 +56,7 @@ export default async function HomePage({
         categories={categories}
         currentLocale={currentLocale}
       />
+      <SummarySection />
       <VideosSection
         initialVideos={VIDEOS_DATA}
         limit={6}

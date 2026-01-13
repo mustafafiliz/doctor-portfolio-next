@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { useConfig } from "@/hooks/useConfig";
 import Image from "next/image";
 import Link from "next/link";
@@ -20,100 +19,62 @@ export function HeroCarousel({ aboutBio, aboutImage }: HeroCarouselProps) {
 
   const heroTitle = config.hero?.title || "";
   const heroSubtitle = config.hero?.subtitle || "";
-  const heroDescription = config.hero?.description || "";
-  const heroCta = config.hero?.ctaText || "";
-  const heroCtaUrl = config.hero?.ctaUrl || "";
 
-  const heroImage = aboutImage || config.hero?.image || "";
-
-  const getBioSummary = (bio: string | null | undefined): string => {
-    if (!bio) return heroDescription;
-
-    const textContent = bio.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
-
-    if (textContent.length <= 250) return textContent;
-
-    const truncated = textContent.substring(0, 200);
-    const lastSpace = truncated.lastIndexOf(' ');
-    return lastSpace > 0 ? truncated.substring(0, lastSpace) + '...' : truncated + '...';
-  };
-
-  const displayDescription = aboutBio ? getBioSummary(aboutBio) : heroDescription;
+  // Note: heroDescription and bio summary logic removed as per new layout requirements
+  // focusing on title/subtitle and stats around the centered image.
 
   return (
-    <section className="relative w-full">
-      <div className="flex flex-col lg:flex-row">
-        {/* Image Section - Left - Full height, flush to edge */}
-        {heroImage && (
-          <div className="relative w-full lg:w-[45%] aspect-4/3">
-            <Image
-              src={heroImage}
-              alt={heroTitle || ""}
-              fill
-              className="object-cover object-top"
-              priority
-              unoptimized={heroImage.startsWith("http")}
-            />
-          </div>
-        )}
+    <section className="relative w-full bg-gray-100 overflow-hidden">
+      <div className="container mx-auto px-4 h-full">
+        <div className="flex flex-col lg:flex-row justify-between h-full pt-12 lg:pt-0">
 
-        {/* Content Section - Right - With background color */}
-        <div
-          className="w-full flex-1 flex items-center"
-          style={{ backgroundColor: config.colors.primary + '10' }}
-        >
-          <div className="px-6 sm:px-10 lg:px-16 py-10 max-w-3xl">
-            {/* Title */}
+          {/* Left: Title & Subtitle */}
+          <div className="w-full lg:w-[50%] lg:pb-20 text-center lg:text-left z-10 mb-8 lg:mb-0 order-1 flex flex-col justify-center">
             {heroTitle && (
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight mb-4">
-                {heroTitle}
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black leading-tight mb-6">
+                Prof. Dr. <br />
+                {heroTitle.replace("Prof. Dr.", "")}
               </h1>
             )}
-
-            {/* Subtitle */}
             {heroSubtitle && (
-              <p
-                className="text-lg sm:text-xl lg:text-2xl font-semibold mb-6"
-                style={{ color: config.colors.primary }}
-              >
+              <p className="text-xl sm:text-2xl text-black/90 font-medium mb-10">
                 {heroSubtitle}
               </p>
             )}
 
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-              <div className="space-y-1">
-                <div
-                  className="text-3xl sm:text-4xl font-bold text-gray-800"
-                >
-                  10.000 +
-                </div>
-                <div className="text-gray-700 text-sm sm:text-base">
-                  Katarakt Ameliyatı
-                </div>
+            {/* Right: Stats */}
+            <div className="flex flex-row gap-8 items-center lg:items-start text-black z-10 order-3 pb-12 lg:pb-0">
+              <div className="text-center lg:text-left">
+                <div className="text-4xl sm:text-4xl font-bold mb-1 text-nowrap">10.000 +</div>
+                <div className="text-black/80 text-lg">Katarakt Ameliyatı</div>
               </div>
-              <div className="space-y-1">
-                <div
-                  className="text-3xl sm:text-4xl font-bold text-gray-800"
-                >
-                  5.000 +
-                </div>
-                <div className="text-gray-700 text-sm sm:text-base">
-                  Glokom Ameliyatı
-                </div>
+              <div className="text-center lg:text-left">
+                <div className="text-4xl sm:text-4xl font-bold mb-1 text-nowrap">5.000 +</div>
+                <div className="text-black/80 text-lg">Glokom Ameliyatı</div>
               </div>
-              <div className="space-y-1">
-                <div
-                  className="text-3xl sm:text-4xl font-bold text-gray-800"
-                >
-                  30.000 +
-                </div>
-                <div className="text-gray-700 text-sm sm:text-base">
-                  Cerrahi Müdahale
-                </div>
+              <div className="text-center lg:text-left">
+                <div className="text-4xl sm:text-4xl font-bold mb-1 text-nowrap">30.000 +</div>
+                <div className="text-black/80 text-lg">Cerrahi Müdahale</div>
               </div>
             </div>
           </div>
+
+          {/* Center: Image */}
+          <div className="w-full lg:w-[50%] relative h-[500px] lg:h-[550px] flex justify-center items-end order-2 lg:order-2 mt-auto">
+            <div className="relative w-full h-full -mr-40">
+              <Image
+                src="/images/icons/me.png"
+                alt={heroTitle || ""}
+                fill
+                className="object-contain object-bottom"
+                priority
+                unoptimized
+              />
+            </div>
+          </div>
+
+
+
         </div>
       </div>
     </section>

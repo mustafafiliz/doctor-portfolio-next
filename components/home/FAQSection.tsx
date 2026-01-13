@@ -32,7 +32,7 @@ export function HomeFAQSection({ faqs }: HomeFAQSectionProps) {
     <section className="py-16 md:py-24 bg-white">
       <Container>
         <div className="text-left mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl md:text-3xl font-bold text-gray-900 mb-4">
             {t("title")}
           </h2>
           <p className="text-gray-600 max-w-2xl">
