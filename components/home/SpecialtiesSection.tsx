@@ -85,11 +85,11 @@ export function SpecialtiesSection({
       
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-12">
+        <div className="text-left mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               {t('title')}
             </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-gray-600 max-w-2xl">
             {t('subtitle')}
           </p>
         </div>

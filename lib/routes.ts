@@ -4,6 +4,7 @@ export const routes = {
   about: "/hakkimda",
   specialties: "/uzmanliklar",
   gallery: "/galeri",
+  videos: "/videolar",
   contact: "/iletisim",
   faq: "/sik-sorulan-sorular",
   blog: "/blog"

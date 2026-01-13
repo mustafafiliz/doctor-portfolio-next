@@ -4,6 +4,7 @@
     "about": "About",
     "specialties": "Specialties",
     "gallery": "Gallery",
+    "videos": "Videos",
     "contact": "Contact",
     "faq": "FAQ",
     "blog": "Blog"
@@ -68,6 +69,9 @@
     "photos": "Visual Gallery",
     "videos": "Video Collection"
   },
+  "videos": {
+    "title": "Videos"
+  },
   "contact": {
     "title": "Contact",
     "subtitle": "Get in Touch",
@@ -109,4 +113,3 @@
     "previous": "Previous"
   }
 }
-

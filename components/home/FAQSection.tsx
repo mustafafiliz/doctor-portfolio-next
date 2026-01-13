@@ -31,16 +31,16 @@ export function HomeFAQSection({ faqs }: HomeFAQSectionProps) {
   return (
     <section className="py-16 md:py-24 bg-white">
       <Container>
-        <div className="text-center mb-12">
+        <div className="text-left mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             {t("title")}
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-gray-600 max-w-2xl">
             {t("subtitle")}
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto mb-10">
+        <div className="max-w-4xl mx-0 mb-10">
           <Accordion type="single" collapsible className="w-full space-y-4">
             {faqs.map((faq, index) => (
               <AccordionItem
@@ -64,7 +64,7 @@ export function HomeFAQSection({ faqs }: HomeFAQSectionProps) {
           </Accordion>
         </div>
 
-        <div className="text-center">
+        <div className="text-left">
           <Link
             href={`/${currentLocale}${getRoute("faq", currentLocale)}`}
             className="inline-flex items-center gap-2 px-8 py-3 rounded-sm bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"

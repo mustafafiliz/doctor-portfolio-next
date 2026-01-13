@@ -134,6 +134,12 @@
     max-width: 100vw;
     width: 100%;
   }
+  /* Container max-width override for 2xl breakpoint */
+  @media (min-width: 96rem) {
+    .container {
+      max-width: 85.625rem; /* 1370px */
+    }
+  }
 }
 
 @layer utilities {

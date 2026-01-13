@@ -15,6 +15,7 @@ const reservedSlugs = [
   'uzmanliklar',
   'uzmanlik',
   'galeri',
+  'videolar',
   'iletisim',
   'sik-sorulan-sorular',
   'blog',

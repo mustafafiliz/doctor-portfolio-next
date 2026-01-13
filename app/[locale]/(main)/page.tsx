@@ -3,7 +3,9 @@ import { QuickLinks } from "@/components/home/QuickLinks";
 import { SpecialtiesSection } from "@/components/home/SpecialtiesSection";
 import { PopularContents } from "@/components/home/PopularContents";
 import { HomeFAQSection } from "@/components/home/FAQSection";
+import { VideosSection } from "@/components/videos/VideosSection";
 import { getConfig, getPublicFAQs, getPublicSpecialties, getPublicAbout } from "@/lib/config";
+import { VIDEOS_DATA } from "@/lib/data";
 import type { Metadata } from "next";
 import type { Locale } from "@/lib/i18n";
 import type { Specialty, SpecialtyCategory, AboutSection } from "@/lib/types";
@@ -29,11 +31,11 @@ export default async function HomePage({
 }) {
   const { locale } = await params;
   const currentLocale = (locale || 'tr') as Locale;
-  
+
   // Server-side'da tüm verileri fetch et
   const faqsData = await getPublicFAQs();
   const faqs = (faqsData.data || []).slice(0, 4); // İlk 4 soruyu al
-  
+
   const specialtiesData = await getPublicSpecialties();
   // Sadece kategorileri gönder
   const categories = specialtiesData.categories || [];
@@ -45,13 +47,18 @@ export default async function HomePage({
     <div className="flex flex-col w-full max-w-full overflow-x-hidden">
       <HeroCarousel aboutBio={about?.bio} aboutImage={about?.image} />
       <QuickLinks currentLocale={currentLocale} />
-      <SpecialtiesSection 
+      <SpecialtiesSection
         initialCategories={categories}
         currentLocale={currentLocale}
       />
-      <PopularContents 
+      <PopularContents
         categories={categories}
         currentLocale={currentLocale}
+      />
+      <VideosSection
+        initialVideos={VIDEOS_DATA}
+        limit={6}
+        showViewAll={true}
       />
       <HomeFAQSection faqs={faqs} />
     </div>

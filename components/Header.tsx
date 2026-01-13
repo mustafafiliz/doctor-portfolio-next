@@ -271,30 +271,36 @@ export function Header() {
                 {t("home")}
               </Link>
 
-              {/* Kategoriler - Direkt gösteriliyor */}
-              {!isLoadingSpecialties && specialtyCategories.slice(0, 5).map((category) => (
-                <Link
-                  key={category._id}
-                  href={`/${currentLocale}/uzmanlik/${category.slug}`}
-                  className={`relative px-4 h-full flex items-center text-sm font-medium transition-all duration-200 border-b-2 ${isActive(`/uzmanlik/${category.slug}`)
-                    ? "border-primary text-primary"
-                    : "border-transparent text-foreground hover:text-primary hover:border-primary/50"
-                    }`}
-                >
-                  {category.title || category.name}
-                </Link>
-              ))}
-
-              {/* Galeri */}
               <Link
-                href={`/${currentLocale}${getRoute("gallery", currentLocale)}`}
-                className={`relative px-4 h-full flex items-center text-sm font-medium transition-all duration-200 border-b-2 ${isActive(getRoute("gallery", currentLocale))
+                href={`/${currentLocale}${getRoute("about", currentLocale)}`}
+                className={`relative px-4 h-full flex items-center text-sm font-medium transition-all duration-200 border-b-2 ${isActive(getRoute("about", currentLocale)) && basePath === ""
                   ? "border-primary text-primary"
                   : "border-transparent text-foreground hover:text-primary hover:border-primary/50"
                   }`}
               >
-                {t("gallery")}
+                {t("about")}
               </Link>
+
+              <Link
+                href={`/${currentLocale}${getRoute("blog", currentLocale)}`}
+                className={`relative px-4 h-full flex items-center text-sm font-medium transition-all duration-200 border-b-2 ${isActive(getRoute("blog", currentLocale))
+                  ? "border-primary text-primary"
+                  : "border-transparent text-foreground hover:text-primary hover:border-primary/50"
+                  }`}
+              >
+                {t("blog")}
+              </Link>
+
+              <Link
+                href={`/${currentLocale}${getRoute("videos", currentLocale)}`}
+                className={`relative px-4 h-full flex items-center text-sm font-medium transition-all duration-200 border-b-2 ${isActive(getRoute("videos", currentLocale))
+                  ? "border-primary text-primary"
+                  : "border-transparent text-foreground hover:text-primary hover:border-primary/50"
+                  }`}
+              >
+                {t("videos")}
+              </Link>
+
             </nav>
 
             {/* Mobile Menu Button */}
@@ -459,16 +465,28 @@ export function Header() {
                   )}
                 </div>
 
-                {/* Galeri */}
+
+
                 <Link
-                  href={`/${currentLocale}${getRoute("gallery", currentLocale)}`}
-                  className={`px-4 py-3 rounded-sm text-base font-medium transition-colors ${isActive(getRoute("gallery", currentLocale))
+                  href={`/${currentLocale}${getRoute("blog", currentLocale)}`}
+                  className={`px-4 py-3 rounded-sm text-base font-medium transition-colors ${isActive(getRoute("blog", currentLocale))
                     ? "text-primary bg-primary/10"
                     : "text-foreground hover:bg-muted/50"
                     }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {t("gallery")}
+                  {t("blog")}
+                </Link>
+
+                <Link
+                  href={`/${currentLocale}${getRoute("videos", currentLocale)}`}
+                  className={`px-4 py-3 rounded-sm text-base font-medium transition-colors ${isActive(getRoute("videos", currentLocale))
+                    ? "text-primary bg-primary/10"
+                    : "text-foreground hover:bg-muted/50"
+                    }`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {t("videos")}
                 </Link>
 
                 {/* Contact Button */}
