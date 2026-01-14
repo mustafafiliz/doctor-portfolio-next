@@ -7,7 +7,7 @@ import Link from 'next/link';
 export function WhatsAppButton() {
   const { config } = useConfig();
 
-  const whatsappUrl = `https://wa.me/${config.contact.whatsapp.replace(/[^0-9]/g, '')}`;
+  const whatsappUrl = `https://wa.me/${config.contact.whatsapp.replace(/[^0-9]/g, '').replace('90', '').replace('90', '+90')}`;
 
   return (
     <Link

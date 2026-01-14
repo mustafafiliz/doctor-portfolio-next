@@ -147,13 +147,13 @@ export function Footer() {
             {/* Phone */}
             {config.contact.phone && (
               <a
-                href={`tel:${config.contact.phone}`}
+                href={`tel:${config.contact.phone.replace(' 90', '').replace('+90', '')}`}
                 className="flex items-center gap-2 text-white hover:text-primary transition-colors"
               >
                 <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
                   <Phone className="h-5 w-5 text-primary" />
                 </div>
-                <span className="font-semibold">{formatPhone(config.contact.phone).replace(' 90', '')}</span>
+                <span className="font-semibold">{formatPhone(config.contact.phone).replace(' 90', '').replace('+90', '')}</span>
               </a>
             )}
           </div>

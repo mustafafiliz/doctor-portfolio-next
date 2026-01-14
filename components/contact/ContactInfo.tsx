@@ -63,16 +63,16 @@ export function ContactInfo() {
     {
       icon: Phone,
       title: t("phone"),
-      content: formatPhoneNumber(config.contact.phone),
-      link: `tel:${config.contact.phone?.replace(/\D/g, '')}`,
+      content: formatPhoneNumber(config.contact.phone).replace(' 90', '').replace('+90', ''),
+      link: `tel:${config.contact.phone?.replace(/\D/g, '').replace('+90', '').replace(' 90', '')}`,
       isLink: true,
       show: !!config.contact.phone
     },
     {
       icon: Phone,
       title: t("mobile"),
-      content: formatPhoneNumber(config.contact.mobile),
-      link: `tel:${config.contact.mobile?.replace(/\D/g, '')}`,
+      content: formatPhoneNumber(config.contact.mobile).replace(' 90', ''),
+      link: `tel:${config.contact.mobile?.replace(/\D/g, '').replace(' 90', '')}`,
       isLink: true,
       show: !!config.contact.mobile
     },

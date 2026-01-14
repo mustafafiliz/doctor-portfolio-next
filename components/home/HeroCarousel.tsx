@@ -26,7 +26,7 @@ export function HeroCarousel({ aboutBio, aboutImage }: HeroCarouselProps) {
   return (
     <section className="relative w-full bg-gray-100 overflow-hidden">
       <div className="container mx-auto px-4 h-full">
-        <div className="flex flex-col lg:flex-row justify-between h-full pt-12 lg:pt-0">
+        <div className="flex flex-col lg:flex-row-reverse justify-between h-full pt-12 lg:pt-0">
 
           {/* Left: Title & Subtitle */}
           <div className="w-full lg:w-[50%] lg:pb-20 text-center lg:text-left z-10 mb-8 lg:mb-0 order-1 flex flex-col justify-center">
@@ -61,9 +61,9 @@ export function HeroCarousel({ aboutBio, aboutImage }: HeroCarouselProps) {
 
           {/* Center: Image */}
           <div className="w-full lg:w-[50%] relative h-[500px] lg:h-[550px] flex justify-center items-end order-2 lg:order-2 mt-auto">
-            <div className="relative w-full h-full -mr-40">
+            <div className="relative w-full h-full -ml-40">
               <Image
-                src="/images/icons/me.png"
+                src="/images/icons/me-1.png"
                 alt={heroTitle || ""}
                 fill
                 className="object-contain object-bottom"
