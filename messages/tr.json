@@ -30,7 +30,12 @@
     "education": "Eğitim",
     "experience": "Deneyim",
     "publications": "Yayınlar",
-    "certifications": "Sertifikalar"
+    "certifications": "Sertifikalar",
+    "hero": {
+      "name": "Prof. Dr. Kadriye Ufuk Elgin",
+      "title": "Göz Hastalıkları Uzmanı",
+      "summary": "Tıp Fakültesi lisans eğitimimi 1985-1991 yılları arasında Hacettepe Üniversitesi Tıp Fakültesinde gerçekleştirdikten sonra, tıpta uzmanlık eğitimimi ise tıpta uzmanlık sınavı (TUS) 3. sü olarak girdiğim Hacettepe Üniversitesi Tıp Fakültesi Göz Anabilim dalında 1996 yılında tamamladım. Türkiye nin en büyük göz hastanelerinde, genel oftalmoloji, katarakt cerrahisi ve glokom cerrahisi alanlarında 25 yılı aşkın süredir çalışmaktayım. Ulusal ve uluslararası seçkin dergilerde basılmış 150 nin üzerinde makalem bulunmaktadır."
+    }
   },
   "specialties": {
     "title": "Uzmanlıklar",

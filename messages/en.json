@@ -30,7 +30,12 @@
     "education": "Education",
     "experience": "Experience",
     "publications": "Publications",
-    "certifications": "Certifications"
+    "certifications": "Certifications",
+    "hero": {
+      "name": "Prof. Dr. Kadriye Ufuk Elgin",
+      "title": "Ophthalmologist",
+      "summary": "I completed my medical school education at Hacettepe University Faculty of Medicine between 1985-1991 and, as the 3rd highest scorer in the Medical Specialization Exam (TUS), completed my ophthalmology residency at Hacettepe University Faculty of Medicine, Department of Ophthalmology in 1996. I have been working for over 25 years in Turkey's leading eye hospitals in the fields of general ophthalmology, cataract surgery and glaucoma surgery, and I have authored more than 150 articles published in prestigious national and international journals."
+    }
   },
   "specialties": {
     "title": "Specialties",

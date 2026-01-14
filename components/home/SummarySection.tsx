@@ -15,7 +15,7 @@ export function SummarySection() {
           {/* Left Side - Text Content */}
           <div className="w-full lg:w-1/2 bg-primary text-white p-8 md:p-12 lg:p-16 flex flex-col justify-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-2">
-              Prof. Dr. Sirel Gür Güngör
+              Prof. Dr. Kadriye Ufuk Elgin
             </h2>
             <h3 className="text-xl md:text-2xl font-medium opacity-90 mb-8">
               Göz Hastalıkları Uzmanı
@@ -23,13 +23,10 @@ export function SummarySection() {
 
             <div className="space-y-6 text-base md:text-lg leading-relaxed opacity-90">
               <p>
-                1997–2003 yılları arasında Ankara Üniversitesi Tıp Fakültesinde aldığım tıp eğitimini dönem birincisi olarak tamamladım. Ardından, 2003–2008 yılları arasında Başkent Üniversitesi Tıp Fakültesi Göz Hastalıkları Anabilim Dalında tıpta uzmanlık eğitimimi tamamlayarak göz hastalıkları uzmanı oldum.
+                Tıp Fakültesi lisans eğitimimi 1985-1991 yılları arasında Hacettepe Üniversitesi Tıp Fakültesinde gerçekleştirdikten sonra, tıpta uzmanlık eğitimimi ise tıpta uzmanlık sınavı (TUS) 3. sü olarak girdiğim Hacettepe Üniversitesi Tıp Fakültesi Göz Anabilim dalında 1996 yılında tamamladım.
               </p>
               <p>
-                2009–2011 yılları arasında, Çankırı Devlet Hastanesinde Devlet Hizmeti Yükümlülüğü kapsamında görev yaptım. 2011 yılında Başkent Üniversitesi Tıp Fakültesi Göz Hastalıkları A.B.D.’da Uzman Doktor olarak göreve başladım.
-              </p>
-              <p>
-                2012 yılında Öğretim Görevlisi, 2015 yılında Doktor Öğretim Üyesi, 2018 yılında Doçent oldum. 2023 tarihinde Profesör unvanı aldım. Akademik ve klinik çalışmalarımı özellikle üveit ve oküler inflamasyon hastalıkları, glokom, katarakt ve medikal retina alanlarında sürdürmekteyim.
+                Türkiye nin en büyük göz hastanelerinde, genel oftalmoloji, katarakt cerrahisi ve glokom cerrahisi alanlarında 25 yılı aşkın süredir çalışmaktayım. Ulusal ve uluslararası seçkin dergilerde basılmış 150 nin üzerinde makalem bulunmaktadır.
               </p>
 
               <Link href="/hakkimda" className='underline font-semibold'>Devamını Oku</Link>
@@ -40,7 +37,7 @@ export function SummarySection() {
           <div className="w-full lg:w-1/2 relative min-h-[400px] lg:min-h-full">
             <Image
               src="/images/icons/dr-kadriye-ufuk-elgin-1.png"
-              alt="Prof. Dr. Sirel Gür Güngör"
+              alt="Prof. Dr. Kadriye Ufuk Elgin"
               fill
               className="object-cover object-top"
               unoptimized
