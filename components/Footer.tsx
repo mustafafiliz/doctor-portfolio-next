@@ -63,8 +63,10 @@ export function Footer() {
       try {
         const data = await getPublicSpecialties();
         const cats = Array.isArray(data) ? data : (data.categories || []);
-        // Order'a göre sırala
-        const sortedCats = cats.sort((a: CategoryWithSpecialties, b: CategoryWithSpecialties) => (a.order || 0) - (b.order || 0));
+        // Order'a göre sırala ve boş kategorileri filtrele
+        const sortedCats = cats
+          .filter((cat: CategoryWithSpecialties) => cat.specialties && cat.specialties.length > 0)
+          .sort((a: CategoryWithSpecialties, b: CategoryWithSpecialties) => (a.order || 0) - (b.order || 0));
         setCategories(sortedCats);
       } catch (error) {
         // Silently fail
@@ -110,14 +112,14 @@ export function Footer() {
   ].filter(link => isValidSocialUrl(link.url));
 
   return (
-    <footer className="bg-[#1a1a2e] text-white relative overflow-hidden">
+    <footer className="bg-white text-black relative overflow-hidden">
       {/* Top Contact Section */}
-      <section className="bg-[#0f0f1a] border-b border-white/10">
+      <section className="bg-gray-100 border-b border-gray-200">
         <div className="container mx-auto px-4 sm:px-6 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             {/* Social Media */}
             <div className="flex items-center gap-4">
-              <span className="text-sm font-medium text-white/80">Beni Takip Edin</span>
+              <span className="text-lg font-bold text-black">Beni Takip Edin</span>
               {socialLinks.length > 0 && (
                 <div className="flex gap-2">
                   {socialLinks.map((social, index) => {
@@ -129,9 +131,9 @@ export function Footer() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={social.label}
-                        className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors"
+                        className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-primary hover:text-white transition-colors text-black border border-gray-200"
                       >
-                        <Icon className="h-4 w-4" />
+                        <Icon className="h-5 w-5" />
                       </a>
                     );
                   })}
@@ -140,7 +142,7 @@ export function Footer() {
             </div>
 
             {/* Info Text */}
-            <p className="text-sm text-white/60 text-center">
+            <p className="text-lg font-medium text-gray-800 text-center">
               Bilgilendirici postlar, videolar ve çok daha fazlası...
             </p>
 
@@ -148,12 +150,12 @@ export function Footer() {
             {config.contact.phone && (
               <a
                 href={`tel:${config.contact.phone.replace(' 90', '').replace('+90', '')}`}
-                className="flex items-center gap-2 text-white hover:text-primary transition-colors"
+                className="flex items-center gap-3 text-black hover:text-primary transition-colors"
               >
-                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                  <Phone className="h-5 w-5 text-primary" />
+                <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center border border-gray-200">
+                  <Phone className="h-6 w-6 text-primary" />
                 </div>
-                <span className="font-semibold">{formatPhone(config.contact.phone).replace(' 90', '').replace('+90', '')}</span>
+                <span className="font-bold text-xl">{formatPhone(config.contact.phone).replace(' 90', '').replace('+90', '')}</span>
               </a>
             )}
           </div>
@@ -161,26 +163,26 @@ export function Footer() {
       </section>
 
       {/* Main Footer Content */}
-      <div className="container mx-auto px-4 sm:px-6 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+      <div className="container mx-auto px-4 sm:px-6 py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-32">
 
           {/* Brand & Contact Section */}
-          <div className="lg:col-span-3 space-y-6">
+          <div className="lg:col-span-4 space-y-8">
             {/* Logo & Brand */}
             <Link href={`/${currentLocale}`} className="inline-block">
               {config.site?.logo ? (
                 <Image
                   src={config.site.logo}
                   alt={config.site?.name || ''}
-                  width={200}
-                  height={54}
-                  className="h-auto w-full max-w-[200px] object-contain"
+                  width={240}
+                  height={65}
+                  className="h-auto w-full max-w-[240px] object-contain"
                   unoptimized
                 />
               ) : (
-                <div className="text-xl font-bold">
-                  <span className="text-white">{config.site?.name || ''}</span>
-                  <span className="block text-sm font-normal text-white/60 mt-1">
+                <div className="text-2xl font-bold">
+                  <span className="text-black">{config.site?.name || ''}</span>
+                  <span className="block text-lg font-normal text-gray-800 mt-2">
                     {config.site?.tagline || ''}
                   </span>
                 </div>
@@ -188,17 +190,17 @@ export function Footer() {
             </Link>
 
             {/* Contact Info */}
-            <div className="space-y-3 text-sm">
+            <div className="space-y-5 text-base">
               {config.contact.address && (
-                <div className="flex items-start gap-2 text-white/70">
-                  <span className="font-medium text-white">Adres:</span>
-                  <span>{config.contact.address}</span>
+                <div className="flex items-start gap-3 text-gray-900">
+                  <span className="font-bold text-black min-w-[80px] text-lg whitespace-nowrap">Adres:</span>
+                  <span className="font-medium leading-relaxed">{config.contact.address}</span>
                 </div>
               )}
               {config.contact.email && (
-                <div className="flex items-center gap-2 text-white/70">
-                  <span className="font-medium text-white">E-Posta:</span>
-                  <a href={`mailto:${config.contact.email}`} className="hover:text-primary transition-colors">
+                <div className="flex items-center gap-3 text-gray-900">
+                  <span className="font-bold text-black min-w-[80px] text-lg whitespace-nowrap">E-Posta:</span>
+                  <a href={`mailto:${config.contact.email}`} className="hover:text-primary transition-colors font-medium">
                     {config.contact.email}
                   </a>
                 </div>
@@ -207,24 +209,24 @@ export function Footer() {
           </div>
 
           {/* Categories & Specialties Links */}
-          <div className="lg:col-span-9">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 lg:gap-8">
+          <div className="lg:col-span-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
               {/* Dynamic Categories */}
-              {categories.slice(0, 5).map((category) => (
+              {categories.slice(0, 2).map((category) => (
                 <div key={category._id}>
                   <Link
                     href={`/${currentLocale}/uzmanlik/${category.slug}`}
-                    className="text-sm font-semibold text-white hover:text-primary transition-colors block mb-4"
+                    className="text-lg font-extrabold text-black hover:text-primary transition-colors block mb-5 uppercase tracking-wide"
                   >
                     {category.title || category.name}
                   </Link>
                   {category.specialties && category.specialties.length > 0 && (
-                    <ul className="space-y-2">
-                      {category.specialties.slice(0, 5).map((specialty) => (
+                    <ul className="space-y-3">
+                      {category.specialties.slice(0, 3).map((specialty) => (
                         <li key={specialty._id}>
                           <Link
                             href={`/${currentLocale}/${specialty.slug}`}
-                            className="text-xs text-white/60 hover:text-primary transition-colors block leading-relaxed"
+                            className="text-base text-gray-800 hover:text-primary transition-colors block leading-relaxed font-semibold"
                           >
                             {specialty.title}
                           </Link>
@@ -235,39 +237,19 @@ export function Footer() {
                 </div>
               ))}
 
-              {/* Blog Section */}
-              <div>
-                <Link
-                  href={`/${currentLocale}/blog`}
-                  className="text-sm font-semibold text-white hover:text-primary transition-colors block mb-4"
-                >
-                  Blog
-                </Link>
-                <ul className="space-y-2">
-                  <li>
-                    <Link
-                      href={`/${currentLocale}/blog`}
-                      className="text-xs text-white/60 hover:text-primary transition-colors block leading-relaxed"
-                    >
-                      Tüm Yazılar
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-
               {/* Hakkımda Section */}
               <div>
                 <Link
                   href={`/${currentLocale}/hakkimda`}
-                  className="text-sm font-semibold text-white hover:text-primary transition-colors block mb-4"
+                  className="text-lg font-extrabold text-black hover:text-primary transition-colors block mb-5 uppercase tracking-wide"
                 >
                   Hakkımda
                 </Link>
-                <ul className="space-y-2">
+                <ul className="space-y-3">
                   <li>
                     <Link
                       href={`/${currentLocale}/hakkimda`}
-                      className="text-xs text-white/60 hover:text-primary transition-colors block leading-relaxed"
+                      className="text-base text-gray-800 hover:text-primary transition-colors block leading-relaxed font-semibold"
                     >
                       {config.site?.name || 'Hakkımda'}
                     </Link>
@@ -275,7 +257,7 @@ export function Footer() {
                   <li>
                     <Link
                       href={`/${currentLocale}/galeri`}
-                      className="text-xs text-white/60 hover:text-primary transition-colors block leading-relaxed"
+                      className="text-base text-gray-800 hover:text-primary transition-colors block leading-relaxed font-semibold"
                     >
                       Galeri
                     </Link>
@@ -283,7 +265,7 @@ export function Footer() {
                   <li>
                     <Link
                       href={`/${currentLocale}/sik-sorulan-sorular`}
-                      className="text-xs text-white/60 hover:text-primary transition-colors block leading-relaxed"
+                      className="text-base text-gray-800 hover:text-primary transition-colors block leading-relaxed font-semibold"
                     >
                       S.S.S.
                     </Link>
@@ -291,7 +273,7 @@ export function Footer() {
                   <li>
                     <Link
                       href={`/${currentLocale}/iletisim`}
-                      className="text-xs text-white/60 hover:text-primary transition-colors block leading-relaxed"
+                      className="text-base text-gray-800 hover:text-primary transition-colors block leading-relaxed font-semibold"
                     >
                       İletişim
                     </Link>
@@ -304,13 +286,13 @@ export function Footer() {
       </div>
 
       {/* Copyright Section */}
-      <div className="border-t border-white/10">
-        <div className="container mx-auto px-4 sm:px-6 py-4">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-white/50">
+      <div className="border-t border-gray-200 bg-gray-100">
+        <div className="container mx-auto px-4 sm:px-6 py-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-base text-gray-600 font-medium">
             <p>
-              Copyright © {new Date().getFullYear()} <span className="text-white/70">{config.site?.name || ''}</span>. Tüm Hakları Saklıdır!
+              Copyright © {new Date().getFullYear()} <span className="text-black font-bold">{config.site?.name || ''}</span>. Tüm Hakları Saklıdır!
             </p>
-            <p className="text-white/40">
+            <p className="text-gray-600">
               Web sitemizin içeriği bilgilendirme amaçlıdır, tedavi yerine geçmez.
             </p>
           </div>
