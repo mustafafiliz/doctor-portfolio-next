@@ -86,7 +86,7 @@ export function Editor({ content, onChange, placeholder = 'İçeriği buraya yaz
     },
     editorProps: {
       attributes: {
-        class: 'prose prose-sm sm:prose lg:prose-lg max-w-none focus:outline-none min-h-[300px] p-4',
+        class: 'prose prose-sm sm:prose lg:prose-lg max-w-none focus:outline-none min-h-[300px] max-h-[600px] overflow-y-auto p-4',
       },
     },
   });
