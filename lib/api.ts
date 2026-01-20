@@ -428,7 +428,7 @@ export const galleryApi = {
 
 // ============ FAQ API ============
 export const faqApi = {
-  list: (): Promise<FAQ[]> => apiFetch("/faq"),
+  list: (): Promise<FAQ[]> => apiFetch("/faq?limit=100"),
 
   create: (data: CreateFAQRequest): Promise<FAQ> =>
     apiFetch("/faq", {

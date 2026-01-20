@@ -9,7 +9,7 @@ import { getConfig, getPublicFAQs, getPublicSpecialties, getPublicAbout } from "
 import { VIDEOS_DATA } from "@/lib/data";
 import type { Metadata } from "next";
 import type { Locale } from "@/lib/i18n";
-import type { Specialty, SpecialtyCategory, AboutSection } from "@/lib/types";
+import type { Specialty, SpecialtyCategory, AboutSection, FAQ } from "@/lib/types";
 
 export async function generateMetadata({
   params
@@ -35,7 +35,10 @@ export default async function HomePage({
 
   // Server-side'da tüm verileri fetch et
   const faqsData = await getPublicFAQs();
-  const faqs = (faqsData.data || []).slice(0, 4); // İlk 4 soruyu al
+  // Verileri order'a göre sırala ve ilk 4'ünü al
+  const faqs = (faqsData.data || [])
+    .sort((a: FAQ, b: FAQ) => (a.order || 0) - (b.order || 0))
+    .slice(0, 4);
 
   const specialtiesData = await getPublicSpecialties();
   // Sadece kategorileri gönder

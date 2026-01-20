@@ -1,5 +1,5 @@
 // Config API - Dynamic configuration for the site
-import type { Specialty, SpecialtyCategory } from "./types";
+import type { Specialty, SpecialtyCategory, FAQ } from "./types";
 
 export interface SiteConfig {
   colors: {
@@ -234,22 +234,21 @@ export async function getPublicSpecialties() {
 
   try {
     const url = `${API_BASE_URL}/specialty/public/${WEBSITE_ID}`;
-    
-    const response = await fetch(
-      url,
-      {
-        next: { revalidate: 60 },
-        headers: {
-          "x-website-id": WEBSITE_ID
-        }
+
+    const response = await fetch(url, {
+      next: { revalidate: 60 },
+      headers: {
+        "x-website-id": WEBSITE_ID
       }
-    );
+    });
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`Failed to fetch specialties: ${response.status} ${errorText}`);
+      throw new Error(
+        `Failed to fetch specialties: ${response.status} ${errorText}`
+      );
     }
-    
+
     const data = await response.json();
 
     // API direkt array döndürüyorsa veya categories içinde array varsa
@@ -325,13 +324,13 @@ export async function getPublicGallery() {
 
     if (!response.ok) throw new Error("Failed to fetch gallery");
     const data = await response.json();
-    
+
     // API response formatını kontrol et ve normalize et
     // Eğer direkt array ise, { data: [...] } formatına çevir
     if (Array.isArray(data)) {
       return { data, total: data.length };
     }
-    
+
     // Eğer { data: [...], total: ..., limit: ... } formatında ise direkt döndür
     return data;
   } catch (error) {
@@ -343,22 +342,31 @@ export async function getPublicFAQs() {
   if (!WEBSITE_ID) return { data: [] };
 
   try {
-    const response = await fetch(`${API_BASE_URL}/faq/public/${WEBSITE_ID}`, {
-      next: { revalidate: 60 },
-      headers: {
-        "x-website-id": WEBSITE_ID
+    const response = await fetch(
+      `${API_BASE_URL}/faq/public/${WEBSITE_ID}?limit=100`,
+      {
+        next: { revalidate: 10 },
+        headers: {
+          "x-website-id": WEBSITE_ID
+        }
       }
-    });
+    );
 
     if (!response.ok) throw new Error("Failed to fetch FAQs");
     const data = await response.json();
 
     // API { data: [...], pagination: {...} } formatında döndürüyor
     if (data.data && Array.isArray(data.data)) {
-      return { data: data.data };
+      const sortedData = (data.data as FAQ[]).sort(
+        (a, b) => (a.order || 0) - (b.order || 0)
+      );
+      return { data: sortedData };
     } else if (Array.isArray(data)) {
       // API direkt array döndürüyorsa
-      return { data };
+      const sortedData = (data as FAQ[]).sort(
+        (a, b) => (a.order || 0) - (b.order || 0)
+      );
+      return { data: sortedData };
     } else {
       return { data: [] };
     }

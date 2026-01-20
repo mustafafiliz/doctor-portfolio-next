@@ -120,18 +120,19 @@ export default function AdminFaqPage() {
 
     const swapIndex = direction === 'up' ? index - 1 : index + 1;
     
-    // Swap orders locally
+    // Swap items in the array
     const newFaqs = [...sortedFaqs];
-    const tempOrder = newFaqs[index].order;
-    newFaqs[index] = { ...newFaqs[index], order: newFaqs[swapIndex].order };
-    newFaqs[swapIndex] = { ...newFaqs[swapIndex], order: tempOrder };
+    [newFaqs[index], newFaqs[swapIndex]] = [newFaqs[swapIndex], newFaqs[index]];
+    
+    // Re-assign orders sequentially to ensure clean ordering
+    const updatedFaqs = newFaqs.map((faq, i) => ({ ...faq, order: i }));
 
-    setFaqs(newFaqs);
+    setFaqs(updatedFaqs);
 
     // Update on server
     try {
       await faqApi.reorder({
-        items: newFaqs.map((faq) => ({ id: faq._id, order: faq.order })),
+        items: updatedFaqs.map((faq) => ({ id: faq._id, order: faq.order })),
       });
     } catch (err) {
       // Revert on error
