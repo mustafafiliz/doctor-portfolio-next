@@ -22,7 +22,7 @@ export default function EditSpecialtyPage() {
   const currentLocale = pathname?.split('/')[1] || 'tr';
   const fileInputRef = useRef<HTMLInputElement>(null);
   const specialtySlug = params.slug as string;
-  
+
   const [specialtyId, setSpecialtyId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -32,7 +32,7 @@ export default function EditSpecialtyPage() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
@@ -54,13 +54,13 @@ export default function EditSpecialtyPage() {
           specialtyApi.getBySlug(specialtySlug),
           specialtyApi.listCategories(),
         ]);
-        
+
         setSpecialtyId(specialtyData._id); // Update ve delete için _id'yi sakla
         // categoryId obje olarak gelebilir, _id'yi al
         const categoryIdValue = typeof specialtyData.categoryId === 'object' && specialtyData.categoryId !== null && '_id' in specialtyData.categoryId
           ? (specialtyData.categoryId as { _id: string })._id
           : (typeof specialtyData.categoryId === 'string' ? specialtyData.categoryId : '');
-        
+
         setFormData({
           title: specialtyData.title,
           slug: specialtyData.slug,
@@ -73,14 +73,14 @@ export default function EditSpecialtyPage() {
           order: specialtyData.order || 0,
           relatedSlugs: specialtyData.relatedSlugs || [],
         });
-        
+
         if (specialtyData.image) {
           setImagePreview(specialtyData.image);
         }
-        
+
         setCategories(categoriesData || []);
       } catch (err) {
-        setError('Uzmanlık alanı yüklenirken bir hata oluştu.');
+        setError('Uzmanlık yüklenirken bir hata oluştu.');
       } finally {
         setIsLoading(false);
       }
@@ -188,8 +188,8 @@ export default function EditSpecialtyPage() {
         }
         if (formData.categoryId) {
           // categoryId'nin string olduğundan emin ol
-          const categoryIdValue = typeof formData.categoryId === 'string' 
-            ? formData.categoryId 
+          const categoryIdValue = typeof formData.categoryId === 'string'
+            ? formData.categoryId
             : String(formData.categoryId);
           form.append('categoryId', categoryIdValue);
         }
@@ -217,8 +217,8 @@ export default function EditSpecialtyPage() {
         }
         if (formData.categoryId) {
           // categoryId'nin string olduğundan emin ol
-          jsonData.categoryId = typeof formData.categoryId === 'string' 
-            ? formData.categoryId 
+          jsonData.categoryId = typeof formData.categoryId === 'string'
+            ? formData.categoryId
             : String(formData.categoryId);
         }
         if (formData.imageUrl) {
@@ -231,13 +231,13 @@ export default function EditSpecialtyPage() {
       }
       router.push(`/${currentLocale}/admin/uzmanliklar`);
     } catch (err) {
-      setError('Uzmanlık alanı güncellenirken bir hata oluştu');
+      setError('Uzmanlık güncellenirken bir hata oluştu');
       setIsSaving(false);
     }
   };
 
   const handleDelete = async () => {
-    if (!confirm('Bu uzmanlık alanını silmek istediğinizden emin misiniz?')) {
+    if (!confirm('Bu uzmanlığı silmek istediğinizden emin misiniz?')) {
       return;
     }
 
@@ -325,7 +325,7 @@ export default function EditSpecialtyPage() {
                 value={formData.title}
                 onChange={(e) => handleTitleChange(e.target.value)}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
-                placeholder="Uzmanlık alanı başlığı"
+                placeholder="Uzmanlık başlığı"
                 required
               />
             </div>
@@ -355,7 +355,7 @@ export default function EditSpecialtyPage() {
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 rows={3}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none resize-none"
-                placeholder="Uzmanlık alanının kısa açıklaması..."
+                placeholder="Uzmanlık kısa açıklaması..."
               />
             </div>
           </div>
@@ -368,7 +368,7 @@ export default function EditSpecialtyPage() {
             <Editor
               content={formData.content}
               onChange={(content) => setFormData({ ...formData, content })}
-              placeholder="Uzmanlık alanı içeriğini buraya yazın..."
+              placeholder="Uzmanlık içeriğini buraya yazın..."
             />
           </div>
         </div>
@@ -455,11 +455,10 @@ export default function EditSpecialtyPage() {
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
-              className={`w-full border-2 border-dashed rounded-sm p-6 text-center cursor-pointer transition-colors ${
-                isDragging
-                  ? 'border-[#144793] bg-blue-50'
-                  : 'border-gray-300 hover:border-[#144793]'
-              }`}
+              className={`w-full border-2 border-dashed rounded-sm p-6 text-center cursor-pointer transition-colors ${isDragging
+                ? 'border-[#144793] bg-blue-50'
+                : 'border-gray-300 hover:border-[#144793]'
+                }`}
             >
               <Upload size={32} className={`mx-auto mb-2 ${isDragging ? 'text-[#144793]' : 'text-gray-400'}`} />
               <p className={`text-sm ${isDragging ? 'text-[#144793] font-medium' : 'text-gray-500'}`}>

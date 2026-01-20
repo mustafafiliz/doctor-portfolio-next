@@ -80,7 +80,7 @@ export default function AdminSpecialtiesPage() {
   const [deletingCategoryId, setDeletingCategoryId] = useState<string | null>(null);
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Bu uzmanlık alanını silmek istediğinizden emin misiniz?')) {
+    if (!confirm('Bu uzmanlığı silmek istediğinizden emin misiniz?')) {
       return;
     }
 
@@ -137,7 +137,7 @@ export default function AdminSpecialtiesPage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-800">Uzmanlık Alanları</h1>
           <p className="text-gray-500 text-sm mt-1">
-            Toplam {specialties.length} uzmanlık alanı
+            Toplam {specialties.length} uzmanlık
           </p>
         </div>
         <div className="flex gap-2">

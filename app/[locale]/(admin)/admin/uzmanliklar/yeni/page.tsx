@@ -20,14 +20,14 @@ export default function NewSpecialtyPage() {
   const pathname = usePathname();
   const currentLocale = pathname?.split('/')[1] || 'tr';
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState<SpecialtyCategory[]>([]);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
@@ -150,8 +150,8 @@ export default function NewSpecialtyPage() {
         }
         if (formData.categoryId) {
           // categoryId'nin string olduğundan emin ol
-          const categoryIdValue = typeof formData.categoryId === 'string' 
-            ? formData.categoryId 
+          const categoryIdValue = typeof formData.categoryId === 'string'
+            ? formData.categoryId
             : String(formData.categoryId);
           form.append('categoryId', categoryIdValue);
         }
@@ -179,8 +179,8 @@ export default function NewSpecialtyPage() {
         }
         if (formData.categoryId) {
           // categoryId'nin string olduğundan emin ol
-          jsonData.categoryId = typeof formData.categoryId === 'string' 
-            ? formData.categoryId 
+          jsonData.categoryId = typeof formData.categoryId === 'string'
+            ? formData.categoryId
             : String(formData.categoryId);
         }
         if (formData.relatedSlugs && formData.relatedSlugs.length > 0) {
@@ -193,24 +193,24 @@ export default function NewSpecialtyPage() {
       // API'den gelen hata mesajını göster
       const errorMessage = err?.message || '';
       const isImageUpload = selectedFile || formData.imageUrl;
-      
+
       // 413 Request Entity Too Large veya failed to fetch (görsel yükleme sırasında)
-      if (err?.statusCode === 413 || 
-          (isImageUpload && (errorMessage.toLowerCase().includes('failed to fetch') || 
-                             errorMessage.toLowerCase().includes('network') ||
-                             !errorMessage))) {
+      if (err?.statusCode === 413 ||
+        (isImageUpload && (errorMessage.toLowerCase().includes('failed to fetch') ||
+          errorMessage.toLowerCase().includes('network') ||
+          !errorMessage))) {
         setError('Görsel dosyası çok büyük. Lütfen daha küçük bir dosya seçin.');
       } else if (err?.statusCode === 415) {
         setError('Desteklenmeyen dosya formatı. Lütfen PNG, JPG veya WebP formatında bir görsel seçin.');
-      } else if (isImageUpload && (errorMessage.toLowerCase().includes('image') || 
-                                    errorMessage.toLowerCase().includes('görsel') ||
-                                    errorMessage.toLowerCase().includes('file') ||
-                                    errorMessage.toLowerCase().includes('upload'))) {
+      } else if (isImageUpload && (errorMessage.toLowerCase().includes('image') ||
+        errorMessage.toLowerCase().includes('görsel') ||
+        errorMessage.toLowerCase().includes('file') ||
+        errorMessage.toLowerCase().includes('upload'))) {
         setError(`Görsel yüklenirken bir hata oluştu: ${errorMessage}`);
       } else if (errorMessage) {
         setError(errorMessage);
       } else {
-      setError('Uzmanlık alanı kaydedilirken bir hata oluştu');
+        setError('Uzmanlık kaydedilirken bir hata oluştu');
       }
       setIsLoading(false);
     }
@@ -229,7 +229,7 @@ export default function NewSpecialtyPage() {
           </Link>
           <div>
             <h1 className="text-2xl font-bold text-gray-800">Yeni Uzmanlık Yazısı</h1>
-            <p className="text-gray-500 text-sm mt-1">Yeni bir uzmanlık alanı oluşturun</p>
+            <p className="text-gray-500 text-sm mt-1">Yeni bir uzmanlık oluşturun</p>
           </div>
         </div>
       </div>
@@ -258,7 +258,7 @@ export default function NewSpecialtyPage() {
                 value={formData.title}
                 onChange={(e) => handleTitleChange(e.target.value)}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
-                placeholder="Uzmanlık alanı başlığı"
+                placeholder="Uzmanlık başlığı"
                 required
               />
             </div>
@@ -288,7 +288,7 @@ export default function NewSpecialtyPage() {
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 rows={3}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none resize-none"
-                placeholder="Uzmanlık alanının kısa açıklaması..."
+                placeholder="Uzmanlık kısa açıklaması..."
               />
             </div>
           </div>
@@ -301,7 +301,7 @@ export default function NewSpecialtyPage() {
             <Editor
               content={formData.content}
               onChange={(content) => setFormData({ ...formData, content })}
-              placeholder="Uzmanlık alanı içeriğini buraya yazın..."
+              placeholder="Uzmanlık içeriğini buraya yazın..."
             />
           </div>
         </div>
@@ -335,11 +335,11 @@ export default function NewSpecialtyPage() {
                 <SelectValue placeholder="Uzmanlık Seçin" />
               </SelectTrigger>
               <SelectContent>
-              {categories.map((category) => (
+                {categories.map((category) => (
                   <SelectItem key={category._id} value={category._id}>
                     {category.title || category.name || category._id}
                   </SelectItem>
-              ))}
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -388,11 +388,10 @@ export default function NewSpecialtyPage() {
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
                 onClick={() => fileInputRef.current?.click()}
-                className={`w-full border-2 border-dashed rounded-sm p-6 text-center cursor-pointer transition-colors ${
-                  isDragging
-                    ? 'border-[#144793] bg-blue-50'
-                    : 'border-gray-300 hover:border-[#144793]'
-                }`}
+                className={`w-full border-2 border-dashed rounded-sm p-6 text-center cursor-pointer transition-colors ${isDragging
+                  ? 'border-[#144793] bg-blue-50'
+                  : 'border-gray-300 hover:border-[#144793]'
+                  }`}
               >
                 <Upload size={32} className={`mx-auto mb-2 ${isDragging ? 'text-[#144793]' : 'text-gray-400'}`} />
                 <p className={`text-sm ${isDragging ? 'text-[#144793] font-medium' : 'text-gray-500'}`}>

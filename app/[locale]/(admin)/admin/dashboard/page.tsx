@@ -146,7 +146,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <p className="text-2xl font-bold text-gray-800 mt-3">{stats.totalSpecialties}</p>
-          <p className="text-sm text-gray-500">Uzmanlık Alanı</p>
+          <p className="text-sm text-gray-500">Uzmanlık</p>
         </div>
 
         <div className="bg-white rounded-sm p-5 border border-gray-200">
