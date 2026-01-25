@@ -7,7 +7,7 @@ import { useConfig } from '@/hooks/useConfig';
 import { usePathname } from 'next/navigation';
 import { type Locale } from '@/lib/i18n';
 import { getRoute } from '@/lib/routes';
-import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin, Twitter, Youtube } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin, Twitter, Youtube, GraduationCap } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { getPublicSpecialties } from '@/lib/config';
 import type { SpecialtyCategory, Specialty } from '@/lib/types';
@@ -103,13 +103,27 @@ export function Footer() {
     }
   };
 
-  const socialLinks = [
+  // Sabit linkler (config'den bağımsız)
+  const fixedLinks = [
+    { icon: Linkedin, url: 'https://www.linkedin.com/in/ufuk-elgin-96380b3a6/', label: 'LinkedIn' },
+    { icon: GraduationCap, url: 'https://scholar.google.com/citations?hl=tr&user=rXphPsUAAAAJ', label: 'Google Akademik' },
+  ];
+
+  // Config'den gelen sosyal medya linkleri (LinkedIn hariç - sabit link kullanacağız)
+  const configSocialLinks = [
     { icon: Facebook, url: config.social?.facebook, label: 'Facebook' },
     { icon: Instagram, url: config.social?.instagram, label: 'Instagram' },
-    { icon: Linkedin, url: config.social?.linkedin, label: 'LinkedIn' },
     { icon: Twitter, url: config.social?.twitter, label: 'Twitter' },
     { icon: Youtube, url: config.social?.youtube, label: 'YouTube' },
   ].filter(link => isValidSocialUrl(link.url));
+
+  // Tüm linkleri birleştir: config linkleri (YouTube hariç) + YouTube + Google Akademik + LinkedIn
+  const socialLinks = [
+    ...configSocialLinks.filter(link => link.label !== 'YouTube'),
+    ...configSocialLinks.filter(link => link.label === 'YouTube'),
+    fixedLinks[1], // Google Akademik
+    fixedLinks[0], // LinkedIn
+  ];
 
   return (
     <footer className="bg-white text-black relative overflow-hidden">
@@ -286,13 +300,13 @@ export function Footer() {
       </div>
 
       {/* Copyright Section */}
-      <div className="border-t border-gray-200 bg-gray-100">
+      <div className="border-t border-gray-200 bg-primary">
         <div className="container mx-auto px-4 sm:px-6 py-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-base text-gray-600 font-medium">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-base text-white font-medium">
             <p>
-              Copyright © {new Date().getFullYear()} <span className="text-black font-bold">{config.site?.name || ''}</span>. Tüm Hakları Saklıdır!
+              Copyright © {new Date().getFullYear()} <span className="text-white font-bold">{config.site?.name || ''}</span>. Tüm Hakları Saklıdır!
             </p>
-            <p className="text-gray-600">
+            <p className="text-white">
               Web sitemizin içeriği bilgilendirme amaçlıdır, tedavi yerine geçmez.
             </p>
           </div>
