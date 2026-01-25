@@ -187,14 +187,6 @@ export default async function SpecialtyPage({
                 ? specialty.category.title || specialty.category.name
                 : "Tüm Uzmanlıklar"}
             </Link>
-            {author?.title && (
-              <div className="flex items-center gap-2 text-sm">
-                <span className="text-gray-400">Medikal içerik:</span>
-                <span className="text-primary font-medium">
-                  {author.title}
-                </span>
-              </div>
-            )}
           </div>
 
           {/* Featured Image */}
