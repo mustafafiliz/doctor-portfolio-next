@@ -28,8 +28,7 @@ export function QuickLinks({ currentLocale: propLocale }: QuickLinksProps) {
     {
       icon: '/images/icons/makaleler.png',
       title: 'Yayınlanan Makaleler',
-      href: 'https://scholar.google.com/citations?hl=tr&user=rXphPsUAAAAJ',
-      isExternal: true,
+      href: `/${currentLocale}/makaleler`,
     },
     {
       icon: '/images/icons/youtube-1.svg',

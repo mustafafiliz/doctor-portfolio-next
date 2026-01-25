@@ -7,7 +7,8 @@ export const routes = {
   videos: "/videolar",
   contact: "/iletisim",
   faq: "/sik-sorulan-sorular",
-  blog: "/blog"
+  blog: "/blog",
+  makaleler: "/makaleler"
 } as const;
 
 // All routes use Turkish URLs regardless of locale
