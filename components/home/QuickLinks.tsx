@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { type Locale } from '@/lib/i18n';
-import { useConfig } from '@/hooks/useConfig';
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { type Locale } from "@/lib/i18n";
+import { useConfig } from "@/hooks/useConfig";
 
 interface QuickLinksProps {
   currentLocale?: Locale;
@@ -12,32 +12,33 @@ interface QuickLinksProps {
 
 export function QuickLinks({ currentLocale: propLocale }: QuickLinksProps) {
   const pathname = usePathname();
-  const currentLocale = propLocale || (pathname?.split('/')[1] || 'tr') as Locale;
+  const currentLocale =
+    propLocale || ((pathname?.split("/")[1] || "tr") as Locale);
   const { config } = useConfig();
   const whatsappUrl = config?.contact?.whatsapp
-    ? `https://wa.me/${config.contact.whatsapp.replace(/[^0-9]/g, '')}`
-    : '#';
+    ? `https://wa.me/${config.contact.whatsapp.replace(/[^0-9]/g, "")}`
+    : "#";
 
   const links = [
     {
-      icon: '/images/icons/stethoscope.png',
-      title: 'Randevu Talebi',
+      icon: "/images/icons/stethoscope.png",
+      title: "Randevu Talebi",
       href: whatsappUrl,
       isExternal: true,
     },
     {
-      icon: '/images/icons/makaleler.png',
-      title: 'Yayınlanan Makaleler',
+      icon: "/images/icons/makaleler.png",
+      title: "Bilimsel Makaleler ve Yayınlar",
       href: `/${currentLocale}/makaleler`,
     },
     {
-      icon: '/images/icons/youtube-1.svg',
-      title: 'Video İçerikler',
+      icon: "/images/icons/youtube-1.svg",
+      title: "Video İçerikler",
       href: `/${currentLocale}/videolar`,
     },
     {
-      icon: '/images/icons/blog-2.png',
-      title: 'Blog Yazıları',
+      icon: "/images/icons/blog-2.png",
+      title: "Blog Yazıları",
       href: `/${currentLocale}/blog`,
     },
   ];
@@ -47,7 +48,7 @@ export function QuickLinks({ currentLocale: propLocale }: QuickLinksProps) {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
           {links.map((link, index) => {
-            const words = link.title.split(' ');
+            const words = link.title.split(" ");
             return (
               <Link
                 key={index}
@@ -67,7 +68,10 @@ export function QuickLinks({ currentLocale: propLocale }: QuickLinksProps) {
                 </div>
                 <div className="flex flex-col justify-center">
                   {words.map((word, i) => (
-                    <span key={i} className="text-base lg:text-lg font-semibold text-gray-800 group-hover:text-primary transition-colors leading-tight">
+                    <span
+                      key={i}
+                      className="text-base lg:text-lg font-semibold text-gray-800 group-hover:text-primary transition-colors leading-tight"
+                    >
                       {word}
                     </span>
                   ))}
@@ -80,4 +84,3 @@ export function QuickLinks({ currentLocale: propLocale }: QuickLinksProps) {
     </section>
   );
 }
-
