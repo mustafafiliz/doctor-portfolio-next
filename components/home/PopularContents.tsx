@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { type Locale } from '@/lib/i18n';
-import type { Specialty, SpecialtyCategory } from '@/lib/types';
-import { getRoute } from '@/lib/routes';
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { type Locale } from "@/lib/i18n";
+import type { Specialty, SpecialtyCategory } from "@/lib/types";
+import { getRoute } from "@/lib/routes";
 
 interface CategoryWithSpecialties extends SpecialtyCategory {
   specialties?: Specialty[];
@@ -18,20 +18,24 @@ interface PopularContentsProps {
 
 export function PopularContents({
   categories,
-  currentLocale: propLocale
+  currentLocale: propLocale,
 }: PopularContentsProps) {
   const pathname = usePathname();
-  const currentLocale = propLocale || (pathname?.split('/')[1] || 'tr') as Locale;
+  const currentLocale =
+    propLocale || ((pathname?.split("/")[1] || "tr") as Locale);
 
   // Tüm uzmanlıkları düzleştir ve ilk 6 tanesini al
-  const allSpecialties: (Specialty & { categoryName?: string; categorySlug?: string })[] = [];
+  const allSpecialties: (Specialty & {
+    categoryName?: string;
+    categorySlug?: string;
+  })[] = [];
   categories.forEach((category) => {
     if (category.specialties && Array.isArray(category.specialties)) {
       category.specialties.forEach((specialty) => {
         allSpecialties.push({
           ...specialty,
           categoryName: category.title || category.name,
-          categorySlug: category.slug
+          categorySlug: category.slug,
         });
       });
     }
@@ -53,7 +57,9 @@ export function PopularContents({
             Blog Yazıları
           </h2>
           <p className="text-gray-600 max-w-2xl">
-            Göz sağlığı, hastalıkları ve tedavi yöntemleri hakkında merak ettiğiniz tüm konuları, güncel bilimsel veriler ışığında hazırladığım blog yazılarımda bulabilirsiniz.
+            Göz sağlığı, hastalıkları ve tedavi yöntemleri hakkında merak
+            ettiğiniz tüm konuları, güncel bilimsel veriler ışığında
+            hazırladığım blog yazılarımda bulabilirsiniz.
           </p>
         </div>
 
@@ -77,7 +83,9 @@ export function PopularContents({
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                      <span className="text-6xl text-primary/30">{specialty.title.charAt(0)}</span>
+                      <span className="text-6xl text-primary/30">
+                        {specialty.title.charAt(0)}
+                      </span>
                     </div>
                   )}
 
@@ -116,7 +124,7 @@ export function PopularContents({
         {/* View All Button */}
         <div className="mt-12 text-center flex justify-center">
           <Link
-            href={`/${currentLocale}${getRoute('blog', currentLocale)}`}
+            href={`/${currentLocale}${getRoute("specialties", currentLocale)}`}
             className="inline-flex items-center justify-center px-8 py-3 text-base font-medium text-white bg-primary hover:bg-primary/90 rounded-sm transition-colors duration-200 shadow-sm hover:shadow-md"
           >
             Tümünü Göster
