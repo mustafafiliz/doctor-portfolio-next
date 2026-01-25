@@ -5,7 +5,9 @@ import type { Metadata } from 'next';
 import { locales, type Locale } from '@/lib/i18n';
 import { Container } from '@/components/Container';
 import Image from 'next/image';
+import Link from 'next/link';
 import type { AboutSection } from '@/lib/types';
+import { FileText } from 'lucide-react';
 
 export async function generateMetadata({
   params,
@@ -123,6 +125,20 @@ export default async function AboutPage({
               </ul>
             </>
           )}
+
+          {/* Bilimsel Makaleler ve Yayınlar Link */}
+          <div className="mt-8 sm:mt-10 pt-6 sm:pt-8 border-t border-gray-200">
+            <Link
+              href={`/${validLocale}/makaleler`}
+              className="inline-flex items-center gap-3 px-6 py-4 bg-primary/10 hover:bg-primary/20 text-primary font-semibold rounded-lg transition-all duration-300 hover:shadow-md group"
+            >
+              <FileText className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <span>Bilimsel Makaleler ve Yayınlar</span>
+              <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
         </div>
       </div>
     </Container>

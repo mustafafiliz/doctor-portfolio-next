@@ -36,15 +36,26 @@ export function AuthorCard({ author, locale = 'tr' }: AuthorCardProps) {
                     </p>
                 )}
 
-                <Link
-                    href={`/${locale}/hakkimda`}
-                    className="inline-flex items-center text-sm font-medium text-[#144793] hover:text-[#0f3a7a] transition-colors"
-                >
-                    Detaylı Bilgi
-                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                </Link>
+                <div className="flex flex-wrap items-center gap-4 mt-2">
+                    <Link
+                        href={`/${locale}/hakkimda`}
+                        className="inline-flex items-center text-sm font-medium text-[#144793] hover:text-[#0f3a7a] transition-colors"
+                    >
+                        Hakkımda
+                        <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                    </Link>
+                    <Link
+                        href={`/${locale}/makaleler`}
+                        className="inline-flex items-center text-sm font-medium text-[#144793] hover:text-[#0f3a7a] transition-colors"
+                    >
+                        Bilimsel Makaleler ve Yayınlar
+                        <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                    </Link>
+                </div>
             </div>
         </div>
     );
