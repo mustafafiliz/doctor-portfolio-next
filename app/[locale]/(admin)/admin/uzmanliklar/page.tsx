@@ -14,6 +14,8 @@ import {
   Loader2,
   AlertCircle,
   X,
+  ArrowUp,
+  ArrowDown,
 } from 'lucide-react';
 import {
   Select,
@@ -69,7 +71,51 @@ export default function AdminSpecialtiesPage() {
   const filteredSpecialties = specialties.filter((specialty) => {
     const matchesSearch = specialty.title.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesSearch;
-  });
+  }).sort((a, b) => (a.order || 0) - (b.order || 0));
+
+  const handleReorder = async (direction: 'up' | 'down', index: number) => {
+    if (searchQuery) return; // Arama yaparken sıralama devre dışı
+
+    const currentList = filteredSpecialties;
+    if (direction === 'up' && index === 0) return;
+    if (direction === 'down' && index === currentList.length - 1) return;
+
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    const newSpecialties = [...specialties];
+
+    // Swap items in the array
+    const currentIndexInMain = newSpecialties.findIndex(s => s._id === currentList[index]._id);
+    const targetIndexInMain = newSpecialties.findIndex(s => s._id === currentList[targetIndex]._id);
+
+    if (currentIndexInMain === -1 || targetIndexInMain === -1) return;
+
+    [newSpecialties[currentIndexInMain], newSpecialties[targetIndexInMain]] =
+      [newSpecialties[targetIndexInMain], newSpecialties[currentIndexInMain]];
+
+    // Optimistic update
+    setSpecialties(newSpecialties);
+
+    // Prepare API payload with normalized orders
+    const offset = (page - 1) * 20;
+    const updates = newSpecialties.map((item, idx) => ({
+      id: item._id,
+      order: offset + idx
+    }));
+
+    try {
+      await specialtyApi.reorder({ items: updates });
+
+      // Update local state orders to match
+      const updatedSpecialties = newSpecialties.map((item, idx) => ({
+        ...item,
+        order: offset + idx
+      }));
+      setSpecialties(updatedSpecialties);
+    } catch (err) {
+      setError('Sıralama güncellenirken bir hata oluştu');
+      fetchData(); // Revert
+    }
+  };
 
   const getCategoryName = (categoryId?: string) => {
     if (!categoryId) return '-';

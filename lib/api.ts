@@ -17,6 +17,7 @@ import type {
   SpecialtyListResponse,
   CreateSpecialtyRequest,
   UpdateSpecialtyRequest,
+  ReorderSpecialtyRequest,
   GalleryPhoto,
   GalleryListResponse,
   CreateGalleryPhotoRequest,
@@ -395,6 +396,12 @@ export const specialtyApi = {
   delete: (id: string): Promise<void> =>
     apiFetch(`/specialty/${id}`, {
       method: "DELETE"
+    }),
+
+  reorder: (data: ReorderSpecialtyRequest): Promise<void> =>
+    apiFetch("/specialty/reorder", {
+      method: "PUT",
+      body: JSON.stringify(data)
     })
 };
 

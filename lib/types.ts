@@ -270,6 +270,10 @@ export interface CreateSpecialtyRequest {
 
 export interface UpdateSpecialtyRequest extends Partial<CreateSpecialtyRequest> {}
 
+export interface ReorderSpecialtyRequest {
+  items: { id: string; order: number }[];
+}
+
 export interface SpecialtyListResponse {
   data: Specialty[];
   total: number;
