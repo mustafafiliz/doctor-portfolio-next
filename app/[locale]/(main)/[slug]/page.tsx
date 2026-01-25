@@ -4,10 +4,11 @@ import { Container } from '@/components/Container';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronRight, ArrowLeft } from 'lucide-react';
-import { getPublicSpecialtyBySlug, getPublicSpecialties, getConfig } from '@/lib/config';
-import type { Specialty, SpecialtyCategory } from '@/lib/types';
+import { getPublicSpecialtyBySlug, getPublicSpecialties, getConfig, getPublicAbout } from '@/lib/config';
+import type { Specialty, SpecialtyCategory, AboutSection } from '@/lib/types';
 import type { Metadata } from 'next';
 import { SpecialtyContent } from '@/components/specialty/SpecialtyContent';
+import { AuthorCard } from '@/components/AuthorCard';
 
 // Rezerve edilmiş slug'lar (diğer sayfalar)
 const reservedSlugs = [
@@ -67,6 +68,7 @@ export default async function SpecialtyPage({
 
   // Specialty'yi kontrol et
   let specialty: Specialty | null = await getPublicSpecialtyBySlug(slug);
+  const author = await getPublicAbout() as AboutSection | null;
 
   if (!specialty) {
     notFound();
@@ -75,7 +77,7 @@ export default async function SpecialtyPage({
   // Eğer specialty'de category yoksa, kategoriyi bul
   if (!specialty.category) {
     const allSpecialties = await getPublicSpecialties();
-    
+
     // categoryId varsa onu kullan
     if (specialty.categoryId) {
       const foundCategory = allSpecialties.categories.find(
@@ -85,7 +87,7 @@ export default async function SpecialtyPage({
         specialty.category = foundCategory;
       }
     }
-    
+
     // categoryId ile bulunamadıysa veya categoryId yoksa, tüm kategorilerde ara
     if (!specialty.category) {
       for (const category of allSpecialties.categories) {
@@ -190,6 +192,9 @@ export default async function SpecialtyPage({
           {specialty.content && (
             <SpecialtyContent content={specialty.content} />
           )}
+
+          {/* Author Card */}
+          <AuthorCard author={author} locale={currentLocale} />
         </div>
       </Container>
     </>

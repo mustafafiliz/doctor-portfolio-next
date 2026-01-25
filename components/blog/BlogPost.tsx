@@ -6,14 +6,16 @@ import { Calendar, ArrowLeft } from 'lucide-react';
 import { type Locale } from '@/lib/i18n';
 import { getRoute } from '@/lib/routes';
 import Image from 'next/image';
-import type { Blog } from '@/lib/types';
+import type { Blog, AboutSection } from '@/lib/types';
+import { AuthorCard } from '@/components/AuthorCard';
 
 interface BlogPostProps {
   post: Blog;
   locale: Locale;
+  author: AboutSection | null;
 }
 
-export function BlogPost({ post, locale }: BlogPostProps) {
+export function BlogPost({ post, locale, author }: BlogPostProps) {
   const t = useTranslations('blog');
   const currentLocale = locale;
 
@@ -66,6 +68,9 @@ export function BlogPost({ post, locale }: BlogPostProps) {
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </div>
+
+        {/* Author Card */}
+        <AuthorCard author={author} locale={locale} />
 
         {/* Blog Content Styles - Match Editor Styles */}
         <style jsx global>{`
