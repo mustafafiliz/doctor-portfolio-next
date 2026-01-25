@@ -1,26 +1,31 @@
-import { notFound } from 'next/navigation';
-import { type Locale } from '@/lib/i18n';
-import { Container } from '@/components/Container';
-import Image from 'next/image';
-import Link from 'next/link';
-import { ChevronRight, ArrowLeft } from 'lucide-react';
-import { getPublicSpecialtyBySlug, getPublicSpecialties, getConfig, getPublicAbout } from '@/lib/config';
-import type { Specialty, SpecialtyCategory, AboutSection } from '@/lib/types';
-import type { Metadata } from 'next';
-import { SpecialtyContent } from '@/components/specialty/SpecialtyContent';
-import { AuthorCard } from '@/components/AuthorCard';
+import { notFound } from "next/navigation";
+import { type Locale } from "@/lib/i18n";
+import { Container } from "@/components/Container";
+import Image from "next/image";
+import Link from "next/link";
+import { ChevronRight, ArrowLeft } from "lucide-react";
+import {
+  getPublicSpecialtyBySlug,
+  getPublicSpecialties,
+  getConfig,
+  getPublicAbout,
+} from "@/lib/config";
+import type { Specialty, SpecialtyCategory, AboutSection } from "@/lib/types";
+import type { Metadata } from "next";
+import { SpecialtyContent } from "@/components/specialty/SpecialtyContent";
+import { AuthorCard } from "@/components/AuthorCard";
 
 // Rezerve edilmiş slug'lar (diğer sayfalar)
 const reservedSlugs = [
-  'hakkimda',
-  'uzmanliklar',
-  'uzmanlik',
-  'galeri',
-  'videolar',
-  'iletisim',
-  'sik-sorulan-sorular',
-  'blog',
-  'admin',
+  "hakkimda",
+  "uzmanliklar",
+  "uzmanlik",
+  "galeri",
+  "videolar",
+  "iletisim",
+  "sik-sorulan-sorular",
+  "blog",
+  "admin",
 ];
 
 export async function generateMetadata({
@@ -58,7 +63,7 @@ export default async function SpecialtyPage({
   params: Promise<{ slug: string; locale: string }>;
 }) {
   const { slug, locale } = await params;
-  const currentLocale = (locale || 'tr') as Locale;
+  const currentLocale = (locale || "tr") as Locale;
   const config = await getConfig();
 
   // Rezerve edilmiş slug ise 404
@@ -68,7 +73,7 @@ export default async function SpecialtyPage({
 
   // Specialty'yi kontrol et
   let specialty: Specialty | null = await getPublicSpecialtyBySlug(slug);
-  const author = await getPublicAbout() as AboutSection | null;
+  const author = (await getPublicAbout()) as AboutSection | null;
 
   if (!specialty) {
     notFound();
@@ -81,7 +86,8 @@ export default async function SpecialtyPage({
     // categoryId varsa onu kullan
     if (specialty.categoryId) {
       const foundCategory = allSpecialties.categories.find(
-        (cat: SpecialtyCategory & { specialties?: Specialty[] }) => cat._id === specialty!.categoryId
+        (cat: SpecialtyCategory & { specialties?: Specialty[] }) =>
+          cat._id === specialty!.categoryId,
       );
       if (foundCategory) {
         specialty.category = foundCategory;
@@ -93,7 +99,8 @@ export default async function SpecialtyPage({
       for (const category of allSpecialties.categories) {
         if (category.specialties && Array.isArray(category.specialties)) {
           const foundSpecialty = category.specialties.find(
-            (s: Specialty) => s._id === specialty!._id || s.slug === specialty!.slug
+            (s: Specialty) =>
+              s._id === specialty!._id || s.slug === specialty!.slug,
           );
           if (foundSpecialty) {
             specialty.category = category;
@@ -117,9 +124,12 @@ export default async function SpecialtyPage({
         className="py-6 sm:py-8"
         style={{ backgroundColor: primaryColor }}
       >
-        <Container>
+        <Container className="hide-scrollbar">
           <nav className="flex items-center gap-2 text-sm text-white/80 flex-wrap">
-            <Link href={`/${currentLocale}`} className="hover:text-white transition-colors">
+            <Link
+              href={`/${currentLocale}`}
+              className="hover:text-white transition-colors"
+            >
               Anasayfa
             </Link>
             <ChevronRight size={14} className="text-white/50" />
@@ -139,13 +149,17 @@ export default async function SpecialtyPage({
                   {specialty.category.title || specialty.category.name}
                 </Link>
                 <ChevronRight size={14} className="text-white/50" />
-                <span className="text-white font-medium">{specialty.title}</span>
+                <span className="text-white font-medium">
+                  {specialty.title}
+                </span>
               </>
             )}
             {!specialty.category && (
               <>
                 <ChevronRight size={14} className="text-white/50" />
-                <span className="text-white font-medium">{specialty.title}</span>
+                <span className="text-white font-medium">
+                  {specialty.title}
+                </span>
               </>
             )}
           </nav>
@@ -171,7 +185,7 @@ export default async function SpecialtyPage({
               <ArrowLeft className="h-4 w-4 mr-2" />
               {specialty.category
                 ? specialty.category.title || specialty.category.name
-                : 'Tüm Uzmanlıklar'}
+                : "Tüm Uzmanlıklar"}
             </Link>
           </div>
 
