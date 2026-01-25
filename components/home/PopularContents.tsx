@@ -24,7 +24,7 @@ export function PopularContents({
   const currentLocale =
     propLocale || ((pathname?.split("/")[1] || "tr") as Locale);
 
-  // Tüm uzmanlıkları düzleştir ve ilk 6 tanesini al
+  // Tüm uzmanlıkları düzleştir, order'a göre sırala ve ilk 6 tanesini al
   const allSpecialties: (Specialty & {
     categoryName?: string;
     categorySlug?: string;
@@ -41,8 +41,10 @@ export function PopularContents({
     }
   });
 
-  // İlk 6 uzmanlık yazısını al
-  const popularSpecialties = allSpecialties.slice(0, 6);
+  // Order'a göre sırala ve ilk 6 uzmanlık yazısını al
+  const popularSpecialties = allSpecialties
+    .sort((a, b) => (a.order || 0) - (b.order || 0))
+    .slice(0, 6);
 
   if (popularSpecialties.length === 0) {
     return null;

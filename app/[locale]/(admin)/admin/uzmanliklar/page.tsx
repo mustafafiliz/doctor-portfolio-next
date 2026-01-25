@@ -14,9 +14,25 @@ import {
   Loader2,
   AlertCircle,
   X,
-  ArrowUp,
-  ArrowDown,
+  GripVertical,
 } from "lucide-react";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import {
   Select,
   SelectContent,
@@ -26,6 +42,115 @@ import {
 } from "@/components/ui/select";
 import { specialtyApi } from "@/lib/api";
 import type { Specialty, SpecialtyCategory } from "@/lib/types";
+
+interface SortableSpecialtyRowProps {
+  specialty: Specialty;
+  currentLocale: string;
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
+  deletingId: string | null;
+}
+
+function SortableSpecialtyRow({
+  specialty,
+  currentLocale,
+  onEdit,
+  onDelete,
+  deletingId,
+}: SortableSpecialtyRowProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: specialty._id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <tr
+      ref={setNodeRef}
+      style={style}
+      className="hover:bg-gray-50"
+    >
+      <td className="px-4 py-4">
+        <div className="flex items-center gap-3">
+          <button
+            {...attributes}
+            {...listeners}
+            className="p-2 text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing touch-none"
+            aria-label="Sürükle"
+          >
+            <GripVertical size={18} />
+          </button>
+          <div className="w-12 h-12 bg-gray-100 rounded-sm overflow-hidden shrink-0">
+            {specialty.image ? (
+              <Image
+                src={specialty.image}
+                alt={specialty.title}
+                width={48}
+                height={48}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-gray-400">
+                <FolderOpen size={20} />
+              </div>
+            )}
+          </div>
+          <div className="min-w-0">
+            <Link
+              href={`/${currentLocale}/admin/uzmanliklar/${specialty.slug}`}
+              className="font-medium text-gray-800 hover:text-[#144793] block truncate"
+            >
+              {specialty.title}
+            </Link>
+            <p className="text-sm text-gray-500 truncate max-w-xs">
+              {specialty.description}
+            </p>
+          </div>
+        </div>
+      </td>
+      <td className="px-4 py-4">
+        <div className="flex items-center justify-end gap-1">
+          <Link
+            href={`/${currentLocale}/${specialty.slug}`}
+            target="_blank"
+            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-sm"
+            title="Görüntüle"
+          >
+            <Eye size={18} />
+          </Link>
+          <Link
+            href={`/${currentLocale}/admin/uzmanliklar/${specialty.slug}`}
+            className="p-2 text-gray-400 hover:text-[#144793] hover:bg-gray-100 rounded-sm"
+            title="Düzenle"
+          >
+            <Edit size={18} />
+          </Link>
+          <button
+            onClick={() => onDelete(specialty._id)}
+            disabled={deletingId === specialty._id}
+            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-sm disabled:opacity-50"
+            title="Sil"
+          >
+            {deletingId === specialty._id ? (
+              <Loader2 size={18} className="animate-spin" />
+            ) : (
+              <Trash2 size={18} />
+            )}
+          </button>
+        </div>
+      </td>
+    </tr>
+  );
+}
 
 export default function AdminSpecialtiesPage() {
   const pathname = usePathname();
@@ -40,6 +165,13 @@ export default function AdminSpecialtiesPage() {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   useEffect(() => {
     fetchData();
@@ -77,49 +209,52 @@ export default function AdminSpecialtiesPage() {
     })
     .sort((a, b) => (a.order || 0) - (b.order || 0));
 
-  const handleReorder = async (direction: "up" | "down", index: number) => {
+  const handleDragEnd = async (event: DragEndEvent) => {
     if (searchQuery) return; // Arama yaparken sıralama devre dışı
 
-    const currentList = filteredSpecialties;
-    if (direction === "up" && index === 0) return;
-    if (direction === "down" && index === currentList.length - 1) return;
+    const { active, over } = event;
 
-    const targetIndex = direction === "up" ? index - 1 : index + 1;
-    const newSpecialties = [...specialties];
+    if (!over || active.id === over.id) {
+      return;
+    }
 
-    // Swap items in the array
-    const currentIndexInMain = newSpecialties.findIndex(
-      (s) => s._id === currentList[index]._id,
+    const sortedSpecialties = [...specialties].sort(
+      (a, b) => (a.order || 0) - (b.order || 0)
     );
-    const targetIndexInMain = newSpecialties.findIndex(
-      (s) => s._id === currentList[targetIndex]._id,
+    const oldIndex = sortedSpecialties.findIndex(
+      (s) => s._id === active.id
+    );
+    const newIndex = sortedSpecialties.findIndex(
+      (s) => s._id === over.id
     );
 
-    if (currentIndexInMain === -1 || targetIndexInMain === -1) return;
+    if (oldIndex === -1 || newIndex === -1) {
+      return;
+    }
 
-    [newSpecialties[currentIndexInMain], newSpecialties[targetIndexInMain]] = [
-      newSpecialties[targetIndexInMain],
-      newSpecialties[currentIndexInMain],
-    ];
+    const newSpecialties = arrayMove(sortedSpecialties, oldIndex, newIndex);
 
     // Optimistic update
     setSpecialties(newSpecialties);
 
     // Prepare API payload with normalized orders
     const offset = (page - 1) * 20;
-    const updates = newSpecialties.map((item, idx) => ({
-      id: item._id,
+    const updatedSpecialties = newSpecialties.map((item, idx) => ({
+      ...item,
       order: offset + idx,
     }));
 
     try {
-      await specialtyApi.reorder({ items: updates });
+      // Her bir uzmanlığı tek tek update ile güncelle
+      await Promise.all(
+        updatedSpecialties.map((item) =>
+          specialtyApi.updateJson(item._id, {
+            order: item.order,
+          })
+        )
+      );
 
       // Update local state orders to match
-      const updatedSpecialties = newSpecialties.map((item, idx) => ({
-        ...item,
-        order: offset + idx,
-      }));
       setSpecialties(updatedSpecialties);
     } catch (err) {
       setError("Sıralama güncellenirken bir hata oluştu");
@@ -335,85 +470,43 @@ export default function AdminSpecialtiesPage() {
       {/* Specialties List */}
       <div className="bg-white rounded-sm border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b border-gray-200">
-              <tr>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-600">
-                  Uzmanlık Yazısı
-                </th>
-                <th className="text-right px-4 py-3 text-sm font-medium text-gray-600">
-                  İşlemler
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {filteredSpecialties.map((specialty) => (
-                <tr key={specialty._id} className="hover:bg-gray-50">
-                  <td className="px-4 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-gray-100 rounded-sm overflow-hidden flex-shrink-0">
-                        {specialty.image ? (
-                          <Image
-                            src={specialty.image}
-                            alt={specialty.title}
-                            width={48}
-                            height={48}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-gray-400">
-                            <FolderOpen size={20} />
-                          </div>
-                        )}
-                      </div>
-                      <div className="min-w-0">
-                        <Link
-                          href={`/${currentLocale}/admin/uzmanliklar/${specialty.slug}`}
-                          className="font-medium text-gray-800 hover:text-[#144793] block truncate"
-                        >
-                          {specialty.title}
-                        </Link>
-                        <p className="text-sm text-gray-500 truncate max-w-xs">
-                          {specialty.description}
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-4">
-                    <div className="flex items-center justify-end gap-1">
-                      <Link
-                        href={`/${currentLocale}/${specialty.slug}`}
-                        target="_blank"
-                        className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-sm"
-                        title="Görüntüle"
-                      >
-                        <Eye size={18} />
-                      </Link>
-                      <Link
-                        href={`/${currentLocale}/admin/uzmanliklar/${specialty.slug}`}
-                        className="p-2 text-gray-400 hover:text-[#144793] hover:bg-gray-100 rounded-sm"
-                        title="Düzenle"
-                      >
-                        <Edit size={18} />
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(specialty._id)}
-                        disabled={deletingId === specialty._id}
-                        className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-sm disabled:opacity-50"
-                        title="Sil"
-                      >
-                        {deletingId === specialty._id ? (
-                          <Loader2 size={18} className="animate-spin" />
-                        ) : (
-                          <Trash2 size={18} />
-                        )}
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={filteredSpecialties.map((s) => s._id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <table className="w-full">
+                <thead className="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th className="text-left px-4 py-3 text-sm font-medium text-gray-600">
+                      Uzmanlık Yazısı
+                    </th>
+                    <th className="text-right px-4 py-3 text-sm font-medium text-gray-600">
+                      İşlemler
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {filteredSpecialties.map((specialty) => (
+                    <SortableSpecialtyRow
+                      key={specialty._id}
+                      specialty={specialty}
+                      currentLocale={currentLocale}
+                      onEdit={(id) => {
+                        // Edit handled by Link
+                      }}
+                      onDelete={handleDelete}
+                      deletingId={deletingId}
+                    />
+                  ))}
+                </tbody>
+              </table>
+            </SortableContext>
+          </DndContext>
         </div>
 
         {filteredSpecialties.length === 0 && (

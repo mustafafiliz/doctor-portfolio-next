@@ -42,7 +42,6 @@ export default function EditSpecialtyPage() {
     categoryId: '',
     imageUrl: '',
     locale: currentLocale,
-    order: 0,
     relatedSlugs: [] as string[],
   });
 
@@ -70,7 +69,6 @@ export default function EditSpecialtyPage() {
           categoryId: categoryIdValue,
           imageUrl: specialtyData.image || '',
           locale: specialtyData.locale || currentLocale,
-          order: specialtyData.order || 0,
           relatedSlugs: specialtyData.relatedSlugs || [],
         });
 
@@ -183,9 +181,6 @@ export default function EditSpecialtyPage() {
         form.append('description', formData.description);
         form.append('content', formData.content);
         form.append('locale', formData.locale);
-        if (formData.order !== undefined && formData.order !== null) {
-          form.append('order', String(Number(formData.order)));
-        }
         if (formData.categoryId) {
           // categoryId'nin string olduğundan emin ol
           const categoryIdValue = typeof formData.categoryId === 'string'
@@ -212,9 +207,6 @@ export default function EditSpecialtyPage() {
           content: formData.content,
           locale: formData.locale,
         };
-        if (formData.order !== undefined && formData.order !== null) {
-          jsonData.order = Number(formData.order);
-        }
         if (formData.categoryId) {
           // categoryId'nin string olduğundan emin ol
           jsonData.categoryId = typeof formData.categoryId === 'string'
@@ -409,19 +401,6 @@ export default function EditSpecialtyPage() {
                 ))}
               </SelectContent>
             </Select>
-          </div>
-
-          {/* Order */}
-          <div className="bg-white rounded-sm border border-gray-200 p-6 space-y-4">
-            <h3 className="font-medium text-gray-800">Sıralama</h3>
-            <input
-              type="number"
-              value={formData.order}
-              onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-[#144793] focus:border-transparent outline-none"
-              placeholder="0"
-            />
-            <p className="text-xs text-gray-500">Düşük sayılar önce gösterilir</p>
           </div>
 
           {/* Featured Image */}

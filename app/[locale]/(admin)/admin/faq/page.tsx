@@ -6,14 +6,119 @@ import {
   Search,
   Edit,
   Trash2,
-  ChevronDown,
-  ChevronUp,
   Loader2,
   AlertCircle,
   X,
+  GripVertical,
+  ChevronDown,
 } from 'lucide-react';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { faqApi } from '@/lib/api';
 import type { FAQ } from '@/lib/types';
+
+interface SortableFAQItemProps {
+  faq: FAQ;
+  expandedId: string | null;
+  setExpandedId: (id: string | null) => void;
+  openEditModal: (faq: FAQ) => void;
+  handleDelete: (id: string) => void;
+  deletingId: string | null;
+}
+
+function SortableFAQItem({
+  faq,
+  expandedId,
+  setExpandedId,
+  openEditModal,
+  handleDelete,
+  deletingId,
+}: SortableFAQItemProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: faq._id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} className="p-4">
+      <div className="flex items-start gap-3">
+        <button
+          {...attributes}
+          {...listeners}
+          className="p-2 text-gray-400 hover:text-gray-600 cursor-grab active:cursor-grabbing touch-none"
+          aria-label="Sürükle"
+        >
+          <GripVertical size={20} />
+        </button>
+        
+        <div className="flex-1 min-w-0">
+          <button
+            onClick={() => setExpandedId(expandedId === faq._id ? null : faq._id)}
+            className="w-full text-left"
+          >
+            <div className="flex items-center justify-between">
+              <h3 className="font-medium text-gray-800">{faq.question}</h3>
+              <ChevronDown
+                size={20}
+                className={`text-gray-400 transition-transform ${
+                  expandedId === faq._id ? 'rotate-180' : ''
+                }`}
+              />
+            </div>
+          </button>
+          {expandedId === faq._id && (
+            <p className="mt-2 text-gray-600 text-sm">{faq.answer}</p>
+          )}
+        </div>
+
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => openEditModal(faq)}
+            className="p-2 text-gray-400 hover:text-[#144793] hover:bg-gray-100 rounded-sm"
+          >
+            <Edit size={18} />
+          </button>
+          <button
+            onClick={() => handleDelete(faq._id)}
+            disabled={deletingId === faq._id}
+            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-sm disabled:opacity-50"
+          >
+            {deletingId === faq._id ? (
+              <Loader2 size={18} className="animate-spin" />
+            ) : (
+              <Trash2 size={18} />
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function AdminFaqPage() {
   const [faqs, setFaqs] = useState<FAQ[]>([]);
@@ -26,6 +131,13 @@ export default function AdminFaqPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   useEffect(() => {
     fetchFaqs();
@@ -107,33 +219,35 @@ export default function AdminFaqPage() {
     setFormData({ question: '', answer: '' });
   };
 
-  const moveItem = async (id: string, direction: 'up' | 'down') => {
-    const sortedFaqs = [...faqs].sort((a, b) => a.order - b.order);
-    const index = sortedFaqs.findIndex((faq) => faq._id === id);
-    
-    if (
-      (direction === 'up' && index === 0) ||
-      (direction === 'down' && index === sortedFaqs.length - 1)
-    ) {
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (!over || active.id === over.id) {
       return;
     }
 
-    const swapIndex = direction === 'up' ? index - 1 : index + 1;
-    
-    // Swap items in the array
-    const newFaqs = [...sortedFaqs];
-    [newFaqs[index], newFaqs[swapIndex]] = [newFaqs[swapIndex], newFaqs[index]];
-    
-    // Re-assign orders sequentially to ensure clean ordering
+    const sortedFaqs = [...faqs].sort((a, b) => a.order - b.order);
+    const oldIndex = sortedFaqs.findIndex((faq) => faq._id === active.id);
+    const newIndex = sortedFaqs.findIndex((faq) => faq._id === over.id);
+
+    if (oldIndex === -1 || newIndex === -1) {
+      return;
+    }
+
+    const newFaqs = arrayMove(sortedFaqs, oldIndex, newIndex);
     const updatedFaqs = newFaqs.map((faq, i) => ({ ...faq, order: i }));
 
     setFaqs(updatedFaqs);
 
-    // Update on server
+    // Update on server - her bir FAQ'yu tek tek update ile güncelle
     try {
-      await faqApi.reorder({
-        items: updatedFaqs.map((faq) => ({ id: faq._id, order: faq.order })),
-      });
+      await Promise.all(
+        updatedFaqs.map((faq) =>
+          faqApi.update(faq._id, {
+            order: faq.order,
+          })
+        )
+      );
     } catch (err) {
       // Revert on error
       fetchFaqs();
@@ -197,70 +311,30 @@ export default function AdminFaqPage() {
 
       {/* FAQ List */}
       {filteredFaqs.length > 0 ? (
-        <div className="bg-white rounded-sm border border-gray-200 divide-y divide-gray-100">
-          {filteredFaqs.map((faq, index) => (
-            <div key={faq._id} className="p-4">
-              <div className="flex items-start gap-3">
-                <div className="flex flex-col gap-1">
-                  <button
-                    onClick={() => moveItem(faq._id, 'up')}
-                    disabled={index === 0}
-                    className="p-1 text-gray-400 hover:text-gray-600 disabled:opacity-30"
-                  >
-                    <ChevronUp size={16} />
-                  </button>
-                  <button
-                    onClick={() => moveItem(faq._id, 'down')}
-                    disabled={index === filteredFaqs.length - 1}
-                    className="p-1 text-gray-400 hover:text-gray-600 disabled:opacity-30"
-                  >
-                    <ChevronDown size={16} />
-                  </button>
-                </div>
-                
-                <div className="flex-1 min-w-0">
-                  <button
-                    onClick={() => setExpandedId(expandedId === faq._id ? null : faq._id)}
-                    className="w-full text-left"
-                  >
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-medium text-gray-800">{faq.question}</h3>
-                      <ChevronDown
-                        size={20}
-                        className={`text-gray-400 transition-transform ${
-                          expandedId === faq._id ? 'rotate-180' : ''
-                        }`}
-                      />
-                    </div>
-                  </button>
-                  {expandedId === faq._id && (
-                    <p className="mt-2 text-gray-600 text-sm">{faq.answer}</p>
-                  )}
-                </div>
-
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => openEditModal(faq)}
-                    className="p-2 text-gray-400 hover:text-[#144793] hover:bg-gray-100 rounded-sm"
-                  >
-                    <Edit size={18} />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(faq._id)}
-                    disabled={deletingId === faq._id}
-                    className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-sm disabled:opacity-50"
-                  >
-                    {deletingId === faq._id ? (
-                      <Loader2 size={18} className="animate-spin" />
-                    ) : (
-                      <Trash2 size={18} />
-                    )}
-                  </button>
-                </div>
-              </div>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={filteredFaqs.map((faq) => faq._id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <div className="bg-white rounded-sm border border-gray-200 divide-y divide-gray-100">
+              {filteredFaqs.map((faq) => (
+                <SortableFAQItem
+                  key={faq._id}
+                  faq={faq}
+                  expandedId={expandedId}
+                  setExpandedId={setExpandedId}
+                  openEditModal={openEditModal}
+                  handleDelete={handleDelete}
+                  deletingId={deletingId}
+                />
+              ))}
             </div>
-          ))}
-        </div>
+          </SortableContext>
+        </DndContext>
       ) : (
         <div className="text-center py-12 bg-white rounded-sm border border-gray-200">
           <p className="text-gray-500">

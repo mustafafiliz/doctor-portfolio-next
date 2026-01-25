@@ -230,9 +230,9 @@ export function Editor({ content, onChange, placeholder = 'İçeriği buraya yaz
   const ToolbarDivider = () => <div className="w-px h-6 bg-gray-300 mx-1" />;
 
   return (
-    <div className="border border-gray-300 rounded-sm overflow-hidden">
+    <div className="border border-gray-300 rounded-sm overflow-visible">
       {/* Toolbar */}
-      <div className="bg-gray-50 border-b border-gray-300 p-2 flex flex-wrap items-center gap-1">
+      <div className="bg-gray-50 border-b border-gray-300 p-2 flex flex-wrap items-center gap-1 relative overflow-visible">
         {/* Undo/Redo */}
         <ToolbarButton
           onClick={() => editor.chain().focus().undo().run()}
@@ -404,7 +404,7 @@ export function Editor({ content, onChange, placeholder = 'İçeriği buraya yaz
             <LinkIcon size={18} />
           </ToolbarButton>
           {showLinkInput && (
-            <div className="absolute top-full left-0 mt-1 bg-white border border-gray-300 rounded-sm shadow-lg p-2 z-10 flex gap-2">
+            <div className="absolute top-full left-0 mt-1 bg-white border border-gray-300 rounded-sm shadow-lg p-2 z-50 flex gap-2">
               <input
                 type="url"
                 value={linkUrl}
@@ -433,7 +433,7 @@ export function Editor({ content, onChange, placeholder = 'İçeriği buraya yaz
             <ImageIcon size={18} />
           </ToolbarButton>
           {showImageInput && (
-            <div className="absolute top-full left-0 mt-1 bg-white border border-gray-300 rounded-sm shadow-lg p-2 z-10 flex flex-col gap-2 min-w-[250px]">
+            <div className="absolute top-full left-0 mt-1 bg-white border border-gray-300 rounded-sm shadow-lg p-2 z-50 flex flex-col gap-2 min-w-[250px]">
               <div className="flex gap-2">
                 <input
                   type="url"
@@ -490,7 +490,7 @@ export function Editor({ content, onChange, placeholder = 'İçeriği buraya yaz
             <TableIcon size={18} />
           </ToolbarButton>
           {showTableMenu && (
-            <div className="absolute top-full right-0 mt-1 bg-white border border-gray-300 rounded-sm shadow-lg p-1 z-10 grid grid-cols-4 gap-1 w-48">
+            <div className="absolute top-full right-0 mt-1 bg-white border border-gray-300 rounded-sm shadow-lg p-1 z-[9999] grid grid-cols-4 gap-1 w-48">
               <button
                 type="button"
                 onClick={() => {
