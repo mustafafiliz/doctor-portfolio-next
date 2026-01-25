@@ -172,8 +172,8 @@ export default async function SpecialtyPage({
       {/* Content Section */}
       <Container className="py-12 sm:py-16">
         <div className="max-w-4xl mx-auto">
-          {/* Back Button */}
-          <div className="mb-8">
+          {/* Back Button & Author */}
+          <div className="mb-8 flex items-center justify-between">
             <Link
               href={
                 specialty.category
@@ -187,6 +187,14 @@ export default async function SpecialtyPage({
                 ? specialty.category.title || specialty.category.name
                 : "Tüm Uzmanlıklar"}
             </Link>
+            {author?.title && (
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-gray-400">Medikal içerik:</span>
+                <span className="text-primary font-medium">
+                  {author.title}
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Featured Image */}
