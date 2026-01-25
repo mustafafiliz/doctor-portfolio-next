@@ -36,7 +36,7 @@ export function AuthorCard({ author, locale = 'tr' }: AuthorCardProps) {
                     </p>
                 )}
 
-                <div className="flex flex-wrap items-center gap-4 mt-2">
+                <div className="flex flex-col gap-3 mt-2">
                     <Link
                         href={`/${locale}/hakkimda`}
                         className="inline-flex items-center text-sm font-medium text-[#144793] hover:text-[#0f3a7a] transition-colors"
