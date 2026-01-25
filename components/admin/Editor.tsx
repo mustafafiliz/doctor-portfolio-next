@@ -1,6 +1,6 @@
 'use client';
 
-import { useEditor, EditorContent } from '@tiptap/react';
+import { useEditor, EditorContent, ReactNodeViewRenderer } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
@@ -9,6 +9,11 @@ import Heading from '@tiptap/extension-heading';
 import Placeholder from '@tiptap/extension-placeholder';
 import Underline from '@tiptap/extension-underline';
 import Highlight from '@tiptap/extension-highlight';
+import { Table } from '@tiptap/extension-table';
+import { TableRow } from '@tiptap/extension-table-row';
+import { TableCell } from '@tiptap/extension-table-cell';
+import { TableHeader } from '@tiptap/extension-table-header';
+import ImageResizeComponent from './ImageResizeComponent';
 import {
   Bold,
   Italic,
@@ -30,8 +35,14 @@ import {
   Highlighter,
   Code,
   Minus,
+  Table as TableIcon,
+  Trash,
+  Plus,
+  Rows,
+  Columns,
+  Upload
 } from 'lucide-react';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useRef, useEffect } from 'react';
 
 interface EditorProps {
   content: string;
@@ -44,6 +55,8 @@ export function Editor({ content, onChange, placeholder = 'İçeriği buraya yaz
   const [showLinkInput, setShowLinkInput] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
   const [showImageInput, setShowImageInput] = useState(false);
+  const [showTableMenu, setShowTableMenu] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const editor = useEditor({
     extensions: [
@@ -59,9 +72,46 @@ export function Editor({ content, onChange, placeholder = 'İçeriği buraya yaz
           class: 'text-[#144793] underline',
         },
       }),
-      Image.configure({
+      Image.extend({
+        addAttributes() {
+          return {
+            ...this.parent?.(),
+            width: {
+              default: null,
+              parseHTML: element => element.style.width || element.getAttribute('width'),
+              renderHTML: attributes => {
+                if (!attributes.width) return {};
+                const width = typeof attributes.width === 'number' ? `${attributes.width}px` : attributes.width;
+                return {
+                  style: `width: ${width}`,
+                };
+              },
+            },
+          };
+        },
+        addNodeView() {
+          return ReactNodeViewRenderer(ImageResizeComponent);
+        },
+      }).configure({
         HTMLAttributes: {
           class: 'max-w-full h-auto rounded-sm',
+        },
+      }),
+      Table.configure({
+        resizable: true,
+        HTMLAttributes: {
+          class: 'border-collapse table-auto w-full my-4',
+        },
+      }),
+      TableRow,
+      TableHeader.configure({
+        HTMLAttributes: {
+          class: 'border border-gray-300 bg-gray-50 p-2 font-bold text-left',
+        },
+      }),
+      TableCell.configure({
+        HTMLAttributes: {
+          class: 'border border-gray-300 p-2',
         },
       }),
       TextAlign.configure({
@@ -91,6 +141,15 @@ export function Editor({ content, onChange, placeholder = 'İçeriği buraya yaz
     },
   });
 
+  // Sync content updates from parent (e.g. after API fetch)
+  useEffect(() => {
+    console.log('Editor Received Content:', content);
+    if (editor && content && content !== editor.getHTML() && !editor.isFocused) {
+      console.log('Syncing content to editor');
+      editor.commands.setContent(content);
+    }
+  }, [content, editor]);
+
   const setLink = useCallback(() => {
     if (linkUrl) {
       editor?.chain().focus().extendMarkRange('link').setLink({ href: linkUrl }).run();
@@ -110,6 +169,31 @@ export function Editor({ content, onChange, placeholder = 'İçeriği buraya yaz
       setShowImageInput(false);
     }
   }, [editor, imageUrl]);
+
+  const addImageFromFile = useCallback((file: File) => {
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        if (result) {
+          editor?.chain().focus().setImage({ src: result }).run();
+          setShowImageInput(false);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  }, [editor]);
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      addImageFromFile(file);
+      // Reset input value so the same file can be selected again if needed
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
 
   if (!editor) {
     return (
@@ -134,11 +218,10 @@ export function Editor({ content, onChange, placeholder = 'İçeriği buraya yaz
       type="button"
       onClick={onClick}
       title={title}
-      className={`p-2 rounded-sm transition-colors ${
-        isActive
-          ? 'bg-[#144793] text-white'
-          : 'text-gray-600 hover:bg-gray-100'
-      }`}
+      className={`p-2 rounded-sm transition-colors ${isActive
+        ? 'bg-[#144793] text-white'
+        : 'text-gray-600 hover:bg-gray-100'
+        }`}
     >
       {children}
     </button>
@@ -331,6 +414,7 @@ export function Editor({ content, onChange, placeholder = 'İçeriği buraya yaz
                 onKeyDown={(e) => e.key === 'Enter' && setLink()}
               />
               <button
+                type="button"
                 onClick={setLink}
                 className="px-3 py-1 bg-[#144793] text-white text-sm rounded-sm hover:bg-[#0f3a7a]"
               >
@@ -349,20 +433,137 @@ export function Editor({ content, onChange, placeholder = 'İçeriği buraya yaz
             <ImageIcon size={18} />
           </ToolbarButton>
           {showImageInput && (
-            <div className="absolute top-full left-0 mt-1 bg-white border border-gray-300 rounded-sm shadow-lg p-2 z-10 flex gap-2">
-              <input
-                type="url"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-                placeholder="Resim URL'si..."
-                className="px-2 py-1 border border-gray-300 rounded-sm text-sm w-48 focus:outline-none focus:border-[#144793]"
-                onKeyDown={(e) => e.key === 'Enter' && addImage()}
-              />
+            <div className="absolute top-full left-0 mt-1 bg-white border border-gray-300 rounded-sm shadow-lg p-2 z-10 flex flex-col gap-2 min-w-[250px]">
+              <div className="flex gap-2">
+                <input
+                  type="url"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  placeholder="Resim URL'si..."
+                  className="px-2 py-1 border border-gray-300 rounded-sm text-sm flex-1 focus:outline-none focus:border-[#144793]"
+                  onKeyDown={(e) => e.key === 'Enter' && addImage()}
+                />
+                <button
+                  type="button"
+                  onClick={addImage}
+                  className="px-3 py-1 bg-[#144793] text-white text-sm rounded-sm hover:bg-[#0f3a7a]"
+                >
+                  Ekle
+                </button>
+              </div>
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t border-gray-200" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-white px-2 text-gray-500">veya</span>
+                </div>
+              </div>
               <button
-                onClick={addImage}
-                className="px-3 py-1 bg-[#144793] text-white text-sm rounded-sm hover:bg-[#0f3a7a]"
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="flex items-center justify-center gap-2 px-3 py-2 border border-gray-300 rounded-sm text-sm hover:bg-gray-50 text-gray-700"
               >
-                Ekle
+                <Upload size={16} />
+                Bilgisayardan Yükle
+              </button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                accept="image/*"
+                onChange={handleFileSelect}
+              />
+            </div>
+          )}
+        </div>
+
+        <ToolbarDivider />
+
+        {/* Table */}
+        <div className="relative">
+          <ToolbarButton
+            onClick={() => setShowTableMenu(!showTableMenu)}
+            isActive={editor.isActive('table')}
+            title="Tablo"
+          >
+            <TableIcon size={18} />
+          </ToolbarButton>
+          {showTableMenu && (
+            <div className="absolute top-full right-0 mt-1 bg-white border border-gray-300 rounded-sm shadow-lg p-1 z-10 grid grid-cols-4 gap-1 w-48">
+              <button
+                type="button"
+                onClick={() => {
+                  editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
+                  setShowTableMenu(false);
+                }}
+                className="p-2 hover:bg-gray-100 rounded-sm text-gray-700"
+                title="Tablo Ekle"
+              >
+                <Plus size={16} />
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().deleteTable().run()}
+                disabled={!editor.can().deleteTable()}
+                className="p-2 hover:bg-gray-100 rounded-sm text-red-600 disabled:opacity-30"
+                title="Tabloyu Sil"
+              >
+                <Trash size={16} />
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().addColumnBefore().run()}
+                disabled={!editor.can().addColumnBefore()}
+                className="p-2 hover:bg-gray-100 rounded-sm text-gray-700 disabled:opacity-30"
+                title="Sola Sütun Ekle"
+              >
+                <Columns size={16} className="rotate-180" />
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().addColumnAfter().run()}
+                disabled={!editor.can().addColumnAfter()}
+                className="p-2 hover:bg-gray-100 rounded-sm text-gray-700 disabled:opacity-30"
+                title="Sağa Sütun Ekle"
+              >
+                <Columns size={16} />
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().deleteColumn().run()}
+                disabled={!editor.can().deleteColumn()}
+                className="p-2 hover:bg-gray-100 rounded-sm text-red-600 disabled:opacity-30"
+                title="Sütunu Sil"
+              >
+                <Columns size={16} className="text-red-600" />
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().addRowBefore().run()}
+                disabled={!editor.can().addRowBefore()}
+                className="p-2 hover:bg-gray-100 rounded-sm text-gray-700 disabled:opacity-30"
+                title="Üste Satır Ekle"
+              >
+                <Rows size={16} className="rotate-180" />
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().addRowAfter().run()}
+                disabled={!editor.can().addRowAfter()}
+                className="p-2 hover:bg-gray-100 rounded-sm text-gray-700 disabled:opacity-30"
+                title="Alta Satır Ekle"
+              >
+                <Rows size={16} />
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().deleteRow().run()}
+                disabled={!editor.can().deleteRow()}
+                className="p-2 hover:bg-gray-100 rounded-sm text-red-600 disabled:opacity-30"
+                title="Satırı Sil"
+              >
+                <Rows size={16} className="text-red-600" />
               </button>
             </div>
           )}
@@ -431,6 +632,44 @@ export function Editor({ content, onChange, placeholder = 'İçeriği buraya yaz
           max-width: 100%;
           height: auto;
           margin: 1em 0;
+        }
+        .ProseMirror table {
+          border-collapse: collapse;
+          table-layout: fixed;
+          width: 100%;
+          margin: 1em 0;
+          overflow: hidden;
+        }
+        .ProseMirror td,
+        .ProseMirror th {
+          min-width: 1em;
+          border: 1px solid #ced4da;
+          padding: 8px;
+          vertical-align: top;
+          box-sizing: border-box;
+          position: relative;
+        }
+        .ProseMirror th {
+          font-weight: bold;
+          text-align: left;
+          background-color: #f8f9fa;
+        }
+        .ProseMirror .selectedCell:after {
+          z-index: 2;
+          position: absolute;
+          content: "";
+          left: 0; right: 0; top: 0; bottom: 0;
+          background: rgba(20, 71, 147, 0.1);
+          pointer-events: none;
+        }
+        .ProseMirror .column-resize-handle {
+          position: absolute;
+          right: -2px;
+          top: 0;
+          bottom: -2px;
+          width: 4px;
+          background-color: #144793;
+          pointer-events: none;
         }
       `}</style>
     </div>

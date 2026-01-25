@@ -19,13 +19,13 @@ export default function NewBlogPage() {
   const pathname = usePathname();
   const currentLocale = pathname?.split('/')[1] || 'tr';
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     metaTitle: '',
     metaDescription: '',
@@ -109,8 +109,10 @@ export default function NewBlogPage() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: React.FormEvent) => {
+    if (e) {
+      e.preventDefault();
+    }
     setIsLoading(true);
     setError(null);
 
@@ -140,24 +142,24 @@ export default function NewBlogPage() {
       // API'den gelen hata mesajını göster
       const errorMessage = err?.message || '';
       const isImageUpload = selectedFile || formData.imageUrl;
-      
+
       // 413 Request Entity Too Large veya failed to fetch (görsel yükleme sırasında)
-      if (err?.statusCode === 413 || 
-          (isImageUpload && (errorMessage.toLowerCase().includes('failed to fetch') || 
-                             errorMessage.toLowerCase().includes('network') ||
-                             !errorMessage))) {
+      if (err?.statusCode === 413 ||
+        (isImageUpload && (errorMessage.toLowerCase().includes('failed to fetch') ||
+          errorMessage.toLowerCase().includes('network') ||
+          !errorMessage))) {
         setError('Görsel dosyası çok büyük. Lütfen daha küçük bir dosya seçin.');
       } else if (err?.statusCode === 415) {
         setError('Desteklenmeyen dosya formatı. Lütfen PNG, JPG veya WebP formatında bir görsel seçin.');
-      } else if (isImageUpload && (errorMessage.toLowerCase().includes('image') || 
-                                    errorMessage.toLowerCase().includes('görsel') ||
-                                    errorMessage.toLowerCase().includes('file') ||
-                                    errorMessage.toLowerCase().includes('upload'))) {
+      } else if (isImageUpload && (errorMessage.toLowerCase().includes('image') ||
+        errorMessage.toLowerCase().includes('görsel') ||
+        errorMessage.toLowerCase().includes('file') ||
+        errorMessage.toLowerCase().includes('upload'))) {
         setError(`Görsel yüklenirken bir hata oluştu: ${errorMessage}`);
       } else if (errorMessage) {
         setError(errorMessage);
       } else {
-      setError('Blog yazısı kaydedilirken bir hata oluştu');
+        setError('Blog yazısı kaydedilirken bir hata oluştu');
       }
       setIsLoading(false);
     }
@@ -191,7 +193,7 @@ export default function NewBlogPage() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="grid lg:grid-cols-3 gap-6">
+      <div className="grid lg:grid-cols-3 gap-6">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           {/* SEO Meta Fields */}
@@ -310,7 +312,8 @@ export default function NewBlogPage() {
             </div>
             <div className="flex gap-2 pt-2">
               <button
-                type="submit"
+                type="button"
+                onClick={() => handleSubmit()}
                 disabled={isLoading}
                 className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-[#144793] text-white rounded-sm hover:bg-[#0f3a7a] disabled:opacity-50 transition-colors"
               >
@@ -355,11 +358,10 @@ export default function NewBlogPage() {
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
                 onClick={() => fileInputRef.current?.click()}
-                className={`w-full border-2 border-dashed rounded-sm p-6 text-center cursor-pointer transition-colors ${
-                  isDragging
-                    ? 'border-[#144793] bg-blue-50'
-                    : 'border-gray-300 hover:border-[#144793]'
-                }`}
+                className={`w-full border-2 border-dashed rounded-sm p-6 text-center cursor-pointer transition-colors ${isDragging
+                  ? 'border-[#144793] bg-blue-50'
+                  : 'border-gray-300 hover:border-[#144793]'
+                  }`}
               >
                 <Upload size={32} className={`mx-auto mb-2 ${isDragging ? 'text-[#144793]' : 'text-gray-400'}`} />
                 <p className={`text-sm ${isDragging ? 'text-[#144793] font-medium' : 'text-gray-500'}`}>
@@ -388,7 +390,7 @@ export default function NewBlogPage() {
             </div>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 }

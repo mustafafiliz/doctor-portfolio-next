@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import {
   Plus,
   Search,
@@ -16,23 +16,23 @@ import {
   X,
   ArrowUp,
   ArrowDown,
-} from 'lucide-react';
+} from "lucide-react";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { specialtyApi } from '@/lib/api';
-import type { Specialty, SpecialtyCategory } from '@/lib/types';
+} from "@/components/ui/select";
+import { specialtyApi } from "@/lib/api";
+import type { Specialty, SpecialtyCategory } from "@/lib/types";
 
 export default function AdminSpecialtiesPage() {
   const pathname = usePathname();
-  const currentLocale = pathname?.split('/')[1] || 'tr';
+  const currentLocale = pathname?.split("/")[1] || "tr";
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
   const [specialties, setSpecialties] = useState<Specialty[]>([]);
   const [categories, setCategories] = useState<SpecialtyCategory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -53,7 +53,7 @@ export default function AdminSpecialtiesPage() {
         specialtyApi.list({
           page,
           limit: 20,
-          categoryId: categoryFilter !== 'all' ? categoryFilter : undefined,
+          categoryId: categoryFilter !== "all" ? categoryFilter : undefined,
         }),
         specialtyApi.listCategories(),
       ]);
@@ -62,35 +62,45 @@ export default function AdminSpecialtiesPage() {
       setTotalPages(specialtiesData.totalPages || 1);
       setCategories(categoriesData || []);
     } catch (err) {
-      setError('Veriler yüklenirken bir hata oluştu');
+      setError("Veriler yüklenirken bir hata oluştu");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const filteredSpecialties = specialties.filter((specialty) => {
-    const matchesSearch = specialty.title.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesSearch;
-  }).sort((a, b) => (a.order || 0) - (b.order || 0));
+  const filteredSpecialties = specialties
+    .filter((specialty) => {
+      const matchesSearch = specialty.title
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      return matchesSearch;
+    })
+    .sort((a, b) => (a.order || 0) - (b.order || 0));
 
-  const handleReorder = async (direction: 'up' | 'down', index: number) => {
+  const handleReorder = async (direction: "up" | "down", index: number) => {
     if (searchQuery) return; // Arama yaparken sıralama devre dışı
 
     const currentList = filteredSpecialties;
-    if (direction === 'up' && index === 0) return;
-    if (direction === 'down' && index === currentList.length - 1) return;
+    if (direction === "up" && index === 0) return;
+    if (direction === "down" && index === currentList.length - 1) return;
 
-    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    const targetIndex = direction === "up" ? index - 1 : index + 1;
     const newSpecialties = [...specialties];
 
     // Swap items in the array
-    const currentIndexInMain = newSpecialties.findIndex(s => s._id === currentList[index]._id);
-    const targetIndexInMain = newSpecialties.findIndex(s => s._id === currentList[targetIndex]._id);
+    const currentIndexInMain = newSpecialties.findIndex(
+      (s) => s._id === currentList[index]._id,
+    );
+    const targetIndexInMain = newSpecialties.findIndex(
+      (s) => s._id === currentList[targetIndex]._id,
+    );
 
     if (currentIndexInMain === -1 || targetIndexInMain === -1) return;
 
-    [newSpecialties[currentIndexInMain], newSpecialties[targetIndexInMain]] =
-      [newSpecialties[targetIndexInMain], newSpecialties[currentIndexInMain]];
+    [newSpecialties[currentIndexInMain], newSpecialties[targetIndexInMain]] = [
+      newSpecialties[targetIndexInMain],
+      newSpecialties[currentIndexInMain],
+    ];
 
     // Optimistic update
     setSpecialties(newSpecialties);
@@ -99,7 +109,7 @@ export default function AdminSpecialtiesPage() {
     const offset = (page - 1) * 20;
     const updates = newSpecialties.map((item, idx) => ({
       id: item._id,
-      order: offset + idx
+      order: offset + idx,
     }));
 
     try {
@@ -108,25 +118,27 @@ export default function AdminSpecialtiesPage() {
       // Update local state orders to match
       const updatedSpecialties = newSpecialties.map((item, idx) => ({
         ...item,
-        order: offset + idx
+        order: offset + idx,
       }));
       setSpecialties(updatedSpecialties);
     } catch (err) {
-      setError('Sıralama güncellenirken bir hata oluştu');
+      setError("Sıralama güncellenirken bir hata oluştu");
       fetchData(); // Revert
     }
   };
 
   const getCategoryName = (categoryId?: string) => {
-    if (!categoryId) return '-';
+    if (!categoryId) return "-";
     const category = categories.find((c) => c._id === categoryId);
-    return category?.title || category?.name || '-';
+    return category?.title || category?.name || "-";
   };
 
-  const [deletingCategoryId, setDeletingCategoryId] = useState<string | null>(null);
+  const [deletingCategoryId, setDeletingCategoryId] = useState<string | null>(
+    null,
+  );
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Bu uzmanlığı silmek istediğinizden emin misiniz?')) {
+    if (!confirm("Bu uzmanlığı silmek istediğinizden emin misiniz?")) {
       return;
     }
 
@@ -135,14 +147,18 @@ export default function AdminSpecialtiesPage() {
       await specialtyApi.delete(id);
       setSpecialties(specialties.filter((s) => s._id !== id));
     } catch (err) {
-      setError('Uzmanlık silinirken bir hata oluştu');
+      setError("Uzmanlık silinirken bir hata oluştu");
     } finally {
       setDeletingId(null);
     }
   };
 
   const handleDeleteCategory = async (id: string) => {
-    if (!confirm('Bu kategoriyi silmek istediğinizden emin misiniz? Kategoriye ait uzmanlıklar silinmeyecektir.')) {
+    if (
+      !confirm(
+        "Bu kategoriyi silmek istediğinizden emin misiniz? Kategoriye ait uzmanlıklar silinmeyecektir.",
+      )
+    ) {
       return;
     }
 
@@ -151,17 +167,21 @@ export default function AdminSpecialtiesPage() {
       await specialtyApi.deleteCategory(id);
       setCategories(categories.filter((c) => c._id !== id));
       if (categoryFilter === id) {
-        setCategoryFilter('all');
+        setCategoryFilter("all");
       }
     } catch (err: any) {
       // API'den gelen mesajı parse et ve Türkçe'ye çevir
-      const errorMessage = err?.message || '';
-      const match = errorMessage.match(/Cannot delete category with (\d+) specialties/i);
+      const errorMessage = err?.message || "";
+      const match = errorMessage.match(
+        /Cannot delete category with (\d+) specialties/i,
+      );
       if (match && match[1]) {
         const count = match[1];
-        setError(`Bu kategoride ${count} uzmanlık bulunmaktadır. Lütfen önce uzmanlıkları silin.`);
+        setError(
+          `Bu kategoride ${count} uzmanlık bulunmaktadır. Lütfen önce uzmanlıkları silin.`,
+        );
       } else {
-        setError('Kategori silinirken bir hata oluştu');
+        setError("Kategori silinirken bir hata oluştu");
       }
     } finally {
       setDeletingCategoryId(null);
@@ -181,9 +201,11 @@ export default function AdminSpecialtiesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Uzmanlık Alanları</h1>
+          <h1 className="text-2xl font-bold text-gray-800">
+            Uzmanlık ve Uzmanlık Yazıları
+          </h1>
           <p className="text-gray-500 text-sm mt-1">
-            Toplam {specialties.length} uzmanlık
+            Toplam {specialties.length} uzmanlık yazısı bulunmaktadır.
           </p>
         </div>
         <div className="flex gap-2">
@@ -220,14 +242,17 @@ export default function AdminSpecialtiesPage() {
           {categories.map((category) => (
             <div
               key={category._id}
-              className={`relative group p-4 rounded-sm border transition-all ${categoryFilter === category._id
-                ? 'border-[#144793] bg-[#144793]/5'
-                : 'border-gray-200 bg-white hover:border-[#144793]'
-                }`}
+              className={`relative group p-4 rounded-sm border transition-all ${
+                categoryFilter === category._id
+                  ? "border-[#144793] bg-[#144793]/5"
+                  : "border-gray-200 bg-white hover:border-[#144793]"
+              }`}
             >
               <button
                 onClick={() => {
-                  setCategoryFilter(categoryFilter === category._id ? 'all' : category._id);
+                  setCategoryFilter(
+                    categoryFilter === category._id ? "all" : category._id,
+                  );
                   setPage(1);
                 }}
                 className="w-full text-left"
@@ -235,7 +260,9 @@ export default function AdminSpecialtiesPage() {
                 <div className="text-2xl font-bold text-[#144793]">
                   {category.specialtyCount || 0}
                 </div>
-                <div className="text-xs text-gray-600 mt-1 truncate">{category.name || category.title}</div>
+                <div className="text-xs text-gray-600 mt-1 truncate">
+                  {category.name || category.title}
+                </div>
               </button>
               <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                 <Link
@@ -271,7 +298,10 @@ export default function AdminSpecialtiesPage() {
       <div className="bg-white rounded-sm border border-gray-200 p-4">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 relative">
-            <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <Search
+              size={18}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+            />
             <input
               type="text"
               placeholder="Uzmanlık ara..."
@@ -308,9 +338,12 @@ export default function AdminSpecialtiesPage() {
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-600">Uzmanlık</th>
-                <th className="text-left px-4 py-3 text-sm font-medium text-gray-600 hidden md:table-cell">Kategori</th>
-                <th className="text-right px-4 py-3 text-sm font-medium text-gray-600">İşlemler</th>
+                <th className="text-left px-4 py-3 text-sm font-medium text-gray-600">
+                  Uzmanlık Yazısı
+                </th>
+                <th className="text-right px-4 py-3 text-sm font-medium text-gray-600">
+                  İşlemler
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -340,14 +373,11 @@ export default function AdminSpecialtiesPage() {
                         >
                           {specialty.title}
                         </Link>
-                        <p className="text-sm text-gray-500 truncate max-w-xs">{specialty.description}</p>
+                        <p className="text-sm text-gray-500 truncate max-w-xs">
+                          {specialty.description}
+                        </p>
                       </div>
                     </div>
-                  </td>
-                  <td className="px-4 py-4 hidden md:table-cell">
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-sm bg-gray-100 text-gray-700 text-xs font-medium">
-                      {getCategoryName(specialty.categoryId)}
-                    </span>
                   </td>
                   <td className="px-4 py-4">
                     <div className="flex items-center justify-end gap-1">
