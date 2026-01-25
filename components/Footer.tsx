@@ -114,12 +114,12 @@ export function Footer() {
   return (
     <footer className="bg-white text-black relative overflow-hidden">
       {/* Top Contact Section */}
-      <section className="bg-gray-100 border-b border-gray-200">
+      <section className="bg-primary border-b border-gray-200">
         <div className="container mx-auto px-4 sm:px-6 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             {/* Social Media */}
             <div className="flex items-center gap-4">
-              <span className="text-lg font-bold text-black">Beni Takip Edin</span>
+              <span className="text-lg font-bold text-white">Beni Takip Edin</span>
               {socialLinks.length > 0 && (
                 <div className="flex gap-2">
                   {socialLinks.map((social, index) => {
@@ -142,7 +142,7 @@ export function Footer() {
             </div>
 
             {/* Info Text */}
-            <p className="text-lg font-medium text-gray-800 text-center">
+            <p className="text-lg font-medium text-white text-center">
               Bilgilendirici postlar, videolar ve çok daha fazlası...
             </p>
 
@@ -150,7 +150,7 @@ export function Footer() {
             {config.contact.phone && (
               <a
                 href={`tel:${config.contact.phone.replace(' 90', '').replace('+90', '')}`}
-                className="flex items-center gap-3 text-black hover:text-primary transition-colors"
+                className="flex items-center gap-3 text-white hover:opacity-80 transition-opacity"
               >
                 <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center border border-gray-200">
                   <Phone className="h-6 w-6 text-primary" />
