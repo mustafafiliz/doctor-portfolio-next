@@ -3,9 +3,13 @@
 import Image from 'next/image';
 import { useTranslations } from '@/components/I18nProvider';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { type Locale } from '@/lib/i18n';
 
 export function SummarySection() {
   const t = useTranslations('about');
+  const pathname = usePathname();
+  const currentLocale = (pathname?.split('/')[1] || 'tr') as Locale;
 
   return (
     <section className="py-16 md:py-24 !pb-5 bg-white">
@@ -26,7 +30,11 @@ export function SummarySection() {
                 Tıp Fakültesi lisans eğitimimi 1985-1991 yılları arasında Hacettepe Üniversitesi Tıp Fakültesinde gerçekleştirdikten sonra, tıpta uzmanlık eğitimimi ise tıpta uzmanlık sınavı (TUS) 3. sü olarak girdiğim Hacettepe Üniversitesi Tıp Fakültesi Göz Anabilim dalında 1996 yılında tamamladım.
               </p>
               <p>
-                Türkiye nin en büyük göz hastanelerinde, genel oftalmoloji, katarakt cerrahisi ve glokom cerrahisi alanlarında 25 yılı aşkın süredir çalışmaktayım. Ulusal ve uluslararası seçkin dergilerde basılmış 150 nin üzerinde makalem bulunmaktadır.
+                Türkiye nin en büyük göz hastanelerinde, genel oftalmoloji, katarakt cerrahisi ve glokom cerrahisi alanlarında 25 yılı aşkın süredir çalışmaktayım. Ulusal ve uluslararası seçkin dergilerde basılmış 150 nin üzerinde{' '}
+                <Link href={`/${currentLocale}/makaleler`} className="underline font-semibold hover:opacity-80 transition-opacity">
+                  makalem
+                </Link>
+                {' '}bulunmaktadır.
               </p>
 
               <Link href="/hakkimda" className='underline font-semibold'>Devamını Oku</Link>
