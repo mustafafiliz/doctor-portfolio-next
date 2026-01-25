@@ -105,8 +105,8 @@ export function Footer() {
 
   // Sabit linkler (config'den bağımsız)
   const fixedLinks = [
-    { icon: Linkedin, url: 'https://www.linkedin.com/in/ufuk-elgin-96380b3a6/', label: 'LinkedIn' },
-    { icon: GraduationCap, url: 'https://scholar.google.com/citations?hl=tr&user=rXphPsUAAAAJ', label: 'Google Akademik' },
+    { icon: Linkedin, url: 'https://www.linkedin.com/in/ufuk-elgin-96380b3a6/', label: 'LinkedIn', isExternal: true },
+    { icon: GraduationCap, url: `/${currentLocale}/makaleler`, label: 'Makaleler', isExternal: false },
   ];
 
   // Config'den gelen sosyal medya linkleri (LinkedIn hariç - sabit link kullanacağız)
@@ -138,18 +138,38 @@ export function Footer() {
                 <div className="flex gap-2">
                   {socialLinks.map((social, index) => {
                     const Icon = social.icon;
-                    return (
-                      <a
-                        key={index}
-                        href={social.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={social.label}
-                        className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-primary hover:text-white transition-colors text-black border border-gray-200"
-                      >
-                        <Icon className="h-5 w-5" />
-                      </a>
-                    );
+                    const isExternal = (social as any).isExternal !== false;
+                    
+                    if (!social.url) return null;
+                    
+                    const commonProps = {
+                      'aria-label': social.label,
+                      className: 'w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-primary hover:text-white transition-colors text-black border border-gray-200',
+                    };
+                    
+                    if (isExternal) {
+                      return (
+                        <a
+                          key={index}
+                          href={social.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          {...commonProps}
+                        >
+                          <Icon className="h-5 w-5" />
+                        </a>
+                      );
+                    } else {
+                      return (
+                        <Link
+                          key={index}
+                          href={social.url as string}
+                          {...commonProps}
+                        >
+                          <Icon className="h-5 w-5" />
+                        </Link>
+                      );
+                    }
                   })}
                 </div>
               )}

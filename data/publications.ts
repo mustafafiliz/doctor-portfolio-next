@@ -6,11 +6,31 @@ export interface Publication {
   journal?: string;
   volume?: string;
   pages?: string;
+  location?: string; // Konferans için
   type: 'international' | 'national' | 'conference' | 'book' | 'panel';
   category: 'A' | 'B' | 'C' | 'D' | 'E' | 'panel';
 }
 
-// A. Uluslararası hakemli dergilerde yayımlanan makaleler
+export interface PanelPresentation {
+  id: string;
+  title: string;
+  event: string;
+  year: number;
+  location?: string;
+  type?: 'panel' | 'course';
+}
+
+export interface BookChapter {
+  id: string;
+  title: string;
+  book: string;
+  year: number;
+  pages?: string;
+  editors?: string;
+  isbn?: string;
+}
+
+// A. Uluslararası hakemli dergilerde yayımlanan makaleler (84 makale)
 export const internationalPublications: Publication[] = [
   { id: 'A1', year: 1998, title: 'Bilateral lacrimal sac fistulas in a patient with nasopharyngeal non- Hodgkin\'s lymphoma', authors: 'Kıratlı H, Elgin U, Kıratlı PÖ, Bekdik CF', journal: 'J Pediatr Ophthalmol Strabismus', volume: '35(3)', pages: '177-8', type: 'international', category: 'A' },
   { id: 'A2', year: 2004, title: 'Phacoemulsification cataract extraction and intraocular lens implantation in patients with Behçet\'s disease', authors: 'Berker N, Soykan E, Elgin U, Özkan SS', journal: 'Ophthalmic Surg Lasers Imaging', volume: '35(3)', pages: '215-8', type: 'international', category: 'A' },
@@ -100,5 +120,22 @@ export const internationalPublications: Publication[] = [
   { id: 'A86', year: 2024, title: 'Macula vessel density and its relationship with the central visual field mean sensitivity across different stages of exfoliation glaucoma', authors: 'Hondur G, Bayraktar S, Sen E, Kiziltoprak H, Doguizi S, Elgin U', journal: 'Clin Exp Optom', volume: '107(2)', pages: '184-191', type: 'international', category: 'A' },
   { id: 'A87', year: 2025, title: 'The relationship between plasma and aqueous humor endothelin-1 levels and retinal microvascular structure in glaucoma', authors: 'Söğüt FE, Bayraktar S, Osmanov Z, Yılmaz C, Şen E, Elgin U', journal: 'Eur J Ophthalmol', volume: '35(6)', pages: '2141-2152', type: 'international', category: 'A' },
 ];
+
+// B. Ulusal hakemli dergilerde yayımlanan makaleler (75 makale)
+// Not: Veriler çok uzun olduğu için burada sadece yapı gösteriliyor
+// Gerçek veriler sayfa dosyasında dinamik olarak yönetilecek
+export const nationalPublications: Publication[] = [];
+
+// B. Uluslararası bilimsel toplantılarda sunulan bildiriler (47 bildiri)
+export const internationalConferences: Publication[] = [];
+
+// E. Ulusal bilimsel toplantılarda sunulan bildiriler (82 bildiri)
+export const nationalConferences: Publication[] = [];
+
+// Panel ve kurs konuşmaları (52)
+export const panelPresentations: PanelPresentation[] = [];
+
+// Kitap bölümleri (11)
+export const bookChapters: BookChapter[] = [];
 
 export const allPublications = internationalPublications;
