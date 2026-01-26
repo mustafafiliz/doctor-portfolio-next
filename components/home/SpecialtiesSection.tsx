@@ -89,12 +89,13 @@ export function SpecialtiesSection({
             const categoryTitle = category.title || category.name || '';
 
             return (
-              <div key={category._id} className="flex flex-col group border border-gray-100 rounded-2xl px-6 py-6 bg-white">
-                <Link
-                  href={`/${currentLocale}/uzmanlik/${category.slug}`}
-                  className="flex items-center gap-4 mb-4"
-                  title={categoryTitle}
-                >
+              <Link
+                key={category._id}
+                href={`/${currentLocale}/uzmanlik/${category.slug}`}
+                className="flex flex-col group border border-gray-100 rounded-2xl px-6 py-6 bg-white hover:shadow-lg transition-all duration-300 cursor-pointer"
+                title={categoryTitle}
+              >
+                <div className="flex items-center gap-4 mb-4">
                   <span className="shrink-0 relative w-[60px] h-[60px]">
                     <Image
                       src="/images/icons/icon-content.jpg"
@@ -107,13 +108,13 @@ export function SpecialtiesSection({
                   <strong className="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
                     {categoryTitle}
                   </strong>
-                </Link>
+                </div>
                 {category.description && (
                   <p className="text-gray-700 text-base leading-relaxed">
                     {category.description}
                   </p>
                 )}
-              </div>
+              </Link>
             );
           })}
         </div>
