@@ -7,7 +7,8 @@
     "videos": "Videolar",
     "contact": "İletişim",
     "faq": "Sık Sorulan Sorular",
-    "blog": "Blog"
+    "blog": "Blog",
+    "press": "Basından Haberler"
   },
   "home": {
     "title": "Prof. Dr. Kadriye Ufuk Elgin",
@@ -108,6 +109,19 @@
     "subtitle": "Son Yazılar",
     "readMore": "Devamını Oku",
     "published": "Yayınlanma Tarihi"
+  },
+  "press": {
+    "title": "Basından Haberler",
+    "subtitle": "Basında Yer Alan Haberler, Röportajlar ve TV Programları",
+    "newsLinks": "Haber Linkleri",
+    "interviews": "Röportajlar",
+    "tvPrograms": "TV Programları",
+    "readMore": "Devamını Oku",
+    "viewArticle": "Haberi Görüntüle",
+    "watchVideo": "Videoyu İzle",
+    "goToPress": "Basına Git",
+    "publishedDate": "Yayın Tarihi",
+    "source": "Kaynak"
   },
   "common": {
     "loading": "Yükleniyor...",

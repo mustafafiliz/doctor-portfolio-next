@@ -7,7 +7,8 @@
     "videos": "Videos",
     "contact": "Contact",
     "faq": "FAQ",
-    "blog": "Blog"
+    "blog": "Blog",
+    "press": "Press"
   },
   "home": {
     "title": "Prof. Dr. Kadriye Ufuk Elgin",
@@ -108,6 +109,19 @@
     "subtitle": "Latest Posts",
     "readMore": "Read More",
     "published": "Published Date"
+  },
+  "press": {
+    "title": "Press",
+    "subtitle": "News, Interviews and TV Programs in the Press",
+    "newsLinks": "News Links",
+    "interviews": "Interviews",
+    "tvPrograms": "TV Programs",
+    "readMore": "Read More",
+    "viewArticle": "View Article",
+    "watchVideo": "Watch Video",
+    "goToPress": "Go to Press",
+    "publishedDate": "Published Date",
+    "source": "Source"
   },
   "common": {
     "loading": "Loading...",

@@ -25,6 +25,7 @@ const reservedSlugs = [
   "iletisim",
   "sik-sorulan-sorular",
   "blog",
+  "basin",
   "admin",
 ];
 

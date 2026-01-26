@@ -41,9 +41,9 @@ export function QuickLinks({ currentLocale: propLocale }: QuickLinksProps) {
     },
     {
       icon: "/images/icons/blog-2.png",
-      title: "Blog Yazıları",
-      lines: ["Blog", "Yazıları"],
-      href: `/${currentLocale}/blog`,
+      title: "Basından Haberler",
+      lines: ["Basından", "Haberler"],
+      href: `/${currentLocale}/basin`,
     },
   ];
 
