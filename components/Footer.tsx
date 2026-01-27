@@ -139,14 +139,14 @@ export function Footer() {
                   {socialLinks.map((social, index) => {
                     const Icon = social.icon;
                     const isExternal = (social as any).isExternal !== false;
-                    
+
                     if (!social.url) return null;
-                    
+
                     const commonProps = {
                       'aria-label': social.label,
                       className: 'w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-primary hover:text-white transition-colors text-black border border-gray-200',
                     };
-                    
+
                     if (isExternal) {
                       return (
                         <a

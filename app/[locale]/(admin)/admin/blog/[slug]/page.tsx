@@ -459,8 +459,8 @@ export default function EditBlogPage() {
                 onDrop={handleDrop}
                 onClick={() => fileInputRef.current?.click()}
                 className={`w-full border-2 border-dashed rounded-sm p-6 text-center cursor-pointer transition-colors ${isDragging
-                    ? 'border-[#144793] bg-blue-50'
-                    : 'border-gray-300 hover:border-[#144793]'
+                  ? 'border-[#144793] bg-blue-50'
+                  : 'border-gray-300 hover:border-[#144793]'
                   }`}
               >
                 <Upload size={32} className={`mx-auto mb-2 ${isDragging ? 'text-[#144793]' : 'text-gray-400'}`} />

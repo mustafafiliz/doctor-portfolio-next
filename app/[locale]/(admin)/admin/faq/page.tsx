@@ -75,7 +75,7 @@ function SortableFAQItem({
         >
           <GripVertical size={20} />
         </button>
-        
+
         <div className="flex-1 min-w-0">
           <button
             onClick={() => setExpandedId(expandedId === faq._id ? null : faq._id)}
@@ -85,9 +85,8 @@ function SortableFAQItem({
               <h3 className="font-medium text-gray-800">{faq.question}</h3>
               <ChevronDown
                 size={20}
-                className={`text-gray-400 transition-transform ${
-                  expandedId === faq._id ? 'rotate-180' : ''
-                }`}
+                className={`text-gray-400 transition-transform ${expandedId === faq._id ? 'rotate-180' : ''
+                  }`}
               />
             </div>
           </button>

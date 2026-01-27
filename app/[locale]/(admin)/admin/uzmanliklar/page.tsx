@@ -377,11 +377,10 @@ export default function AdminSpecialtiesPage() {
           {categories.map((category) => (
             <div
               key={category._id}
-              className={`relative group p-4 rounded-sm border transition-all ${
-                categoryFilter === category._id
+              className={`relative group p-4 rounded-sm border transition-all ${categoryFilter === category._id
                   ? "border-[#144793] bg-[#144793]/5"
                   : "border-gray-200 bg-white hover:border-[#144793]"
-              }`}
+                }`}
             >
               <button
                 onClick={() => {

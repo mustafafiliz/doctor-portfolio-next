@@ -20,7 +20,7 @@ export interface User {
   _id: string;
   email: string;
   name: string;
-  role: 'user' | 'admin';
+  role: "user" | "admin";
   websiteId?: string;
   mustResetPassword?: boolean;
   createdAt: string;
@@ -51,7 +51,7 @@ export interface WorkingHour {
 export interface WebsiteSettings {
   _id: string;
   userId: string;
-  
+
   // Site Info
   site: {
     name: string;
@@ -59,14 +59,14 @@ export interface WebsiteSettings {
     logo?: string;
     favicon?: string;
   };
-  
+
   // Colors
   colors: {
     primary: string;
     accent: string;
     secondary?: string;
   };
-  
+
   // Contact Info
   contact: {
     email: string;
@@ -74,10 +74,10 @@ export interface WebsiteSettings {
     whatsapp?: string;
     address: string;
   };
-  
+
   // Working Hours
   workingHours: WorkingHour[];
-  
+
   // Social Media
   social: {
     facebook?: string;
@@ -86,14 +86,14 @@ export interface WebsiteSettings {
     linkedin?: string;
     youtube?: string;
   };
-  
+
   // Maps
   maps: {
     embedUrl?: string;
     latitude?: string;
     longitude?: string;
   };
-  
+
   // SEO
   seo: {
     metaTitle?: string;
@@ -101,7 +101,7 @@ export interface WebsiteSettings {
     keywords?: string;
     ogImage?: string;
   };
-  
+
   // Hero Section
   hero?: {
     title?: string;
@@ -111,7 +111,7 @@ export interface WebsiteSettings {
     ctaText?: string;
     ctaUrl?: string;
   };
-  
+
   createdAt: string;
   updatedAt: string;
 }
@@ -179,7 +179,7 @@ export interface Blog {
   categoryId?: string;
   category?: BlogCategory;
   tags?: string[];
-  status: 'draft' | 'published';
+  status: "draft" | "published";
   locale?: string;
   metaTitle?: string;
   metaDescription?: string;
@@ -197,7 +197,7 @@ export interface CreateBlogRequest {
   image?: File;
   categoryId?: string;
   tags?: string[];
-  status?: 'draft' | 'published';
+  status?: "draft" | "published";
   metaTitle?: string;
   metaDescription?: string;
 }
@@ -395,4 +395,3 @@ export interface PublicGalleryResponse {
 export interface PublicFAQResponse {
   data: FAQ[];
 }
-
