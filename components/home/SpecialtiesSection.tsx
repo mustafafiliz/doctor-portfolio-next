@@ -65,8 +65,6 @@ export function SpecialtiesSection({
     return null;
   }
 
-  console.log("categories", categories)
-
   return (
     <section className="py-8 md:py-16 bg-[#f8f9fa] relative">
       <div className="container mx-auto px-4 sm:px-6 relative z-10">

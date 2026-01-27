@@ -57,22 +57,22 @@ export function QuickLinks({ currentLocale: propLocale }: QuickLinksProps) {
               href={link.href}
               target={link.isExternal ? "_blank" : undefined}
               rel={link.isExternal ? "noopener noreferrer" : undefined}
-              className="group flex flex-row items-center text-left gap-4 hover:-translate-y-1 transition-transform duration-300"
+              className="group flex flex-row items-center text-left gap-3 lg:gap-4 hover:-translate-y-1 transition-transform duration-300"
             >
-              <div className="shrink-0 w-20 h-20 lg:w-24 lg:h-24 rounded-full bg-primary/5 flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-300">
+              <div className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-full bg-primary/5 flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-300">
                 <Image
                   src={link.icon}
                   alt={link.title}
                   width={48}
                   height={48}
-                  className="w-10 h-10 lg:w-12 lg:h-12 transition-transform duration-300 group-hover:scale-110"
+                  className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 transition-transform duration-300 group-hover:scale-110"
                 />
               </div>
               <div className="flex flex-col justify-center">
                 {link.lines.map((line, i) => (
                   <span
                     key={i}
-                    className="text-base lg:text-lg font-semibold text-gray-800 group-hover:text-primary transition-colors leading-tight"
+                    className="text-sm sm:text-base lg:text-lg font-semibold text-gray-800 group-hover:text-primary transition-colors leading-tight"
                   >
                     {line}
                   </span>

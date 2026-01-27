@@ -124,7 +124,7 @@ export function PopularContents({
         </div>
 
         {/* View All Button */}
-        <div className="mt-12 text-center flex justify-center">
+        <div className="mt-8 md:mt-12 text-center flex justify-center">
           <Link
             href={`/${currentLocale}${getRoute("specialties", currentLocale)}`}
             className="inline-flex items-center justify-center px-8 py-3 text-base font-medium text-white bg-primary hover:bg-primary/90 rounded-sm transition-colors duration-200 shadow-sm hover:shadow-md"

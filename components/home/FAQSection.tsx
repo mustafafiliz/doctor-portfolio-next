@@ -29,18 +29,18 @@ export function HomeFAQSection({ faqs }: HomeFAQSectionProps) {
   }
 
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="py-8 md:py-24 bg-white">
       <Container>
-        <div className="text-left mb-12">
+        <div className="text-left mb-8 md:mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             {t("title")}
           </h2>
-          <p className="text-gray-600 max-w-2xl">
+          <p className="text-gray-600 max-w-2xl text-base md:text-lg">
             {t("subtitle")}
           </p>
         </div>
 
-        <div className="max-w-4xl mx-0 mb-10">
+        <div className="max-w-4xl mx-0 mb-8 md:mb-10">
           <Accordion type="single" collapsible className="w-full space-y-4">
             {faqs.map((faq, index) => (
               <AccordionItem
@@ -48,15 +48,15 @@ export function HomeFAQSection({ faqs }: HomeFAQSectionProps) {
                 value={`item-${faq._id}`}
                 className="border border-gray-200 rounded-sm bg-white data-[state=open]:border-primary data-[state=open]:shadow-md transition-all duration-200"
               >
-                <AccordionTrigger className="text-left text-base font-semibold text-gray-900 hover:text-primary transition-colors px-6 py-4 hover:no-underline [&[data-state=open]]:text-primary">
-                  <span className="flex items-center gap-4">
+                <AccordionTrigger className="text-left text-base font-semibold text-gray-900 hover:text-primary transition-colors px-4 py-3 md:px-6 md:py-4 hover:no-underline [&[data-state=open]]:text-primary">
+                  <span className="flex items-center gap-3 md:gap-4">
                     <span className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 text-primary text-sm font-bold flex items-center justify-center">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     {faq.question}
                   </span>
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-600 leading-relaxed px-6 pb-6 pt-0 ml-12">
+                <AccordionContent className="text-gray-600 leading-relaxed px-4 pb-4 md:px-6 md:pb-6 pt-0 ml-0 md:ml-12">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>

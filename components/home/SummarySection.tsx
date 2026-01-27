@@ -42,7 +42,7 @@ export function SummarySection() {
           </div>
 
           {/* Right Side - Image */}
-          <div className="w-full lg:w-1/2 relative min-h-[400px] lg:min-h-full">
+          <div className="w-full lg:w-1/2 relative min-h-[300px] lg:min-h-full">
             <Image
               src="/images/icons/dr-kadriye-ufuk-elgin-1.png"
               alt="Prof. Dr. Kadriye Ufuk Elgin"
