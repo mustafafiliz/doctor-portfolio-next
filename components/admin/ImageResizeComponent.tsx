@@ -11,7 +11,7 @@ export default function ImageResizeComponent(props: NodeViewProps) {
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     setIsResizing(true);
-
+    
     const startX = e.clientX;
     const startWidth = containerRef.current?.offsetWidth || 0;
 
@@ -19,7 +19,7 @@ export default function ImageResizeComponent(props: NodeViewProps) {
       const currentX = e.clientX;
       const diffX = currentX - startX;
       const newWidth = Math.max(100, startWidth + diffX); // Minimum 100px
-
+      
       updateAttributes({ width: newWidth });
     };
 
@@ -34,10 +34,10 @@ export default function ImageResizeComponent(props: NodeViewProps) {
   }, [updateAttributes]);
 
   return (
-    <NodeViewWrapper
+    <NodeViewWrapper 
       ref={containerRef}
       className="image-resizer relative inline-block group"
-      style={{
+      style={{ 
         width: node.attrs.width || 'auto',
         maxWidth: '100%',
         display: 'inline-block',
@@ -46,13 +46,13 @@ export default function ImageResizeComponent(props: NodeViewProps) {
       }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={node.attrs.src}
-        alt={node.attrs.alt}
+      <img 
+        src={node.attrs.src} 
+        alt={node.attrs.alt} 
         className={`rounded-sm transition-shadow duration-200 ${selected ? 'ring-2 ring-[#144793] ring-offset-1' : ''}`}
         style={{ width: '100%', height: 'auto', display: 'block' }}
       />
-
+      
       {(selected || isResizing) && (
         <div
           onMouseDown={handleMouseDown}

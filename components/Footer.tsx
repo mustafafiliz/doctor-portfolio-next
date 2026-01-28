@@ -129,11 +129,11 @@ export function Footer() {
     <footer className="bg-white text-black relative overflow-hidden">
       {/* Top Contact Section */}
       <section className="bg-primary border-b border-gray-200">
-        <div className="container mx-auto px-4 sm:px-6 py-6">
+        <div className="container mx-auto px-4 sm:px-6 py-4 md:py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             {/* Social Media */}
             <div className="flex items-center gap-4">
-              <span className="text-lg font-bold text-white">Beni Takip Edin</span>
+              <span className="text-base md:text-lg font-bold text-white">Beni Takip Edin</span>
               {socialLinks.length > 0 && (
                 <div className="flex gap-2">
                   {socialLinks.map((social, index) => {
@@ -244,23 +244,23 @@ export function Footer() {
 
           {/* Categories & Specialties Links */}
           <div className="lg:col-span-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
               {/* Dynamic Categories */}
               {categories.slice(0, 2).map((category) => (
                 <div key={category._id}>
                   <Link
                     href={`/${currentLocale}/uzmanlik/${category.slug}`}
-                    className="text-lg font-extrabold text-black hover:text-primary transition-colors block mb-5 uppercase tracking-wide"
+                    className="text-base md:text-lg font-extrabold text-black hover:text-primary transition-colors block mb-3 md:mb-5 uppercase tracking-wide"
                   >
                     {category.title || category.name}
                   </Link>
                   {category.specialties && category.specialties.length > 0 && (
-                    <ul className="space-y-3">
+                    <ul className="space-y-2 md:space-y-3">
                       {category.specialties.slice(0, 3).map((specialty) => (
                         <li key={specialty._id}>
                           <Link
                             href={`/${currentLocale}/${specialty.slug}`}
-                            className="text-base text-gray-800 hover:text-primary transition-colors block leading-relaxed font-semibold"
+                            className="text-sm md:text-base text-gray-800 hover:text-primary transition-colors block leading-relaxed font-semibold"
                           >
                             {specialty.title}
                           </Link>
@@ -275,15 +275,15 @@ export function Footer() {
               <div>
                 <Link
                   href={`/${currentLocale}/hakkimda`}
-                  className="text-lg font-extrabold text-black hover:text-primary transition-colors block mb-5 uppercase tracking-wide"
+                  className="text-base md:text-lg font-extrabold text-black hover:text-primary transition-colors block mb-3 md:mb-5 uppercase tracking-wide"
                 >
                   Hakkımda
                 </Link>
-                <ul className="space-y-3">
+                <ul className="space-y-2 md:space-y-3">
                   <li>
                     <Link
                       href={`/${currentLocale}/hakkimda`}
-                      className="text-base text-gray-800 hover:text-primary transition-colors block leading-relaxed font-semibold"
+                      className="text-sm md:text-base text-gray-800 hover:text-primary transition-colors block leading-relaxed font-semibold"
                     >
                       {config.site?.name || 'Hakkımda'}
                     </Link>
@@ -291,7 +291,7 @@ export function Footer() {
                   <li>
                     <Link
                       href={`/${currentLocale}/galeri`}
-                      className="text-base text-gray-800 hover:text-primary transition-colors block leading-relaxed font-semibold"
+                      className="text-sm md:text-base text-gray-800 hover:text-primary transition-colors block leading-relaxed font-semibold"
                     >
                       Galeri
                     </Link>
@@ -299,7 +299,7 @@ export function Footer() {
                   <li>
                     <Link
                       href={`/${currentLocale}/sik-sorulan-sorular`}
-                      className="text-base text-gray-800 hover:text-primary transition-colors block leading-relaxed font-semibold"
+                      className="text-sm md:text-base text-gray-800 hover:text-primary transition-colors block leading-relaxed font-semibold"
                     >
                       S.S.S.
                     </Link>
@@ -307,7 +307,7 @@ export function Footer() {
                   <li>
                     <Link
                       href={`/${currentLocale}/iletisim`}
-                      className="text-base text-gray-800 hover:text-primary transition-colors block leading-relaxed font-semibold"
+                      className="text-sm md:text-base text-gray-800 hover:text-primary transition-colors block leading-relaxed font-semibold"
                     >
                       İletişim
                     </Link>
