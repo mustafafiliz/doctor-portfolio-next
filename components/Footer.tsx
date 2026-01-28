@@ -201,7 +201,7 @@ export function Footer() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-32">
 
           {/* Brand & Contact Section */}
-          <div className="lg:col-span-4 space-y-8">
+          <div className="lg:col-span-4 flex flex-col-reverse lg:flex-col gap-6 md:gap-8 order-last lg:order-first text-center lg:text-left items-center lg:items-start">
             {/* Logo & Brand */}
             <Link href={`/${currentLocale}`} className="inline-block">
               {config.site?.logo ? (
@@ -227,12 +227,12 @@ export function Footer() {
             <div className="space-y-5 text-base">
               {config.contact.address && (
                 <div className="flex items-start gap-3 text-gray-900">
-                  <span className="font-bold text-black min-w-[80px] text-lg whitespace-nowrap">Adres:</span>
-                  <span className="font-medium leading-relaxed">{config.contact.address}</span>
+                  <span className="font-bold text-black lg:min-w-[80px] text-lg whitespace-nowrap">Adres:</span>
+                  <span className="font-medium leading-relaxed text-left">{config.contact.address}</span>
                 </div>
               )}
               {config.contact.email && (
-                <div className="flex items-center gap-3 text-gray-900">
+                <div className="flex items-center gap-3 text-gray-900 lg:mb-0 mb-5">
                   <span className="font-bold text-black min-w-[80px] text-lg whitespace-nowrap">E-Posta:</span>
                   <a href={`mailto:${config.contact.email}`} className="hover:text-primary transition-colors font-medium">
                     {config.contact.email}
