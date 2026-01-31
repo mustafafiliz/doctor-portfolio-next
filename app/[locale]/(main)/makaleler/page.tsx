@@ -43,25 +43,25 @@ export default function MakalelerPage() {
   const categories: Category[] = [
     {
       id: "international-articles",
-      title: "A. Uluslararası Hakemli Dergilerde Yayımlanan Makaleler",
+      title: "Uluslararası Hakemli Dergilerde Yayımlanan Makaleler",
       count: 84,
       icon: FileText,
     },
     {
       id: "national-articles",
-      title: "B. Ulusal Hakemli Dergilerde Yayımlanan Makaleler",
+      title: "Ulusal Hakemli Dergilerde Yayımlanan Makaleler",
       count: 75,
       icon: FileText,
     },
     {
       id: "international-conferences",
-      title: "A. Uluslararası Bilimsel Toplantılarda Sunulan Bildiriler",
+      title: "Uluslararası Bilimsel Toplantılarda Sunulan Bildiriler",
       count: 47,
       icon: Presentation,
     },
     {
       id: "national-conferences",
-      title: "B. Ulusal Bilimsel Toplantılarda Sunulan Bildiriler",
+      title: "Ulusal Bilimsel Toplantılarda Sunulan Bildiriler",
       count: 82,
       icon: Presentation,
     },
@@ -1073,473 +1073,473 @@ export default function MakalelerPage() {
     location?: string;
     type?: "panel" | "course";
   }> = [
-    {
-      id: "P1",
-      year: 2009,
-      title: "Cerrahi tedavide yenilikler",
-      event:
-        "Türk Oftalmoloji Derneği, 11. Uygulamalı Glokom Cerrahi Sempozyumu",
-      location: "İstanbul",
-      type: "panel",
-    },
-    {
-      id: "P2",
-      year: 2009,
-      title: "Filtran cerrahide yenilikler",
-      event:
-        "Türk Oftalmoloji Derneği, 11. Uygulamalı Glokom Cerrahi Sempozyumu",
-      location: "İstanbul",
-      type: "panel",
-    },
-    {
-      id: "P3",
-      year: 2008,
-      title: "Hifemalar Ve İris Yaralanmaları",
-      event: "Türk Oftalmoloji Derneği, 42. Ulusal kongre",
-      location: "Antalya",
-      type: "panel",
-    },
-    {
-      id: "P4",
-      year: 2010,
-      title: "Konjonktivadan örnek alınması ve klinik değerlendirme",
-      event:
-        "Türk Oftalmoloji Derneği, 44. Ulusal kongre - Oküler Enfeksiyonlar Birimi Uygulamalı Kursu",
-      location: "Antalya",
-      type: "course",
-    },
-    {
-      id: "P5",
-      year: 2011,
-      title: "Nöron Koruyucu İlaçlar",
-      event:
-        "Türk Oftalmoloji Derneği, Bahar sempozyumu - Glokomda tıbbi tedavi paneli",
-      location: "İstanbul",
-      type: "panel",
-    },
-    {
-      id: "P6",
-      year: 2011,
-      title: "Neovasküler glokom, Etiyoloji ve Patogenez",
-      event:
-        "Türk Oftalmoloji Derneği, 45. Ulusal kongre - Glokom birimi paneli",
-      location: "Girne",
-      type: "panel",
-    },
-    {
-      id: "P7",
-      year: 2011,
-      title: "Katarakt cerrahisi",
-      event:
-        "Türk Oftalmoloji Derneği, 45. Ulusal kongre - Oküler Cerrahide Antisepsi ve Antibiyotik Proflaksisi kursu",
-      location: "Girne",
-      type: "course",
-    },
-    {
-      id: "P8",
-      year: 2011,
-      title: "Komplikasyonlar ve tedavisi",
-      event:
-        "Türk Oftalmoloji Derneği, 45. Ulusal kongre - Ön segment penetran yaralanmaları kursu",
-      location: "Girne",
-      type: "course",
-    },
-    {
-      id: "P9",
-      year: 2011,
-      title: "Penetran cerrahide başarıyı etkileyen faktörler",
-      event:
-        "Türk Oftalmoloji Derneği, Glokom cerrahi sempozyumu - Penetran cerrahi paneli",
-      location: "Ankara",
-      type: "panel",
-    },
-    {
-      id: "P10",
-      year: 2013,
-      title: "Oküler Enfeksiyonlar: Örnek Alma",
-      event:
-        "Türk Oftalmoloji Derneği, Nisan kursu - Oküler enfeksiyonlarda tanı ve muayene yöntemleri",
-      location: "Ankara",
-      type: "course",
-    },
-    {
-      id: "P11",
-      year: 2013,
-      title: "Trabekülektomi sonrası hipotoni ve ona bağlı gelişen makulapati",
-      event:
-        "Türk Oftalmoloji Derneği, Glokom cerrahi sempozyumu - Cerrahi olgular oturumu",
-      location: "İzmir",
-      type: "panel",
-    },
-    {
-      id: "P12",
-      year: 2013,
-      title:
-        "New antiglaucoma medicines to improve patients compliance and tolerability",
-      event: "Today and Future in Glaucoma symposium",
-      location: "St Petersburg, Rusya",
-      type: "panel",
-    },
-    {
-      id: "P13",
-      year: 2013,
-      title: "Glokom ilaçlarının oküler yüzey ile ilişkisi",
-      event: "Türk Oftalmoloji Derneği, 47. Ulusal kongre",
-      location: "Antalya",
-      type: "panel",
-    },
-    {
-      id: "P14",
-      year: 2014,
-      title: "Diabet ve Glokom Epidemiyolojisi",
-      event:
-        "Türk Oftalmoloji Derneği, Kış sempozyumu - Diabet ve glokom paneli",
-      location: "Antalya",
-      type: "panel",
-    },
-    {
-      id: "P15",
-      year: 2014,
-      title:
-        "Cerrahi sonrası geç dönem konjonktiva ve kornea sorunları ve çözümleri",
-      event:
-        "Türk Oftalmoloji Derneği, Glokom cerrahi sempozyumu - Glokomda cerrahi sonrası komplikasyonlar ve tedavisi paneli",
-      location: "Ankara",
-      type: "panel",
-    },
-    {
-      id: "P16",
-      year: 2014,
-      title: "İris-Lens Travmaları",
-      event:
-        "Türk Oftalmoloji Derneği, 48. Ulusal kongre - Olgularla oküler travma etkileşimli panel",
-      location: "Antalya",
-      type: "panel",
-    },
-    {
-      id: "P17",
-      year: 2015,
-      title: "Glokom İlaçlarında Yan Etkiler ve Toksisite",
-      event:
-        "Türk Oftalmoloji Derneği, yaz sempozyumu - Glokomda Akılcı İlaç Kullanımı paneli",
-      location: "İzmir",
-      type: "panel",
-    },
-    {
-      id: "P18",
-      year: 2015,
-      title: "Göz dışı operasyonlarda antibiyotik profilaksisi",
-      event:
-        "Türk Oftalmoloji Derneği, 49. Ulusal kongre - Oküler enfeksiyonlar birimi paneli",
-      location: "İstanbul",
-      type: "panel",
-    },
-    {
-      id: "P19",
-      year: 2016,
-      title: "Tarayıcı Lazer Polarimetre",
-      event: "Türk Oftalmoloji Derneği, Nisan kursu - Glokomda tanı paneli",
-      location: "Ankara",
-      type: "panel",
-    },
-    {
-      id: "P20",
-      year: 2016,
-      title: "Üveitik glokomda ilk cerrahi seçeneği: Filtran cerrahi",
-      event:
-        "50. Türk Oftalmoloji Derneği, 50. Ulusal kongre - Glokom birimi paneli",
-      location: "Antalya",
-      type: "panel",
-    },
-    {
-      id: "P21",
-      year: 2016,
-      title: "Penetran göz yaralanmasında primer yaklaşım",
-      event:
-        "Türk Oftalmoloji Derneği, 50. Ulusal kongre - Oküler travmatoloji birimi paneli",
-      location: "Antalya",
-      type: "panel",
-    },
-    {
-      id: "P22",
-      year: 2017,
-      title: "Oküler Travmalar: Terminoloji ve Sınıflama",
-      event:
-        "Türk Oftalmoloji Derneği, Kış sempozyumu - Panel: Oküler Travmalara Yaklaşım: Akılcı İlaç Kullanımı",
-      location: "Bursa",
-      type: "panel",
-    },
-    {
-      id: "P23",
-      year: 2017,
-      title: "Olgularla görme alanı analizleri",
-      event:
-        "Türk Oftalmoloji Derneği, Glokom birimi Beceri aktarım kursu - Glokom tanısında ve tedavinin yönlendirilmesinde görme alanından nasıl faydalanacağız?",
-      location: "Bursa",
-      type: "course",
-    },
-    {
-      id: "P24",
-      year: 2017,
-      title: "Ön segment travmaları",
-      event:
-        "Türk Oftalmoloji Derneği, Bahar sempozyumu - Panel: Çocuklarda göz yaralanmaları",
-      location: "Antalya",
-      type: "panel",
-    },
-    {
-      id: "P25",
-      year: 2017,
-      title: "Seton implant, kime, nasıl yapayım?",
-      event:
-        "51. Türk Oftalmoloji Derneği, 51. Ulusal kongre - Glokom birimi paneli",
-      location: "Antalya",
-      type: "panel",
-    },
-    {
-      id: "P26",
-      year: 2017,
-      title: "Üveitik glokomda yaklaşımımız",
-      event:
-        "Türk Oftalmoloji Derneği, 51. Ulusal kongre - Glokom birimi beceri aktarım kursu",
-      location: "Antalya",
-      type: "course",
-    },
-    {
-      id: "P27",
-      year: 2018,
-      title: "OCT ile progresyon analizleri",
-      event:
-        "Türk Oftalmoloji Derneği, Mart sempozyumu - Panel: Glokomda görüntüleme teknikleri",
-      location: "Adana",
-      type: "panel",
-    },
-    {
-      id: "P28",
-      year: 2018,
-      title:
-        "Cerrahi sahanın uygun temizliği Ameliyathane personelinin hijyeni",
-      event:
-        "Türk Oftalmoloji Derneği, Oküler enfeksiyonlar beceri aktarım kursu - Göz cerrahisinde enfeksiyon kaynakları ve önlemleri",
-      location: "Ankara",
-      type: "course",
-    },
-    {
-      id: "P29",
-      year: 2018,
-      title: "Glokomatöz görme alanı tanısı ve evreleme",
-      event:
-        "Türk Oftalmoloji Derneği, birimi beceri aktarım kursu - Glokom tanısında ve tedavinin yönlendirilmesinde tanısal testlerden nasıl faydalanacağız?",
-      location: "Ankara",
-      type: "course",
-    },
-    {
-      id: "P30",
-      year: 2018,
-      title: "Kime hangi cerrahi",
-      event:
-        "Türk Oftalmoloji Derneği, Yaz sempozyumu - Panel: Glokom cerrahisi kabusunuz olmasın",
-      location: "Van",
-      type: "panel",
-    },
-    {
-      id: "P31",
-      year: 2018,
-      title: "Hasta uyumu",
-      event:
-        "Türk Oftalmoloji Derneği, Yaz sempozyumu - Panel: Glokomun Medikal tedavisinde Güç, Konfor ve Hasta Uyumu",
-      location: "Van",
-      type: "panel",
-    },
-    {
-      id: "P32",
-      year: 2018,
-      title: "Örneklerle olgu değerlendirmeleri",
-      event:
-        "Türk Oftalmoloji Derneği, 52. Ulusal kongre - Glokomun görme alanı değerlendirmesi",
-      location: "Antalya",
-      type: "course",
-    },
-    {
-      id: "P33",
-      year: 2018,
-      title: "Adenovirus mikrobiyolojisi",
-      event:
-        "Türk Oftalmoloji Derneği, 52. Ulusal kongre - Adenoviral Enfeksiyonlara Oftalmolojik Yaklaşım",
-      location: "Antalya",
-      type: "panel",
-    },
-    {
-      id: "P34",
-      year: 2019,
-      title: "Özellikli hastalarda tıbbi tedavide nelere dikkat edilmeli?",
-      event:
-        "Türk Oftalmoloji Derneği, birimi beceri aktarım kursu - Glokom tedavisi",
-      location: "Ankara",
-      type: "course",
-    },
-    {
-      id: "P35",
-      year: 2019,
-      title: "İlaç raporları",
-      event:
-        "Türk Oftalmoloji Derneği, birimi beceri aktarım kursu - Güncel sağlık kurulu raporları",
-      location: "Ankara",
-      type: "course",
-    },
-    {
-      id: "P36",
-      year: 2019,
-      title: "İlk yöntem hangisi olmalı? Görme alanı mı? OCT mi?",
-      event:
-        "Türk Oftalmoloji Derneği, gözde gündem toplantısı - Glokom şüphesinde nasıl davranalım?",
-      location: "Girne",
-      type: "panel",
-    },
-    {
-      id: "P37",
-      year: 2019,
-      title: "İris lens yaralanmaları",
-      event:
-        "Türk Oftalmoloji Derneği, Bahar Sempozyumu - Ön segment yaralanmaları",
-      location: "İstanbul",
-      type: "panel",
-    },
-    {
-      id: "P38",
-      year: 2019,
-      title: "Glokom demiştim ama değil galiba",
-      event:
-        "Türk Oftalmoloji Derneği, birimi beceri aktarım kursu - Glokom Tanı ve Tedavisinde Yol Haritamız",
-      location: "Gaziantep",
-      type: "course",
-    },
-    {
-      id: "P39",
-      year: 2019,
-      title: "Ganglion hücreleri yenilenebilir mi?",
-      event:
-        "53. TOD Ulusal kongre - Glokomun geleceği-inovasyondan klinik pratiğe geçiş",
-      location: "Antalya",
-      type: "panel",
-    },
-    {
-      id: "P40",
-      year: 2019,
-      title: "Zon 1 yaralanmaları",
-      event:
-        "53. TOD Ulusal kongre - Penetran glob yaralanmaları ve kapak yaralanmalarında yaklaşım aşamaları",
-      location: "Antalya",
-      type: "course",
-    },
-    {
-      id: "P41",
-      year: 2019,
-      title: "Simbrinza: Gloom pratiğimdeki yeri",
-      event: "53. TOD Ulusal kongre - Glokom tedavisinde gözde çözüm",
-      location: "Antalya",
-      type: "panel",
-    },
-    {
-      id: "P42",
-      year: 2019,
-      title: "Orbitanın parazitik enfeksiyonları",
-      event: "53. TOD Ulusal kongre - Orbita enfeksiyonları",
-      location: "Antalya",
-      type: "panel",
-    },
-    {
-      id: "P43",
-      year: 2021,
-      title: "Travmatik katarakt cerrahisi",
-      event:
-        "Türk Oftalmoloji Derneği, Sanal Nisan kursu - Özellikli olgularda katarakt cerrahisi",
-      location: "Online",
-      type: "panel",
-    },
-    {
-      id: "P44",
-      year: 2021,
-      title: "Glokomda OKT Anjiyo",
-      event:
-        "Türk Oftalmoloji Derneği, Sanal Bahar Sempozyumu - Glokomda görüntüleme yöntemleri",
-      location: "Online",
-      type: "panel",
-    },
-    {
-      id: "P45",
-      year: 2021,
-      title:
-        "Glokomlu hastanın reçetesinde nöroprotektif ilaçlar yer almalıdır",
-      event: "55. TOD Ulusal kongre - Glokomda doğru bilinen yanlışlar",
-      location: "Antalya",
-      type: "panel",
-    },
-    {
-      id: "P46",
-      year: 2022,
-      title: "Glokomda yapay zeka",
-      event: "TOD Bahar sempozyumu - Oftalmolojide yapay zeka",
-      location: "İstanbul",
-      type: "panel",
-    },
-    {
-      id: "P47",
-      year: 2022,
-      title: "Glokomda progresyon takibini OCT ile yaparım",
-      event: "TOD 56. Ulusal kongre",
-      location: "Antalya",
-      type: "panel",
-    },
-    {
-      id: "P48",
-      year: 2023,
-      title: "Siz olsaydınız ne yapardınız",
-      event: "57: TOD Ulusal Kongre - Glokom Etkileşimli Toplantı",
-      location: "Antalya",
-      type: "panel",
-    },
-    {
-      id: "P49",
-      year: 2024,
-      title: "Travmatik glokom",
-      event: "58: TOD Ulusal Kongre - OTM etkileşimli toplantı",
-      location: "Antalya",
-      type: "panel",
-    },
-    {
-      id: "P50",
-      year: 2024,
-      title: "Glokom ile Nörooftalmolojik patoloji ayırımında OKT'ye güvenirim",
-      event: "58: TOD Ulusal Kongre - Glokom etkileşimli toplantı",
-      location: "Antalya",
-      type: "panel",
-    },
-    {
-      id: "P51",
-      year: 2024,
-      title: "OCTA in glaucoma",
-      event: "European Glaucoma Society congress",
-      location: "Dublin, Ireland",
-      type: "panel",
-    },
-    {
-      id: "P52",
-      year: 2025,
-      title: "OKTA pratik olarak kullanışlı mı",
-      event: "58: TOD Ulusal Kongre - Glokom BİLEP toplantı",
-      location: "Antalya",
-      type: "panel",
-    },
-    {
-      id: "P53",
-      year: 2025,
-      title: "Glokomda destekleyici ve alternatif tedaviler",
-      event: "Türk Oftalmoloji Derneği, birimi beceri aktarım kursu",
-      location: "Diyarbakır",
-      type: "course",
-    },
-  ];
+      {
+        id: "P1",
+        year: 2009,
+        title: "Cerrahi tedavide yenilikler",
+        event:
+          "Türk Oftalmoloji Derneği, 11. Uygulamalı Glokom Cerrahi Sempozyumu",
+        location: "İstanbul",
+        type: "panel",
+      },
+      {
+        id: "P2",
+        year: 2009,
+        title: "Filtran cerrahide yenilikler",
+        event:
+          "Türk Oftalmoloji Derneği, 11. Uygulamalı Glokom Cerrahi Sempozyumu",
+        location: "İstanbul",
+        type: "panel",
+      },
+      {
+        id: "P3",
+        year: 2008,
+        title: "Hifemalar Ve İris Yaralanmaları",
+        event: "Türk Oftalmoloji Derneği, 42. Ulusal kongre",
+        location: "Antalya",
+        type: "panel",
+      },
+      {
+        id: "P4",
+        year: 2010,
+        title: "Konjonktivadan örnek alınması ve klinik değerlendirme",
+        event:
+          "Türk Oftalmoloji Derneği, 44. Ulusal kongre - Oküler Enfeksiyonlar Birimi Uygulamalı Kursu",
+        location: "Antalya",
+        type: "course",
+      },
+      {
+        id: "P5",
+        year: 2011,
+        title: "Nöron Koruyucu İlaçlar",
+        event:
+          "Türk Oftalmoloji Derneği, Bahar sempozyumu - Glokomda tıbbi tedavi paneli",
+        location: "İstanbul",
+        type: "panel",
+      },
+      {
+        id: "P6",
+        year: 2011,
+        title: "Neovasküler glokom, Etiyoloji ve Patogenez",
+        event:
+          "Türk Oftalmoloji Derneği, 45. Ulusal kongre - Glokom birimi paneli",
+        location: "Girne",
+        type: "panel",
+      },
+      {
+        id: "P7",
+        year: 2011,
+        title: "Katarakt cerrahisi",
+        event:
+          "Türk Oftalmoloji Derneği, 45. Ulusal kongre - Oküler Cerrahide Antisepsi ve Antibiyotik Proflaksisi kursu",
+        location: "Girne",
+        type: "course",
+      },
+      {
+        id: "P8",
+        year: 2011,
+        title: "Komplikasyonlar ve tedavisi",
+        event:
+          "Türk Oftalmoloji Derneği, 45. Ulusal kongre - Ön segment penetran yaralanmaları kursu",
+        location: "Girne",
+        type: "course",
+      },
+      {
+        id: "P9",
+        year: 2011,
+        title: "Penetran cerrahide başarıyı etkileyen faktörler",
+        event:
+          "Türk Oftalmoloji Derneği, Glokom cerrahi sempozyumu - Penetran cerrahi paneli",
+        location: "Ankara",
+        type: "panel",
+      },
+      {
+        id: "P10",
+        year: 2013,
+        title: "Oküler Enfeksiyonlar: Örnek Alma",
+        event:
+          "Türk Oftalmoloji Derneği, Nisan kursu - Oküler enfeksiyonlarda tanı ve muayene yöntemleri",
+        location: "Ankara",
+        type: "course",
+      },
+      {
+        id: "P11",
+        year: 2013,
+        title: "Trabekülektomi sonrası hipotoni ve ona bağlı gelişen makulapati",
+        event:
+          "Türk Oftalmoloji Derneği, Glokom cerrahi sempozyumu - Cerrahi olgular oturumu",
+        location: "İzmir",
+        type: "panel",
+      },
+      {
+        id: "P12",
+        year: 2013,
+        title:
+          "New antiglaucoma medicines to improve patients compliance and tolerability",
+        event: "Today and Future in Glaucoma symposium",
+        location: "St Petersburg, Rusya",
+        type: "panel",
+      },
+      {
+        id: "P13",
+        year: 2013,
+        title: "Glokom ilaçlarının oküler yüzey ile ilişkisi",
+        event: "Türk Oftalmoloji Derneği, 47. Ulusal kongre",
+        location: "Antalya",
+        type: "panel",
+      },
+      {
+        id: "P14",
+        year: 2014,
+        title: "Diabet ve Glokom Epidemiyolojisi",
+        event:
+          "Türk Oftalmoloji Derneği, Kış sempozyumu - Diabet ve glokom paneli",
+        location: "Antalya",
+        type: "panel",
+      },
+      {
+        id: "P15",
+        year: 2014,
+        title:
+          "Cerrahi sonrası geç dönem konjonktiva ve kornea sorunları ve çözümleri",
+        event:
+          "Türk Oftalmoloji Derneği, Glokom cerrahi sempozyumu - Glokomda cerrahi sonrası komplikasyonlar ve tedavisi paneli",
+        location: "Ankara",
+        type: "panel",
+      },
+      {
+        id: "P16",
+        year: 2014,
+        title: "İris-Lens Travmaları",
+        event:
+          "Türk Oftalmoloji Derneği, 48. Ulusal kongre - Olgularla oküler travma etkileşimli panel",
+        location: "Antalya",
+        type: "panel",
+      },
+      {
+        id: "P17",
+        year: 2015,
+        title: "Glokom İlaçlarında Yan Etkiler ve Toksisite",
+        event:
+          "Türk Oftalmoloji Derneği, yaz sempozyumu - Glokomda Akılcı İlaç Kullanımı paneli",
+        location: "İzmir",
+        type: "panel",
+      },
+      {
+        id: "P18",
+        year: 2015,
+        title: "Göz dışı operasyonlarda antibiyotik profilaksisi",
+        event:
+          "Türk Oftalmoloji Derneği, 49. Ulusal kongre - Oküler enfeksiyonlar birimi paneli",
+        location: "İstanbul",
+        type: "panel",
+      },
+      {
+        id: "P19",
+        year: 2016,
+        title: "Tarayıcı Lazer Polarimetre",
+        event: "Türk Oftalmoloji Derneği, Nisan kursu - Glokomda tanı paneli",
+        location: "Ankara",
+        type: "panel",
+      },
+      {
+        id: "P20",
+        year: 2016,
+        title: "Üveitik glokomda ilk cerrahi seçeneği: Filtran cerrahi",
+        event:
+          "50. Türk Oftalmoloji Derneği, 50. Ulusal kongre - Glokom birimi paneli",
+        location: "Antalya",
+        type: "panel",
+      },
+      {
+        id: "P21",
+        year: 2016,
+        title: "Penetran göz yaralanmasında primer yaklaşım",
+        event:
+          "Türk Oftalmoloji Derneği, 50. Ulusal kongre - Oküler travmatoloji birimi paneli",
+        location: "Antalya",
+        type: "panel",
+      },
+      {
+        id: "P22",
+        year: 2017,
+        title: "Oküler Travmalar: Terminoloji ve Sınıflama",
+        event:
+          "Türk Oftalmoloji Derneği, Kış sempozyumu - Panel: Oküler Travmalara Yaklaşım: Akılcı İlaç Kullanımı",
+        location: "Bursa",
+        type: "panel",
+      },
+      {
+        id: "P23",
+        year: 2017,
+        title: "Olgularla görme alanı analizleri",
+        event:
+          "Türk Oftalmoloji Derneği, Glokom birimi Beceri aktarım kursu - Glokom tanısında ve tedavinin yönlendirilmesinde görme alanından nasıl faydalanacağız?",
+        location: "Bursa",
+        type: "course",
+      },
+      {
+        id: "P24",
+        year: 2017,
+        title: "Ön segment travmaları",
+        event:
+          "Türk Oftalmoloji Derneği, Bahar sempozyumu - Panel: Çocuklarda göz yaralanmaları",
+        location: "Antalya",
+        type: "panel",
+      },
+      {
+        id: "P25",
+        year: 2017,
+        title: "Seton implant, kime, nasıl yapayım?",
+        event:
+          "51. Türk Oftalmoloji Derneği, 51. Ulusal kongre - Glokom birimi paneli",
+        location: "Antalya",
+        type: "panel",
+      },
+      {
+        id: "P26",
+        year: 2017,
+        title: "Üveitik glokomda yaklaşımımız",
+        event:
+          "Türk Oftalmoloji Derneği, 51. Ulusal kongre - Glokom birimi beceri aktarım kursu",
+        location: "Antalya",
+        type: "course",
+      },
+      {
+        id: "P27",
+        year: 2018,
+        title: "OCT ile progresyon analizleri",
+        event:
+          "Türk Oftalmoloji Derneği, Mart sempozyumu - Panel: Glokomda görüntüleme teknikleri",
+        location: "Adana",
+        type: "panel",
+      },
+      {
+        id: "P28",
+        year: 2018,
+        title:
+          "Cerrahi sahanın uygun temizliği Ameliyathane personelinin hijyeni",
+        event:
+          "Türk Oftalmoloji Derneği, Oküler enfeksiyonlar beceri aktarım kursu - Göz cerrahisinde enfeksiyon kaynakları ve önlemleri",
+        location: "Ankara",
+        type: "course",
+      },
+      {
+        id: "P29",
+        year: 2018,
+        title: "Glokomatöz görme alanı tanısı ve evreleme",
+        event:
+          "Türk Oftalmoloji Derneği, birimi beceri aktarım kursu - Glokom tanısında ve tedavinin yönlendirilmesinde tanısal testlerden nasıl faydalanacağız?",
+        location: "Ankara",
+        type: "course",
+      },
+      {
+        id: "P30",
+        year: 2018,
+        title: "Kime hangi cerrahi",
+        event:
+          "Türk Oftalmoloji Derneği, Yaz sempozyumu - Panel: Glokom cerrahisi kabusunuz olmasın",
+        location: "Van",
+        type: "panel",
+      },
+      {
+        id: "P31",
+        year: 2018,
+        title: "Hasta uyumu",
+        event:
+          "Türk Oftalmoloji Derneği, Yaz sempozyumu - Panel: Glokomun Medikal tedavisinde Güç, Konfor ve Hasta Uyumu",
+        location: "Van",
+        type: "panel",
+      },
+      {
+        id: "P32",
+        year: 2018,
+        title: "Örneklerle olgu değerlendirmeleri",
+        event:
+          "Türk Oftalmoloji Derneği, 52. Ulusal kongre - Glokomun görme alanı değerlendirmesi",
+        location: "Antalya",
+        type: "course",
+      },
+      {
+        id: "P33",
+        year: 2018,
+        title: "Adenovirus mikrobiyolojisi",
+        event:
+          "Türk Oftalmoloji Derneği, 52. Ulusal kongre - Adenoviral Enfeksiyonlara Oftalmolojik Yaklaşım",
+        location: "Antalya",
+        type: "panel",
+      },
+      {
+        id: "P34",
+        year: 2019,
+        title: "Özellikli hastalarda tıbbi tedavide nelere dikkat edilmeli?",
+        event:
+          "Türk Oftalmoloji Derneği, birimi beceri aktarım kursu - Glokom tedavisi",
+        location: "Ankara",
+        type: "course",
+      },
+      {
+        id: "P35",
+        year: 2019,
+        title: "İlaç raporları",
+        event:
+          "Türk Oftalmoloji Derneği, birimi beceri aktarım kursu - Güncel sağlık kurulu raporları",
+        location: "Ankara",
+        type: "course",
+      },
+      {
+        id: "P36",
+        year: 2019,
+        title: "İlk yöntem hangisi olmalı? Görme alanı mı? OCT mi?",
+        event:
+          "Türk Oftalmoloji Derneği, gözde gündem toplantısı - Glokom şüphesinde nasıl davranalım?",
+        location: "Girne",
+        type: "panel",
+      },
+      {
+        id: "P37",
+        year: 2019,
+        title: "İris lens yaralanmaları",
+        event:
+          "Türk Oftalmoloji Derneği, Bahar Sempozyumu - Ön segment yaralanmaları",
+        location: "İstanbul",
+        type: "panel",
+      },
+      {
+        id: "P38",
+        year: 2019,
+        title: "Glokom demiştim ama değil galiba",
+        event:
+          "Türk Oftalmoloji Derneği, birimi beceri aktarım kursu - Glokom Tanı ve Tedavisinde Yol Haritamız",
+        location: "Gaziantep",
+        type: "course",
+      },
+      {
+        id: "P39",
+        year: 2019,
+        title: "Ganglion hücreleri yenilenebilir mi?",
+        event:
+          "53. TOD Ulusal kongre - Glokomun geleceği-inovasyondan klinik pratiğe geçiş",
+        location: "Antalya",
+        type: "panel",
+      },
+      {
+        id: "P40",
+        year: 2019,
+        title: "Zon 1 yaralanmaları",
+        event:
+          "53. TOD Ulusal kongre - Penetran glob yaralanmaları ve kapak yaralanmalarında yaklaşım aşamaları",
+        location: "Antalya",
+        type: "course",
+      },
+      {
+        id: "P41",
+        year: 2019,
+        title: "Simbrinza: Gloom pratiğimdeki yeri",
+        event: "53. TOD Ulusal kongre - Glokom tedavisinde gözde çözüm",
+        location: "Antalya",
+        type: "panel",
+      },
+      {
+        id: "P42",
+        year: 2019,
+        title: "Orbitanın parazitik enfeksiyonları",
+        event: "53. TOD Ulusal kongre - Orbita enfeksiyonları",
+        location: "Antalya",
+        type: "panel",
+      },
+      {
+        id: "P43",
+        year: 2021,
+        title: "Travmatik katarakt cerrahisi",
+        event:
+          "Türk Oftalmoloji Derneği, Sanal Nisan kursu - Özellikli olgularda katarakt cerrahisi",
+        location: "Online",
+        type: "panel",
+      },
+      {
+        id: "P44",
+        year: 2021,
+        title: "Glokomda OKT Anjiyo",
+        event:
+          "Türk Oftalmoloji Derneği, Sanal Bahar Sempozyumu - Glokomda görüntüleme yöntemleri",
+        location: "Online",
+        type: "panel",
+      },
+      {
+        id: "P45",
+        year: 2021,
+        title:
+          "Glokomlu hastanın reçetesinde nöroprotektif ilaçlar yer almalıdır",
+        event: "55. TOD Ulusal kongre - Glokomda doğru bilinen yanlışlar",
+        location: "Antalya",
+        type: "panel",
+      },
+      {
+        id: "P46",
+        year: 2022,
+        title: "Glokomda yapay zeka",
+        event: "TOD Bahar sempozyumu - Oftalmolojide yapay zeka",
+        location: "İstanbul",
+        type: "panel",
+      },
+      {
+        id: "P47",
+        year: 2022,
+        title: "Glokomda progresyon takibini OCT ile yaparım",
+        event: "TOD 56. Ulusal kongre",
+        location: "Antalya",
+        type: "panel",
+      },
+      {
+        id: "P48",
+        year: 2023,
+        title: "Siz olsaydınız ne yapardınız",
+        event: "57: TOD Ulusal Kongre - Glokom Etkileşimli Toplantı",
+        location: "Antalya",
+        type: "panel",
+      },
+      {
+        id: "P49",
+        year: 2024,
+        title: "Travmatik glokom",
+        event: "58: TOD Ulusal Kongre - OTM etkileşimli toplantı",
+        location: "Antalya",
+        type: "panel",
+      },
+      {
+        id: "P50",
+        year: 2024,
+        title: "Glokom ile Nörooftalmolojik patoloji ayırımında OKT'ye güvenirim",
+        event: "58: TOD Ulusal Kongre - Glokom etkileşimli toplantı",
+        location: "Antalya",
+        type: "panel",
+      },
+      {
+        id: "P51",
+        year: 2024,
+        title: "OCTA in glaucoma",
+        event: "European Glaucoma Society congress",
+        location: "Dublin, Ireland",
+        type: "panel",
+      },
+      {
+        id: "P52",
+        year: 2025,
+        title: "OKTA pratik olarak kullanışlı mı",
+        event: "58: TOD Ulusal Kongre - Glokom BİLEP toplantı",
+        location: "Antalya",
+        type: "panel",
+      },
+      {
+        id: "P53",
+        year: 2025,
+        title: "Glokomda destekleyici ve alternatif tedaviler",
+        event: "Türk Oftalmoloji Derneği, birimi beceri aktarım kursu",
+        location: "Diyarbakır",
+        type: "course",
+      },
+    ];
 
   // Kitap bölümleri (C1-C11)
   const bookChapters: Array<{
@@ -1550,18 +1550,18 @@ export default function MakalelerPage() {
     pages?: string;
     editors?: string;
   }> = [
-    { id: 'C1', year: 2013, title: 'Oküler enfeksiyonlarda örnek alınması', book: '33. TOD Oftalmoloji kursu kitabı', pages: '32-27' },
-    { id: 'C2', year: 2013, title: 'Görme alanına genel bakış', book: 'Görme alanları: Muayene ve yorumlama', pages: '3-40', editors: 'Prof.Dr Oya Tekeli' },
-    { id: 'C3', year: 2014, title: 'Görme alanının önemi', book: 'Shields textbook of glaucoma Türkçe', pages: '92-120', editors: 'Prof.Dr Oya Tekeli' },
-    { id: 'C4', year: 2016, title: 'Tarayıcı lazer polarimetre', book: '36. TOD Oftalmoloji kursu kitabı', pages: '59-64' },
-    { id: 'C5', year: 2017, title: 'Minimal invazif glokom cerrahisi: Ab interno trabekülektomi', book: 'Glokomda cerrahi yenilikler', pages: '175-186', editors: 'Doç.Dr. Zeynep Aktaş, Doç. Dr. Sinan Sarıcaoğlu' },
-    { id: 'C6', year: 2021, title: 'Steroid glokomu', book: 'Glokom temel kavramlar ve yenilikler (ISBN: 978-605-80205-3-5)', pages: '195-200', editors: 'Özcan Ocakoğlu, Atilla Bayer, Ufuk Elgin' },
-    { id: 'C7', year: 2021, title: 'Editörlük', book: 'Glokom temel kavramlar ve yenilikler (ISBN: 978-605-80205-3-5)', editors: 'Özcan Ocakoğlu, Atilla Bayer, Ufuk Elgin' },
-    { id: 'C8', year: 2020, title: 'Travmatik glokom ve oküler hipotoni', book: 'Oküler Travmatoloji ve Medikolegal Oftalmoloji: Güncel Tanı ve Tedavi Yaklaşımları (ISBN: 978-605-61013-5-9)', pages: '295-305', editors: 'Dr. Mehmet Çıtırık' },
-    { id: 'C9', year: 2021, title: 'Mantar enfeksiyonlarında mikrobiyolojik inceleme', book: 'Oküler Enfeksiyonlar Güncel Tanı ve Tedavi (ISBN: 978-605-61013-7-3)', pages: '49-53', editors: 'Ulviye Yiğit, Erdal Yüzbaşıoğlu' },
-    { id: 'C10', year: 2021, title: 'Travmatik olgularda katarakt cerrahisi', book: '40. TOD Oftalmoloji kursu kitabı', pages: '140-144' },
-    { id: 'C11', year: 2021, title: 'Blebitis ve bleb ile bağlantılı endoftalmi', book: 'TOD Eğitim Yayınları' },
-  ];
+      { id: 'C1', year: 2013, title: 'Oküler enfeksiyonlarda örnek alınması', book: '33. TOD Oftalmoloji kursu kitabı', pages: '32-27' },
+      { id: 'C2', year: 2013, title: 'Görme alanına genel bakış', book: 'Görme alanları: Muayene ve yorumlama', pages: '3-40', editors: 'Prof.Dr Oya Tekeli' },
+      { id: 'C3', year: 2014, title: 'Görme alanının önemi', book: 'Shields textbook of glaucoma Türkçe', pages: '92-120', editors: 'Prof.Dr Oya Tekeli' },
+      { id: 'C4', year: 2016, title: 'Tarayıcı lazer polarimetre', book: '36. TOD Oftalmoloji kursu kitabı', pages: '59-64' },
+      { id: 'C5', year: 2017, title: 'Minimal invazif glokom cerrahisi: Ab interno trabekülektomi', book: 'Glokomda cerrahi yenilikler', pages: '175-186', editors: 'Doç.Dr. Zeynep Aktaş, Doç. Dr. Sinan Sarıcaoğlu' },
+      { id: 'C6', year: 2021, title: 'Steroid glokomu', book: 'Glokom temel kavramlar ve yenilikler (ISBN: 978-605-80205-3-5)', pages: '195-200', editors: 'Özcan Ocakoğlu, Atilla Bayer, Ufuk Elgin' },
+      { id: 'C7', year: 2021, title: 'Editörlük', book: 'Glokom temel kavramlar ve yenilikler (ISBN: 978-605-80205-3-5)', editors: 'Özcan Ocakoğlu, Atilla Bayer, Ufuk Elgin' },
+      { id: 'C8', year: 2020, title: 'Travmatik glokom ve oküler hipotoni', book: 'Oküler Travmatoloji ve Medikolegal Oftalmoloji: Güncel Tanı ve Tedavi Yaklaşımları (ISBN: 978-605-61013-5-9)', pages: '295-305', editors: 'Dr. Mehmet Çıtırık' },
+      { id: 'C9', year: 2021, title: 'Mantar enfeksiyonlarında mikrobiyolojik inceleme', book: 'Oküler Enfeksiyonlar Güncel Tanı ve Tedavi (ISBN: 978-605-61013-7-3)', pages: '49-53', editors: 'Ulviye Yiğit, Erdal Yüzbaşıoğlu' },
+      { id: 'C10', year: 2021, title: 'Travmatik olgularda katarakt cerrahisi', book: '40. TOD Oftalmoloji kursu kitabı', pages: '140-144' },
+      { id: 'C11', year: 2021, title: 'Blebitis ve bleb ile bağlantılı endoftalmi', book: 'TOD Eğitim Yayınları' },
+    ];
 
   // Seçili kategoriye göre filtreleme
   const filteredPublications = useMemo(() => {
@@ -1669,11 +1669,10 @@ export default function MakalelerPage() {
                           setSelectedCategory(category.id);
                           setSelectedYear(null);
                         }}
-                        className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${
-                          selectedCategory === category.id
+                        className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${selectedCategory === category.id
                             ? "bg-primary text-white shadow-md"
                             : "bg-white border border-gray-200 text-gray-700 hover:border-primary/50 hover:bg-gray-50"
-                        }`}
+                          }`}
                       >
                         <div className="flex items-start justify-between gap-2">
                           <div className="flex items-start gap-2 flex-1 min-w-0">
@@ -1681,7 +1680,7 @@ export default function MakalelerPage() {
                               className={`w-4 h-4 shrink-0 mt-0.5 ${selectedCategory === category.id ? "text-white" : "text-primary"}`}
                             />
                             <span className="text-sm font-medium line-clamp-2 leading-snug">
-                              {category.title.split(". ")[1] || category.title}
+                              {category.title}
                             </span>
                           </div>
                           <span
@@ -1710,11 +1709,10 @@ export default function MakalelerPage() {
                           setSelectedCategory(category.id);
                           setSelectedYear(null);
                         }}
-                        className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${
-                          selectedCategory === category.id
+                        className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${selectedCategory === category.id
                             ? "bg-primary text-white shadow-md"
                             : "bg-white border border-gray-200 text-gray-700 hover:border-primary/50 hover:bg-gray-50"
-                        }`}
+                          }`}
                       >
                         <div className="flex items-start justify-between gap-2">
                           <div className="flex items-start gap-2 flex-1 min-w-0">
@@ -1751,11 +1749,10 @@ export default function MakalelerPage() {
                           setSelectedCategory(category.id);
                           setSelectedYear(null);
                         }}
-                        className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${
-                          selectedCategory === category.id
+                        className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${selectedCategory === category.id
                             ? "bg-primary text-white shadow-md"
                             : "bg-white border border-gray-200 text-gray-700 hover:border-primary/50 hover:bg-gray-50"
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2 flex-1 min-w-0">
@@ -1781,18 +1778,18 @@ export default function MakalelerPage() {
               {/* Google Scholar Link */}
               {(selectedCategory === "international-articles" ||
                 selectedCategory === "national-articles") && (
-                <div className="mt-6 pt-6 border-t border-gray-200">
-                  <a
-                    href="https://scholar.google.com/citations?hl=tr&user=rXphPsUAAAAJ"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-primary hover:text-primary/80 font-semibold text-sm transition-colors group"
-                  >
-                    <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                    GOOGLE AKADEMİK PROFİLİ
-                  </a>
-                </div>
-              )}
+                  <div className="mt-6 pt-6 border-t border-gray-200">
+                    <a
+                      href="https://scholar.google.com/citations?hl=tr&user=rXphPsUAAAAJ"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-primary hover:text-primary/80 font-semibold text-sm transition-colors group"
+                    >
+                      <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                      GOOGLE AKADEMİK PROFİLİ
+                    </a>
+                  </div>
+                )}
             </div>
           </aside>
 
@@ -1818,16 +1815,16 @@ export default function MakalelerPage() {
                         {currentCategory.title.toLowerCase().includes("makale")
                           ? "makale"
                           : currentCategory.title
-                                .toLowerCase()
-                                .includes("bildiri")
+                            .toLowerCase()
+                            .includes("bildiri")
                             ? "bildiri"
                             : currentCategory.title
-                                  .toLowerCase()
-                                  .includes("üyelik")
+                              .toLowerCase()
+                              .includes("üyelik")
                               ? "kuruluş"
                               : currentCategory.title
-                                    .toLowerCase()
-                                    .includes("editör")
+                                .toLowerCase()
+                                .includes("editör")
                                 ? "dergi"
                                 : "kayıt"}
                       </p>
@@ -1840,38 +1837,36 @@ export default function MakalelerPage() {
             {/* Year Filter (sadece makaleler için) */}
             {(selectedCategory === "international-articles" ||
               selectedCategory === "national-articles") && (
-              <div className="mb-6 bg-white border border-gray-200 rounded-lg p-4">
-                <p className="text-sm font-medium text-gray-700 mb-3">
-                  Yıla Göre Filtrele:
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <button
-                    onClick={() => setSelectedYear(null)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                      selectedYear === null
-                        ? "bg-primary text-white shadow-md"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    Tüm Yıllar
-                  </button>
-                  {years.map((year) => (
+                <div className="mb-6 bg-white border border-gray-200 rounded-lg p-4">
+                  <p className="text-sm font-medium text-gray-700 mb-3">
+                    Yıla Göre Filtrele:
+                  </p>
+                  <div className="flex flex-wrap gap-2">
                     <button
-                      key={year}
-                      onClick={() => setSelectedYear(year)}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                        selectedYear === year
+                      onClick={() => setSelectedYear(null)}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedYear === null
                           ? "bg-primary text-white shadow-md"
                           : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
+                        }`}
                     >
-                      {year}{" "}
-                      <span className="opacity-75">({statsByYear[year]})</span>
+                      Tüm Yıllar
                     </button>
-                  ))}
+                    {years.map((year) => (
+                      <button
+                        key={year}
+                        onClick={() => setSelectedYear(year)}
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedYear === year
+                            ? "bg-primary text-white shadow-md"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                          }`}
+                      >
+                        {year}{" "}
+                        <span className="opacity-75">({statsByYear[year]})</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
             {/* Content based on category */}
             {selectedCategory === "international-articles" && (
