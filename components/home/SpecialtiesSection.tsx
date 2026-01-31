@@ -66,7 +66,7 @@ export function SpecialtiesSection({
   }
 
   return (
-    <section className="py-8 md:py-16 bg-[#f8f9fa] relative">
+    <section className="pt-0 pb-0 bg-white relative">
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
         <div className="mb-12">
@@ -90,7 +90,7 @@ export function SpecialtiesSection({
               <Link
                 key={category._id}
                 href={`/${currentLocale}/uzmanlik/${category.slug}`}
-                className="flex flex-col group border border-gray-100 rounded-2xl px-6 py-6 bg-white hover:shadow-lg transition-all duration-300 cursor-pointer"
+                className="flex flex-col group border border-gray-200 rounded-2xl px-6 py-6 bg-gray-50 hover:shadow-lg transition-all duration-300 cursor-pointer"
                 title={categoryTitle}
               >
                 <div className="flex items-center gap-4 mb-4">

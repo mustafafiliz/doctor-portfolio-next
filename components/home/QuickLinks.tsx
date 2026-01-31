@@ -15,9 +15,18 @@ export function QuickLinks({ currentLocale: propLocale }: QuickLinksProps) {
   const currentLocale =
     propLocale || ((pathname?.split("/")[1] || "tr") as Locale);
   const { config } = useConfig();
-  const whatsappUrl = config?.contact?.whatsapp
-    ? `https://wa.me/${config.contact.whatsapp.replace(/[^0-9]/g, "")}`
-    : "#";
+
+  const getWhatsappUrl = (phone?: string) => {
+    if (!phone) return "#";
+    let cleaned = phone.replace(/[^0-9]/g, "");
+    // Fix: Remove extra 90 if present (e.g. 9090532... -> 90532...)
+    if (cleaned.startsWith("9090")) {
+      cleaned = cleaned.substring(2);
+    }
+    return `https://wa.me/${cleaned}`;
+  };
+
+  const whatsappUrl = getWhatsappUrl(config?.contact?.whatsapp);
 
   const links = [
     {
@@ -48,7 +57,7 @@ export function QuickLinks({ currentLocale: propLocale }: QuickLinksProps) {
   ];
 
   return (
-    <section className="py-12 md:py-16">
+    <section className="py-8 md:py-12">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
           {links.map((link, index) => (

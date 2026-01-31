@@ -51,7 +51,7 @@ export function PopularContents({
   }
 
   return (
-    <section className="py-16 md:py-24 bg-[#f8f9fa]">
+    <section className="pt-8 md:pt-12">
       <div className="container mx-auto px-4 sm:px-6">
         {/* Section Header - Top Right */}
         <div className="flex flex-col items-start text-left mb-12">

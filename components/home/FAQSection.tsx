@@ -29,7 +29,7 @@ export function HomeFAQSection({ faqs }: HomeFAQSectionProps) {
   }
 
   return (
-    <section className="py-8 md:py-24 bg-white">
+    <section className="pt-0 pb-8 md:pb-12 bg-white">
       <Container>
         <div className="text-left mb-8 md:mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">

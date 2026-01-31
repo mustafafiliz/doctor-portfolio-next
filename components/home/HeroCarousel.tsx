@@ -29,7 +29,7 @@ export function HeroCarousel({ aboutBio, aboutImage }: HeroCarouselProps) {
         <div className="flex flex-col lg:flex-row-reverse justify-between h-full pt-12 lg:pt-0">
 
           {/* Left: Title & Subtitle */}
-          <div className="w-full lg:w-[50%] lg:pb-20 text-center lg:text-left z-10 mb-8 lg:mb-0 order-1 flex flex-col justify-center lg:pt-0">
+          <div className="w-full lg:w-[50%] lg:pb-12 text-center lg:text-left z-10 mb-8 lg:mb-0 order-1 flex flex-col justify-center lg:pt-0">
             {heroTitle && (
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black leading-tight mb-6">
                 Prof. Dr. <br />
