@@ -81,11 +81,13 @@
   "contact": {
     "title": "İletişim",
     "subtitle": "Bize Ulaşın",
+    "description": "İletişim için aşağıdaki bilgileri kullanabilirsiniz.",
+    "mapTitle": "Konumumuz",
     "form": {
       "name": "Ad Soyad",
       "email": "E-posta",
       "phone": "Telefon",
-      "subject": "Konu",
+      "subject": "Konu Başlığı",
       "message": "Mesajınız",
       "send": "Gönder",
       "sending": "Gönderiliyor...",

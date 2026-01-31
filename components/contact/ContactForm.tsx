@@ -27,7 +27,7 @@ export function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Mesaj validasyonu
     if (formData.message.trim().length < 10) {
       setMessageError('Mesajınız en az 10 karakter olmalıdır.');
@@ -38,13 +38,13 @@ export function ContactForm() {
       });
       return;
     }
-    
+
     setMessageError(null);
     setLoading(true);
 
     try {
       const websiteId = getWebsiteId();
-      
+
       if (websiteId) {
         const cleanPhone = getCleanPhoneNumber(formData.phone);
         await contactApi.submit(websiteId, {
@@ -58,7 +58,7 @@ export function ContactForm() {
         // Fallback for demo mode
         await new Promise((resolve) => setTimeout(resolve, 1000));
       }
-      
+
       toast({
         title: t('success'),
         description: 'Mesajınız başarıyla gönderildi.',
@@ -86,7 +86,7 @@ export function ContactForm() {
   const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     setFormData({ ...formData, message: value });
-    
+
     // Real-time validation
     if (value.trim().length > 0 && value.trim().length < 10) {
       setMessageError('Mesajınız en az 10 karakter olmalıdır.');
@@ -106,9 +106,9 @@ export function ContactForm() {
         <h2 className="text-2xl sm:text-3xl font-bold mb-2 text-gray-900">
           İletişim Formu
         </h2>
-        <p className="text-sm sm:text-base text-muted-foreground">Bize ulaşmak için formu doldurun</p>
+        <p className="text-sm sm:text-base text-muted-foreground">İletişim için aşağıdaki bilgileri kullanabilirsiniz.</p>
       </div>
-      
+
       <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
           <div className="space-y-2">
@@ -170,7 +170,7 @@ export function ContactForm() {
               value={formData.subject}
               onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
               className="h-11 sm:h-12 bg-background/50 border-border/50 focus:border-primary transition-all text-sm sm:text-base"
-              placeholder="Konu"
+              placeholder="Konu Başlığı"
             />
           </div>
         </div>
@@ -193,9 +193,8 @@ export function ContactForm() {
                 setMessageError(null);
               }
             }}
-            className={`bg-background/50 border-border/50 focus:border-primary transition-all resize-none text-sm sm:text-base ${
-              messageError ? 'border-red-500 focus:border-red-500' : ''
-            }`}
+            className={`bg-background/50 border-border/50 focus:border-primary transition-all resize-none text-sm sm:text-base ${messageError ? 'border-red-500 focus:border-red-500' : ''
+              }`}
             placeholder="Mesajınızı buraya yazın... (En az 10 karakter)"
           />
           {messageError && (
@@ -208,9 +207,9 @@ export function ContactForm() {
           )}
         </div>
 
-        <Button 
-          type="submit" 
-          disabled={loading} 
+        <Button
+          type="submit"
+          disabled={loading}
           className="w-full h-11 sm:h-12 bg-gradient-to-r from-primary via-primary/90 to-accent hover:from-primary/90 hover:via-primary hover:to-accent/90 text-primary-foreground text-sm sm:text-base font-semibold shadow-lg shadow-primary/30 transition-all duration-300 hover:shadow-xl hover:shadow-primary/40"
         >
           {loading ? (

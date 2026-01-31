@@ -15,7 +15,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const validLocale = locale as Locale;
-  
+
   if (!locales.includes(validLocale)) {
     notFound();
   }
@@ -29,14 +29,27 @@ export async function generateMetadata({
   };
 }
 
-export default async function ContactPage() {
+export default async function ContactPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const validLocale = locale as Locale;
+
+  if (!locales.includes(validLocale)) {
+    notFound();
+  }
+
+  const dict = await getDictionary(validLocale);
+
   return (
     <Container className="py-12 sm:py-16 md:py-20 lg:py-24">
       <div className="text-center mb-8 sm:mb-12">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 text-gray-900">
-          İletişim
+          {dict.contact.title}
         </h1>
-        <p className="text-base sm:text-lg text-muted-foreground px-4">Bize ulaşmak için aşağıdaki bilgileri kullanabilirsiniz</p>
+        <p className="text-base sm:text-lg text-muted-foreground px-4">{dict.contact.description}</p>
       </div>
 
       {/* İletişim Bilgileri ve Form */}
@@ -47,7 +60,7 @@ export default async function ContactPage() {
 
       {/* Harita */}
       <div className="mt-8 sm:mt-12">
-        <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">Konumumuz</h2>
+        <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">{dict.contact.mapTitle}</h2>
         <ContactMap />
       </div>
     </Container>

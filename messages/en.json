@@ -81,6 +81,8 @@
   "contact": {
     "title": "Contact",
     "subtitle": "Get in Touch",
+    "description": "You can use the information below to contact us.",
+    "mapTitle": "Our Location",
     "form": {
       "name": "Full Name",
       "email": "Email",
