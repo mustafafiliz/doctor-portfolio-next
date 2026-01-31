@@ -106,7 +106,7 @@ export function Footer() {
   // Sabit linkler (config'den bağımsız)
   const fixedLinks = [
     { icon: Linkedin, url: 'https://www.linkedin.com/in/ufuk-elgin-96380b3a6/', label: 'LinkedIn', isExternal: true },
-    { icon: GraduationCap, url: `/${currentLocale}/makaleler`, label: 'Makaleler', isExternal: false },
+    { icon: GraduationCap, url: 'https://scholar.google.com/citations?hl=tr&user=rXphPsUAAAAJ', label: 'Google Scholar', isExternal: true },
   ];
 
   // Config'den gelen sosyal medya linkleri (LinkedIn hariç - sabit link kullanacağız)
