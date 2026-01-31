@@ -1670,8 +1670,8 @@ export default function MakalelerPage() {
                           setSelectedYear(null);
                         }}
                         className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${selectedCategory === category.id
-                            ? "bg-primary text-white shadow-md"
-                            : "bg-white border border-gray-200 text-gray-700 hover:border-primary/50 hover:bg-gray-50"
+                          ? "bg-primary text-white shadow-md"
+                          : "bg-white border border-gray-200 text-gray-700 hover:border-primary/50 hover:bg-gray-50"
                           }`}
                       >
                         <div className="flex items-start justify-between gap-2">
@@ -1680,7 +1680,7 @@ export default function MakalelerPage() {
                               className={`w-4 h-4 shrink-0 mt-0.5 ${selectedCategory === category.id ? "text-white" : "text-primary"}`}
                             />
                             <span className="text-sm font-medium line-clamp-2 leading-snug">
-                              {category.title}
+                              {category.title.split(". ")[1] || category.title}
                             </span>
                           </div>
                           <span
@@ -1710,8 +1710,8 @@ export default function MakalelerPage() {
                           setSelectedYear(null);
                         }}
                         className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${selectedCategory === category.id
-                            ? "bg-primary text-white shadow-md"
-                            : "bg-white border border-gray-200 text-gray-700 hover:border-primary/50 hover:bg-gray-50"
+                          ? "bg-primary text-white shadow-md"
+                          : "bg-white border border-gray-200 text-gray-700 hover:border-primary/50 hover:bg-gray-50"
                           }`}
                       >
                         <div className="flex items-start justify-between gap-2">
@@ -1750,8 +1750,8 @@ export default function MakalelerPage() {
                           setSelectedYear(null);
                         }}
                         className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${selectedCategory === category.id
-                            ? "bg-primary text-white shadow-md"
-                            : "bg-white border border-gray-200 text-gray-700 hover:border-primary/50 hover:bg-gray-50"
+                          ? "bg-primary text-white shadow-md"
+                          : "bg-white border border-gray-200 text-gray-700 hover:border-primary/50 hover:bg-gray-50"
                           }`}
                       >
                         <div className="flex items-center justify-between">
@@ -1760,7 +1760,7 @@ export default function MakalelerPage() {
                               className={`w-4 h-4 shrink-0 ${selectedCategory === category.id ? "text-white" : "text-primary"}`}
                             />
                             <span className="text-sm font-medium truncate">
-                              {category.title}
+                              {category.title.split(". ")[1] || category.title}
                             </span>
                           </div>
                           <span
@@ -1845,8 +1845,8 @@ export default function MakalelerPage() {
                     <button
                       onClick={() => setSelectedYear(null)}
                       className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedYear === null
-                          ? "bg-primary text-white shadow-md"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        ? "bg-primary text-white shadow-md"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                         }`}
                     >
                       Tüm Yıllar
@@ -1856,8 +1856,8 @@ export default function MakalelerPage() {
                         key={year}
                         onClick={() => setSelectedYear(year)}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${selectedYear === year
-                            ? "bg-primary text-white shadow-md"
-                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                          ? "bg-primary text-white shadow-md"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                           }`}
                       >
                         {year}{" "}

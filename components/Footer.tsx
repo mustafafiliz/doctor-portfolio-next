@@ -239,6 +239,26 @@ export function Footer() {
                   </a>
                 </div>
               )}
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-3 text-gray-900">
+                  <span className="font-bold text-black min-w-[80px] text-lg whitespace-nowrap">Telefon :</span>
+                  <a href="tel:03124167000" className="hover:text-primary transition-colors font-medium">
+                    0312 416 70 00
+                  </a>
+                </div>
+                <div className="flex items-center gap-3 text-gray-900">
+                  <span className="font-bold text-black min-w-[80px] text-lg whitespace-nowrap">Telefon :</span>
+                  <a href="tel:4444469" className="hover:text-primary transition-colors font-medium">
+                    444 4 469
+                  </a>
+                </div>
+                <div className="flex items-center gap-3 text-gray-900">
+                  <span className="font-bold text-black min-w-[80px] text-lg whitespace-nowrap">Gsm:</span>
+                  <a href="tel:05441565755" className="hover:text-primary transition-colors font-medium">
+                    0544 156 57 55
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -288,14 +308,7 @@ export function Footer() {
                       {config.site?.name || 'Hakkımda'}
                     </Link>
                   </li>
-                  <li>
-                    <Link
-                      href={`/${currentLocale}/galeri`}
-                      className="text-sm md:text-base text-gray-800 hover:text-primary transition-colors block leading-relaxed font-semibold"
-                    >
-                      Galeri
-                    </Link>
-                  </li>
+
                   <li>
                     <Link
                       href={`/${currentLocale}/sik-sorulan-sorular`}
