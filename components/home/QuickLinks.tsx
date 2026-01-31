@@ -66,7 +66,7 @@ export function QuickLinks({ currentLocale: propLocale }: QuickLinksProps) {
               href={link.href}
               target={link.isExternal ? "_blank" : undefined}
               rel={link.isExternal ? "noopener noreferrer" : undefined}
-              className="group flex flex-row items-center text-left gap-3 lg:gap-4 hover:-translate-y-1 transition-transform duration-300"
+              className="group flex flex-row items-center justify-center text-left gap-3 lg:gap-4 hover:-translate-y-1 transition-transform duration-300"
             >
               <div className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-full bg-primary/5 flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-300">
                 <Image
