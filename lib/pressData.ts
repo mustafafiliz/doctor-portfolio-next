@@ -111,5 +111,16 @@ Prof. Dr. Elgin, düzenli egzersizin, genel vücut sağlığı için olduğu kad
     externalLink: '/files/gazete-kupuru-2026.pdf',
     description: 'Halk arasında "göze perde inmesi" olarak bilinen katarakt, yaşam konforunu ve göz sağlığını ciddi şekilde etkiler. Prof. Dr. Kadriye Ufuk Elgin, sağlıklı gözlerin sırrını açıklıyor.',
     fullContent: 'Halk arasında "göze perde inmesi" olarak bilinen ve renkleri soldurarak görme kalitesini yavaşça düşüren katarakt, yaşam konforunu ve göz sağlığını ciddi şekilde etkiler. Kataraktın yaşlanmanın doğal bir sonucu olarak görülse de her yaşta ortaya çıkabilen bir hastalık olduğunu belirten Göz Hastalıkları Uzmanı Prof. Dr. Kadriye Ufuk Elgin, sağlıklı gözlerin sırrını açıklıyor.\n\nDetaylı bilgi için PDF dosyasını inceleyebilirsiniz.'
+  },
+  {
+    id: '6',
+    slug: 'haberturk-glokomun-sinsi-ilerleyisine-dikkat',
+    type: 'tv',
+    title: 'Glokomun Sinsi İlerleyişine Dikkat!',
+    source: 'Habertürk',
+    date: 'Ocak 2026',
+    image: '/images/haberturk-glokom.jpg',
+    externalLink: 'https://www.haberturk.com/video/saglik/izle/glokomun-sinsi-ilerleyisine-dikkat/744965',
+    description: 'Prof. Dr. Kadriye Ufuk Elgin, Habertürk ekranlarında glokomun sinsi ilerleyişi ve göz sağlığı üzerine önemli uyarılarda bulundu.'
   }
 ];
