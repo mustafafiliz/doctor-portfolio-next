@@ -1,7 +1,7 @@
 export interface PressItem {
   id: string;
   slug: string;
-  type: 'news' | 'interview' | 'tv';
+  type: "news" | "interview" | "tv";
   title: string;
   source: string;
   date: string;
@@ -14,26 +14,30 @@ export interface PressItem {
 // Basından haberler verileri
 export const pressData: PressItem[] = [
   {
-    id: '1',
-    slug: 'mag-dergisi-akilli-mercek-ameliyati',
-    type: 'interview',
-    title: 'Akıllı Mercek Ameliyatı',
-    source: 'MAG Sağlık ve Güzellik',
-    date: 'Nisan 2023',
-    image: '/images/news/1.png',
-    description: 'Prof. Dr. K. Ufuk Elgin, katarakt problemi ve akıllı mercek uygulamaları hakkında MAG Okurları için değerli bilgiler veriyor.',
-    fullContent: 'Küçük yaşlarında göz doktoru olmayı kendine hedef edinen Prof. Dr. K. Ufuk Elgin, katarakt problemi ve akıllı mercek uygulamaları hakkında MAG Okurları için oldukça değerli bilgiler veriyor.',
+    id: "1",
+    slug: "mag-dergisi-akilli-mercek-ameliyati",
+    type: "interview",
+    title: "Akıllı Mercek Ameliyatı",
+    source: "MAG Sağlık ve Güzellik",
+    date: "Nisan 2023",
+    image: "/images/news/1.png",
+    description:
+      "Prof. Dr. K. Ufuk Elgin, katarakt problemi ve akıllı mercek uygulamaları hakkında MAG Okurları için değerli bilgiler veriyor.",
+    fullContent:
+      "Küçük yaşlarında göz doktoru olmayı kendine hedef edinen Prof. Dr. K. Ufuk Elgin, katarakt problemi ve akıllı mercek uygulamaları hakkında MAG Okurları için oldukça değerli bilgiler veriyor."
   },
   {
-    id: '2',
-    slug: 'hurriyet-her-glokom-hastasi-potansiyel-gorme-engellidir',
-    type: 'news',
+    id: "2",
+    slug: "hurriyet-her-glokom-hastasi-potansiyel-gorme-engellidir",
+    type: "news",
     title: "'Her glokom hastası potansiyel görme engellidir'",
-    source: 'Hürriyet Gazetesi',
-    date: '11 Mart 2025',
-    image: '/images/news/2.webp',
-    externalLink: 'https://www.hurriyet.com.tr/yerel-haberler/ankara/her-glokom-hastasi-potansiyel-gorme-engellidir42724305',
-    description: 'Glokom hastalığının körlük nedenleri içerisinde ilk sıralarda yer aldığını belirten Prof. Dr. Kadriye Ufuk Elgin, bugün dünyada 80-90 milyon glokomlu olduğu bilinmektedir.',
+    source: "Hürriyet Gazetesi",
+    date: "11 Mart 2025",
+    image: "/images/news/2.webp",
+    externalLink:
+      "https://www.hurriyet.com.tr/yerel-haberler/ankara/her-glokom-hastasi-potansiyel-gorme-engellidir42724305",
+    description:
+      "Glokom hastalığının körlük nedenleri içerisinde ilk sıralarda yer aldığını belirten Prof. Dr. Kadriye Ufuk Elgin, bugün dünyada 80-90 milyon glokomlu olduğu bilinmektedir.",
     fullContent: `Glokom hastalığının körlük nedenleri içerisinde ilk sıralarda yer aldığını belirten Göz Hastalıkları Uzmanı Prof. Dr. Kadriye Ufuk Elgin, bugün dünyada 80-90 milyon glokomlu olduğu bilinmektedir. Her glokomlu 'potansiyel görme engellidir. Glokom hastalığını tamamen iyileştirmek mümkün değil ancak ilerlemesini durdurmak elimizde" dedi.
 
 Dünyagöz Ankara Hastanesi'nden Prof. Dr. Kadriye Ufuk Elgin, Glokom Haftası kapsamında açıklamalarda bulundu. Prof. Dr. Elgin, hastaların tedaviyi aksatmamaları gerektiğini belirterek "Tanı konulduktan sonra tedavisi mümkün olan glokom hastalarının ilaçlarla veya gerekli durumlarda ameliyatlarla körlüğe gidişi engellenebiliyor. Ancak görmesini yitirmiş bir gözün tekrar görmesi maalesef mümkün değil. Bu yüzden hastaların, önerilen tedaviyi uygulamaları ve özellikle Ramazan ayında oruç tutan glokom hastalarının göz damlasını damlatmayı ihmal etmemeleri gerekir. Göz damlası orucu bozmaz ama bu damlanın bir doz bile atlanması körlüğe sebep olabilir" ifadelerini kullandı.
@@ -48,18 +52,21 @@ Glokomlu hastanın yaşam tarzının, hastalığın gidişatı açısından son 
 
 'SİGARADAN UZAK BİR YAŞAM SON DERECE ÖNEMLİ'
 
-Prof. Dr. Elgin, "Sigaradan uzak bir yaşam, tüm vücut sağlığı için olduğu gibi glokomla mücadele için de son derece önemlidir. Alkol tüketimi ile glokom arasında bir ilişki ise net olarak bilinmemektedir. Ancak günde bir kadeh kırmızı şarap içilmesi, antioksidan özelliği nedeniyle glokom için faydalı olabilir. Günde 2-3 kupayı geçmeyen siyah ve yeşil çay tüketimi glokom için faydalı iken, aşırı kahve içimi hastalığı olumsuz yönde etkiliyor" dedi. Düzenli egzersizin genel vücut sağlığı için olduğu kadar glokoma karşı da büyük oranda önemli olduğunu dile getiren Prof. Dr. Elgin, "Düzenli olarak haftada 3-4 kez, 40-45 dakika dinamik aerobik egzersiz (yürüme, koşma, bisiklet vs) idealdir. Glokom hastaları için uygun olmayan sporlara gelince: Başın aşağıda kaldığı atipik pozisyonlara bağlı olarak yoga, benzer şekilde ağırlık çalışmaları, skuat gibi izometrik egzersizler ve bungee jumping gibi sporlar uygun değildir. Ayrıca sıkı yüzücü gözlükleri ve dalış sporu da glokomlu hastalar için uygun değildir" ifadelerini kullandı.`,
+Prof. Dr. Elgin, "Sigaradan uzak bir yaşam, tüm vücut sağlığı için olduğu gibi glokomla mücadele için de son derece önemlidir. Alkol tüketimi ile glokom arasında bir ilişki ise net olarak bilinmemektedir. Ancak günde bir kadeh kırmızı şarap içilmesi, antioksidan özelliği nedeniyle glokom için faydalı olabilir. Günde 2-3 kupayı geçmeyen siyah ve yeşil çay tüketimi glokom için faydalı iken, aşırı kahve içimi hastalığı olumsuz yönde etkiliyor" dedi. Düzenli egzersizin genel vücut sağlığı için olduğu kadar glokoma karşı da büyük oranda önemli olduğunu dile getiren Prof. Dr. Elgin, "Düzenli olarak haftada 3-4 kez, 40-45 dakika dinamik aerobik egzersiz (yürüme, koşma, bisiklet vs) idealdir. Glokom hastaları için uygun olmayan sporlara gelince: Başın aşağıda kaldığı atipik pozisyonlara bağlı olarak yoga, benzer şekilde ağırlık çalışmaları, skuat gibi izometrik egzersizler ve bungee jumping gibi sporlar uygun değildir. Ayrıca sıkı yüzücü gözlükleri ve dalış sporu da glokomlu hastalar için uygun değildir" ifadelerini kullandı.`
   },
   {
-    id: '3',
-    slug: 'medikal-akademi-40-yas-ustu-glokom-riski',
-    type: 'news',
-    title: 'Prof. Dr. Kadriye Ufuk Elgin: 40 yaşın üzerindeki kişilerde glokom riski artıyor',
-    source: 'Medikal Akademi',
-    date: '13 Mart 2023',
-    image: '/images/news/3.webp',
-    externalLink: 'https://www.medikalakademi.com.tr/prof-elgin-40-yas-ustu-glokom-riski-artiyor/',
-    description: 'Halk arasında göz tansiyonu olarak bilinen glokomun görme sinirine hasar vererek körlüğe neden olabileceğini belirten Prof. Dr. Kadriye Ufuk Elgin, hastalığın 40 yaş üstü kişilerde daha sık görülebildiğini vurguladı.',
+    id: "3",
+    slug: "medikal-akademi-40-yas-ustu-glokom-riski",
+    type: "news",
+    title:
+      "Prof. Dr. Kadriye Ufuk Elgin: 40 yaşın üzerindeki kişilerde glokom riski artıyor",
+    source: "Medikal Akademi",
+    date: "13 Mart 2023",
+    image: "/images/news/3.webp",
+    externalLink:
+      "https://www.medikalakademi.com.tr/prof-elgin-40-yas-ustu-glokom-riski-artiyor/",
+    description:
+      "Halk arasında göz tansiyonu olarak bilinen glokomun görme sinirine hasar vererek körlüğe neden olabileceğini belirten Prof. Dr. Kadriye Ufuk Elgin, hastalığın 40 yaş üstü kişilerde daha sık görülebildiğini vurguladı.",
     fullContent: `Halk arasında göz tansiyonu olarak bilinen glokomun görme sinirine hasar vererek körlüğe neden olabileceğini belirten Dünyagöz Hastanesi Göz Hastalıkları Uzmanı Prof. Dr. Kadriye Ufuk Elgin, hastalığın 40 yaş üstü kişilerde daha sık görülebildiğini vurguladı. 6-12 Mart Glokom Haftası nedeniyle Medikal Akademi Ankara Temsilcisi Hatice Pala Kaya'ya bilgi veren Dünyagöz Hastanesi'nden Göz Hastalıkları Uzmanı Prof. Dr. Kadriye Ufuk Elgin, glokomun sinsi bir hastalık olduğuna ve körlük nedenleri içerisinde ilk sıralarda yer aldığına işaret ederek, "Geç tanı konulduğunda görme sinirinde onarılması mümkün olmayan ciddi tahribatlar oluşturabilmektedir. Şikayetler ortaya çıkana kadar beklenmemelidir. 40 yaşına gelen her erişkinin detaylı göz muayenesi olması önerilmektedir" dedi.
 
 Ailenizde glokom varsa, risk daha fazla
@@ -88,39 +95,45 @@ Glokomla mücadelede sigaradan uzak bir yaşamın son derece önemli olduğunu h
 
 Uygun sporları yapın
 
-Prof. Dr. Elgin, düzenli egzersizin, genel vücut sağlığı için olduğu kadar glokom için de büyük oranda önemli olduğunu, düzenli olarak haftada 3-4 kez, 40-45 dakika dinamik aerobik egzersizin (yürüme, koşma, bisiklet vs) ideal olduğunu aktardı. Glokom hastaları için uygun olmayan sporlar hakkında da uyarılarda bulunan Prof. Dr. Elgin, "Başın aşağıda kaldığı atipik pozisyonlara bağlı olarak yoga, benzer şekilde ağırlık çalışmaları, skuat gibi izometrik egzersizler ve bungee jumping gibi sporlar uygun değildir. Ayrıca sıkı yüzücü gözlükleri ve dalış sporu da glokomlu hastalar için uygun değildir" diye konuştu.`,
+Prof. Dr. Elgin, düzenli egzersizin, genel vücut sağlığı için olduğu kadar glokom için de büyük oranda önemli olduğunu, düzenli olarak haftada 3-4 kez, 40-45 dakika dinamik aerobik egzersizin (yürüme, koşma, bisiklet vs) ideal olduğunu aktardı. Glokom hastaları için uygun olmayan sporlar hakkında da uyarılarda bulunan Prof. Dr. Elgin, "Başın aşağıda kaldığı atipik pozisyonlara bağlı olarak yoga, benzer şekilde ağırlık çalışmaları, skuat gibi izometrik egzersizler ve bungee jumping gibi sporlar uygun değildir. Ayrıca sıkı yüzücü gözlükleri ve dalış sporu da glokomlu hastalar için uygun değildir" diye konuştu.`
   },
   {
-    id: '4',
-    slug: 'kanal-d-konustukca-programi',
-    type: 'tv',
-    title: 'Konuştukça Programı',
-    source: 'Kanal D',
-    date: '24 Ocak 2026',
-    externalLink: 'https://www.kanald.com.tr/konustukca/bolumler/konustukca-462-bolum-24-01-2026',
-    description: 'Prof. Dr. Kadriye Ufuk Elgin, Kanal D\'de yayınlanan Konuştukça programına konuk oldu.',
+    id: "4",
+    slug: "kanal-d-konustukca-programi",
+    type: "tv",
+    title: "Konuştukça Programı",
+    source: "Kanal D",
+    date: "24 Ocak 2026",
+    image: "/images/kanal-d-konustukca.jpg",
+    externalLink:
+      "https://www.kanald.com.tr/konustukca/bolumler/konustukca-462-bolum-24-01-2026",
+    description:
+      "Prof. Dr. Kadriye Ufuk Elgin, Kanal D'de yayınlanan Konuştukça programına konuk oldu."
   },
   {
-    id: '5',
-    slug: 'saglikli-gozlerin-sirri',
-    type: 'interview',
-    title: 'Sağlıklı Gözlerin Sırrı',
-    source: 'Basın',
-    date: '28 Ocak 2026',
-    image: '/images/9.png',
-    externalLink: '/files/gazete-kupuru-2026.pdf',
-    description: 'Halk arasında "göze perde inmesi" olarak bilinen katarakt, yaşam konforunu ve göz sağlığını ciddi şekilde etkiler. Prof. Dr. Kadriye Ufuk Elgin, sağlıklı gözlerin sırrını açıklıyor.',
-    fullContent: 'Halk arasında "göze perde inmesi" olarak bilinen ve renkleri soldurarak görme kalitesini yavaşça düşüren katarakt, yaşam konforunu ve göz sağlığını ciddi şekilde etkiler. Kataraktın yaşlanmanın doğal bir sonucu olarak görülse de her yaşta ortaya çıkabilen bir hastalık olduğunu belirten Göz Hastalıkları Uzmanı Prof. Dr. Kadriye Ufuk Elgin, sağlıklı gözlerin sırrını açıklıyor.\n\nDetaylı bilgi için PDF dosyasını inceleyebilirsiniz.'
+    id: "5",
+    slug: "saglikli-gozlerin-sirri",
+    type: "interview",
+    title: "Sağlıklı Gözlerin Sırrı",
+    source: "Marie Claire",
+    date: "28 Ocak 2026",
+    image: "/images/9.png",
+    externalLink: "/files/gazete-kupuru-2026.pdf",
+    description:
+      'Halk arasında "göze perde inmesi" olarak bilinen katarakt, yaşam konforunu ve göz sağlığını ciddi şekilde etkiler. Prof. Dr. Kadriye Ufuk Elgin, sağlıklı gözlerin sırrını açıklıyor.',
+    fullContent:
+      'Halk arasında "göze perde inmesi" olarak bilinen ve renkleri soldurarak görme kalitesini yavaşça düşüren katarakt, yaşam konforunu ve göz sağlığını ciddi şekilde etkiler. Kataraktın yaşlanmanın doğal bir sonucu olarak görülse de her yaşta ortaya çıkabilen bir hastalık olduğunu belirten Göz Hastalıkları Uzmanı Prof. Dr. Kadriye Ufuk Elgin, sağlıklı gözlerin sırrını açıklıyor.\n\nDetaylı bilgi için PDF dosyasını inceleyebilirsiniz.'
   },
   {
-    id: '6',
-    slug: 'haberturk-glokomun-sinsi-ilerleyisine-dikkat',
-    type: 'tv',
-    title: 'Glokomun Sinsi İlerleyişine Dikkat!',
-    source: 'Habertürk',
-    date: 'Ocak 2026',
-    image: '/images/haberturk-glokom.jpg',
-    externalLink: 'https://www.haberturk.com/video/saglik/izle/glokomun-sinsi-ilerleyisine-dikkat/744965',
-    description: 'Prof. Dr. Kadriye Ufuk Elgin, Habertürk ekranlarında glokomun sinsi ilerleyişi ve göz sağlığı üzerine önemli uyarılarda bulundu.'
+    id: "6",
+    slug: "haberturk-glokomun-sinsi-ilerleyisine-dikkat",
+    type: "tv",
+    title: "Glokomun Sinsi İlerleyişine Dikkat!",
+    source: "Habertürk",
+    date: "Ocak 2026",
+    externalLink:
+      "https://www.haberturk.com/video/saglik/izle/glokomun-sinsi-ilerleyisine-dikkat/744965",
+    description:
+      "Prof. Dr. Kadriye Ufuk Elgin, Habertürk ekranlarında glokomun sinsi ilerleyişi ve göz sağlığı üzerine önemli uyarılarda bulundu."
   }
 ];
