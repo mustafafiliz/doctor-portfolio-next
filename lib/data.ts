@@ -1,5 +1,9 @@
 export const VIDEOS_DATA = [
   {
+    title: "Glokom bilgilendirme",
+    url: "https://www.youtube.com/watch?v=MLwK7m7Kj7E"
+  },
+  {
     title: "Glokom hastalarında katarakt cerrahisi nasıl olmalı?",
     url: "https://www.youtube.com/shorts/hDyp61pqILs"
   },
