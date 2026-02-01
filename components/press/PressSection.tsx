@@ -40,9 +40,10 @@ export function PressSection({ currentLocale }: PressSectionProps) {
           <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
             <Calendar className="w-4 h-4" />
             <span>{item.date}</span>
+            <span className="mx-1">•</span>
+            <span className="font-medium text-gray-700">{item.source}</span>
           </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
-          <p className="text-gray-600 mb-3">{item.source}</p>
+          <h3 className="text-xl font-bold text-gray-900 mb-3">{item.title}</h3>
           {item.description && (
             <p className="text-gray-700 text-sm mb-4 line-clamp-3">{item.description}</p>
           )}
