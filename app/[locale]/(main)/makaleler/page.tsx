@@ -55,13 +55,13 @@ export default function MakalelerPage() {
     },
     {
       id: "international-conferences",
-      title: "Uluslararası Bilimsel Toplantılarda Sunulan Bildiriler",
+      title: "Uluslararası Bilimsel Toplantılarda Sunulan ve Toplantı Kitabında Basılı Yer Alan Bildiriler",
       count: 47,
       icon: Presentation,
     },
     {
       id: "national-conferences",
-      title: "Ulusal Bilimsel Toplantılarda Sunulan Bildiriler",
+      title: "Ulusal Bilimsel Toplantılarda Sunulan ve Toplantı Kitabında Basılı Yer Alan Bildiriler",
       count: 82,
       icon: Presentation,
     },
