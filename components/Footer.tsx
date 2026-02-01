@@ -131,6 +131,11 @@ export function Footer() {
       <section className="bg-primary border-b border-gray-200">
         <div className="container mx-auto px-4 sm:px-6 py-4 md:py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            {/* Info Text */}
+            <p className="text-lg font-medium text-white text-center">
+              Bilgilendirici postlar, videolar ve çok daha fazlası...
+            </p>
+
             {/* Social Media */}
             <div className="flex items-center gap-4">
               <span className="text-base md:text-lg font-bold text-white">Beni Takip Edin</span>
@@ -174,11 +179,6 @@ export function Footer() {
                 </div>
               )}
             </div>
-
-            {/* Info Text */}
-            <p className="text-lg font-medium text-white text-center">
-              Bilgilendirici postlar, videolar ve çok daha fazlası...
-            </p>
 
             {/* Phone */}
             {config.contact.phone && (
