@@ -4,10 +4,18 @@ import { useConfig } from '@/hooks/useConfig';
 
 export function ContactMap() {
   const { config } = useConfig();
-  
+
   // Use embed URL from API if available, otherwise generate from address
   let mapUrl = '';
-  
+
+  // User provided specific map location correction
+  // Priority 1: Use the specific corrected location
+  const specificLocation = "Prof.Dr. Kadriye Ufuk Elgin I Göz Hastalıkları Uzmanı-Ankara Kavaklıdere Tunus Cd No:28 06640 Çankaya/Ankara";
+  const encodedLocation = encodeURIComponent(specificLocation);
+  mapUrl = `https://www.google.com/maps?q=${encodedLocation}&ll=39.9109217,32.8567298&z=15&output=embed`;
+
+  /* 
+  // Fallback to config if needed in future (currently overridden by specific fix)
   if (config.maps?.embedUrl) {
     mapUrl = config.maps.embedUrl;
   } else if (config.maps?.latitude && config.maps?.longitude) {
@@ -16,6 +24,7 @@ export function ContactMap() {
     const mapAddress = encodeURIComponent(config.contact.address);
     mapUrl = `https://www.google.com/maps?q=${mapAddress}&output=embed`;
   }
+  */
 
   if (!mapUrl) {
     return (
