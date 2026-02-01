@@ -91,7 +91,7 @@ export function VideosSection({ initialVideos, limit, showViewAll = false }: Vid
   }, [selectedIndex, closeModal, nextVideo, prevVideo]);
 
   return (
-    <Container className="pt-0 pb-8 md:pb-12">
+    <Container className="pt-8 pb-8 md:pb-12">
       <div className="text-left mb-12">
         <h2 className="text-3xl md:text-3xl font-bold text-gray-900 mb-4">
           {t('title')}

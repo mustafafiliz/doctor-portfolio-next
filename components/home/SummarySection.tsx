@@ -12,7 +12,7 @@ export function SummarySection() {
   const currentLocale = (pathname?.split('/')[1] || 'tr') as Locale;
 
   return (
-    <section className="pb-8 md:pb-12">
+    <section className='pb-4'>
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex flex-col lg:flex-row items-stretch gap-0 overflow-hidden shadow-xl rounded-2xl">
 
