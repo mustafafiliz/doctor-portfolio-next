@@ -11,6 +11,7 @@ import {
 } from "@/lib/config";
 import type { SpecialtyCategory, Specialty } from "@/lib/types";
 import type { Metadata } from "next";
+import { SpecialtiesLayout } from "@/components/specialties/SpecialtiesLayout";
 
 interface CategoryWithSpecialties extends SpecialtyCategory {
   specialties?: Specialty[];
@@ -47,17 +48,19 @@ export default async function CategoryPage({
   const currentLocale = (locale || "tr") as Locale;
   const config = await getConfig();
 
-  // Sadece kategoriyi kontrol et (specialty'ler artık /[slug] route'unda)
+  // Tüm specialty'leri çek (Sidebar için)
+  const allSpecialties = await getPublicSpecialties();
+  const categories = allSpecialties.categories || [];
+
+  // Mevcut kategoriyi bul
   const categoryData = await getPublicCategoryBySlug(slug);
 
   if (!categoryData) {
     notFound();
   }
 
-  // Kategori bulundu, içindeki specialty'leri de çek
-  const allSpecialties = await getPublicSpecialties();
   const categorySpecialties =
-    allSpecialties.categories.find(
+    categories.find(
       (cat: SpecialtyCategory & { specialties?: Specialty[] }) =>
         cat._id === categoryData._id,
     )?.specialties || [];
@@ -68,95 +71,64 @@ export default async function CategoryPage({
   };
 
   const primaryColor = config.colors.primary;
+  const title = category.title || category.name;
 
-  // Kategori sayfası
   return (
-    <div>
-      {/* Breadcrumb Header */}
-      <div className="py-6 sm:py-8" style={{ backgroundColor: primaryColor }}>
-        <Container>
-          <nav className="flex items-center gap-2 text-sm text-white/80">
+    <SpecialtiesLayout
+      categories={categories}
+      currentSlug={slug}
+      locale={currentLocale}
+      title={title}
+      description={category.description}
+      breadcrumb={[
+        { label: title }
+      ]}
+    >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {categorySpecialties.length > 0 ? (
+          categorySpecialties.map((specialty) => (
             <Link
-              href={`/${currentLocale}`}
-              className="hover:text-white transition-colors"
+              key={specialty._id}
+              href={`/${currentLocale}/${specialty.slug}`}
+              className="group bg-white border border-gray-100 rounded-xl overflow-hidden hover:border-primary hover:shadow-lg transition-all"
             >
-              Anasayfa
-            </Link>
-            <ChevronRight size={14} className="text-white/50" />
-            <Link
-              href={`/${currentLocale}/uzmanliklar`}
-              className="hover:text-white transition-colors"
-            >
-              Uzmanlıklar
-            </Link>
-            <ChevronRight size={14} className="text-white/50" />
-            <span className="text-white font-medium">
-              {category.title || category.name}
-            </span>
-          </nav>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white mt-3">
-            {category.title || category.name}
-          </h1>
-          {category.description && (
-            <p className="text-white/80 mt-2 max-w-2xl">
-              {category.description}
-            </p>
-          )}
-        </Container>
-      </div>
-
-      {/* Specialties List */}
-      <Container className="py-12">
-        {category.specialties && category.specialties.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {category.specialties.map((specialty) => (
-              <Link
-                key={specialty._id}
-                href={`/${currentLocale}/${specialty.slug}`}
-                className="group bg-white border border-gray-200 rounded-sm overflow-hidden hover:border-primary hover:shadow-lg transition-all"
-              >
-                {specialty.image ? (
-                  <div className="aspect-video relative overflow-hidden bg-gray-100">
-                    <Image
-                      src={specialty.image}
-                      alt={specialty.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      unoptimized
-                    />
-                  </div>
-                ) : (
-                  <div className="aspect-video bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
-                    <span className="text-4xl text-primary/30">
-                      {specialty.title.charAt(0)}
-                    </span>
-                  </div>
-                )}
-                <div className="p-5">
-                  <h2 className="text-lg font-semibold text-gray-800 group-hover:text-primary transition-colors">
-                    {specialty.title}
-                  </h2>
-                  {specialty.description && (
-                    <p className="text-gray-600 text-sm mt-2 line-clamp-2">
-                      {specialty.description}
-                    </p>
-                  )}
-                  <span className="inline-flex items-center gap-1 text-primary text-sm font-medium mt-4">
-                    Devamını Oku
-                    <ChevronRight size={16} />
-                  </span>
+              {specialty.image ? (
+                <div className="aspect-video relative overflow-hidden bg-gray-100">
+                  <Image
+                    src={specialty.image}
+                    alt={specialty.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    unoptimized
+                  />
                 </div>
-              </Link>
-            ))}
-          </div>
+              ) : (
+                <div className="aspect-video bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+                  <span className="text-4xl text-gray-300 font-bold">{specialty.title.charAt(0)}</span>
+                </div>
+              )}
+              <div className="p-5">
+                <h2 className="text-lg font-bold text-gray-900 group-hover:text-primary transition-colors">
+                  {specialty.title}
+                </h2>
+                {specialty.description && (
+                  <p className="text-gray-500 text-sm mt-2 line-clamp-2">
+                    {specialty.description}
+                  </p>
+                )}
+                <span className="inline-flex items-center gap-1 text-primary text-sm font-medium mt-4 group-hover:gap-2 transition-all">
+                  İncele
+                  <ChevronRight size={16} />
+                </span>
+              </div>
+            </Link>
+          ))
         ) : (
-          <div className="text-center py-12">
-            <p className="text-gray-500">
-              Bu kategoride henüz içerik bulunmuyor.
-            </p>
+          <div className="col-span-2 text-center py-12 bg-white rounded-xl border border-gray-100">
+            <p className="text-gray-500">Bu kategoride henüz içerik bulunmuyor.</p>
           </div>
         )}
-      </Container>
-    </div>
+      </div>
+    </SpecialtiesLayout>
   );
 }

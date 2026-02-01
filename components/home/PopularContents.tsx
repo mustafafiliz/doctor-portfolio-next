@@ -56,12 +56,12 @@ export function PopularContents({
         {/* Section Header - Top Right */}
         <div className="flex flex-col items-start text-left mb-12">
           <h2 className="text-3xl md:text-3xl font-bold text-gray-900 mb-4">
-            Blog Yazıları
+            Uzmanlık Yazılarım
           </h2>
           <p className="text-gray-600 max-w-2xl">
             Göz sağlığı, hastalıkları ve tedavi yöntemleri hakkında merak
             ettiğiniz tüm konuları, güncel bilimsel veriler ışığında
-            hazırladığım blog yazılarımda bulabilirsiniz.
+            hazırladığım yazılımı da bulabilirsiniz.
           </p>
         </div>
 
