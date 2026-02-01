@@ -1679,7 +1679,7 @@ export default function MakalelerPage() {
                             <Icon
                               className={`w-4 h-4 shrink-0 mt-0.5 ${selectedCategory === category.id ? "text-white" : "text-primary"}`}
                             />
-                            <span className="text-sm font-medium line-clamp-2 leading-snug">
+                            <span className="text-sm font-medium line-clamp-3 leading-snug">
                               {category.title.split(". ")[1] || category.title}
                             </span>
                           </div>
@@ -1719,7 +1719,7 @@ export default function MakalelerPage() {
                             <Icon
                               className={`w-4 h-4 shrink-0 mt-0.5 ${selectedCategory === category.id ? "text-white" : "text-primary"}`}
                             />
-                            <span className="text-sm font-medium line-clamp-2 leading-snug">
+                            <span className="text-sm font-medium line-clamp-3 leading-snug">
                               {category.title.split(". ")[1] || category.title}
                             </span>
                           </div>
