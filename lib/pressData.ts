@@ -131,6 +131,7 @@ Prof. Dr. Elgin, düzenli egzersizin, genel vücut sağlığı için olduğu kad
     title: "Glokomun Sinsi İlerleyişine Dikkat!",
     source: "Habertürk",
     date: "Ocak 2026",
+    image: "/images/haberturk-glokom.png",
     externalLink:
       "https://www.haberturk.com/video/saglik/izle/glokomun-sinsi-ilerleyisine-dikkat/744965",
     description:
