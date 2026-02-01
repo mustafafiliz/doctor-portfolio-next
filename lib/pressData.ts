@@ -100,4 +100,16 @@ Prof. Dr. Elgin, düzenli egzersizin, genel vücut sağlığı için olduğu kad
     externalLink: 'https://www.kanald.com.tr/konustukca/bolumler/konustukca-462-bolum-24-01-2026',
     description: 'Prof. Dr. Kadriye Ufuk Elgin, Kanal D\'de yayınlanan Konuştukça programına konuk oldu.',
   },
+  {
+    id: '5',
+    slug: 'saglikli-gozlerin-sirri',
+    type: 'interview',
+    title: 'Sağlıklı Gözlerin Sırrı',
+    source: 'Basın',
+    date: '28 Ocak 2026',
+    image: '/images/9.png',
+    externalLink: '/files/gazete-kupuru-2026.pdf',
+    description: 'Halk arasında "göze perde inmesi" olarak bilinen katarakt, yaşam konforunu ve göz sağlığını ciddi şekilde etkiler. Prof. Dr. Kadriye Ufuk Elgin, sağlıklı gözlerin sırrını açıklıyor.',
+    fullContent: 'Halk arasında "göze perde inmesi" olarak bilinen ve renkleri soldurarak görme kalitesini yavaşça düşüren katarakt, yaşam konforunu ve göz sağlığını ciddi şekilde etkiler. Kataraktın yaşlanmanın doğal bir sonucu olarak görülse de her yaşta ortaya çıkabilen bir hastalık olduğunu belirten Göz Hastalıkları Uzmanı Prof. Dr. Kadriye Ufuk Elgin, sağlıklı gözlerin sırrını açıklıyor.\n\nDetaylı bilgi için PDF dosyasını inceleyebilirsiniz.'
+  }
 ];
