@@ -27,5 +27,37 @@ export const VIDEOS_DATA = [
     title: "Glokom ve göz tansiyonu aynı şey midir?",
     url: "https://www.youtube.com/shorts/EsChtpt_T_E"
   },
-  { title: "Glokom nedir?", url: "https://www.youtube.com/shorts/DqK8eb3sijk" }
+  { title: "Glokom nedir?", url: "https://www.youtube.com/shorts/DqK8eb3sijk" },
+  {
+    title: "Glokomun ortaya çıkmasına etki eden faktörler nelerdir?",
+    url: "https://www.youtube.com/watch?v=W5VBRbger2w"
+  },
+  {
+    title: "Göz tansiyonu ve glokom aynı anlama mı gelmektedir?",
+    url: "https://www.youtube.com/watch?v=ccjdtjvT3o4"
+  },
+  {
+    title: "Glokom tedavi edilebilen bir hastalık mıdır?",
+    url: "https://www.youtube.com/watch?v=gVD1ErCtM1c"
+  },
+  {
+    title: "Glokom nasıl teşhis edilmektedir?",
+    url: "https://www.youtube.com/watch?v=wLiesBYwWeE"
+  },
+  {
+    title: "Glokom hangi belirtilerle ortaya çıkmaktadır?",
+    url: "https://www.youtube.com/watch?v=6iMABILpZB8"
+  },
+  {
+    title: "Glokom nedir?",
+    url: "https://www.youtube.com/watch?v=17cGq45mOP0"
+  },
+  {
+    title: "Prof. Dr. Kadriye Ufuk Elgin",
+    url: "https://www.youtube.com/watch?v=XMX8eC67d6o"
+  },
+  {
+    title: "Erken teşhisin önemi",
+    url: "https://www.youtube.com/watch?v=69tf613BhMs"
+  }
 ];

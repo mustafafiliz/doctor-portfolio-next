@@ -27,10 +27,10 @@ export function SummarySection() {
 
             <div className="space-y-6 text-base md:text-lg leading-relaxed opacity-90">
               <p>
-                Tıp Fakültesi lisans eğitimimi 1985-1991 yılları arasında Hacettepe Üniversitesi Tıp Fakültesinde gerçekleştirdikten sonra, tıpta uzmanlık eğitimimi ise tıpta uzmanlık sınavı (TUS) 3. sü olarak girdiğim Hacettepe Üniversitesi Tıp Fakültesi Göz Anabilim dalında 1996 yılında tamamladım.
+                Tıp eğitimimi, Türkiye’nin en önemli üniversitelerinden biri olan Hacettepe üniversitesi tıp fakültesinde, 1991 yılında tamamladım. Ardından, tıpta uzmanlık sınavı (TUS) 3.sü olarak girdiğim Hacettepe Üniversitesi Tıp Fakültesi Göz Anabilim dalında uzmanlık eğitimimi tamamlayarak, 1996 yılında göz hastalıkları uzmanı oldum.
               </p>
               <p>
-                Türkiye nin en büyük göz hastanelerinde, genel oftalmoloji, katarakt cerrahisi ve glokom cerrahisi alanlarında 25 yılı aşkın süredir çalışmaktayım. Ulusal ve uluslararası seçkin dergilerde basılmış 150 nin üzerinde{' '}
+                30 yılı aşkın süredir Türkiye’nin en büyük göz hastanelerinde genel oftalmoloji, katarakt cerrahisi ve glokom cerrahisi alanlarında çalışmaktayım. Ayrıca bir eğitimci olarak yüzlerce asistan hekimin yetişmesinde katkıda bulundum. Ulusal ve uluslararası seçkin dergilerde basılmış 150’nin üzerinde{' '}
                 <Link href={`/${currentLocale}/makaleler`} className="underline font-semibold hover:opacity-80 transition-opacity">
                   makalem
                 </Link>
