@@ -86,7 +86,7 @@ export default async function CategoryPage({
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {categorySpecialties.length > 0 ? (
-          categorySpecialties.map((specialty) => (
+          categorySpecialties.map((specialty: Specialty) => (
             <Link
               key={specialty._id}
               href={`/${currentLocale}/${specialty.slug}`}
