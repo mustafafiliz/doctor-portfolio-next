@@ -225,12 +225,13 @@ export function Footer() {
 
             {/* Contact Info */}
             <div className="space-y-5 text-base">
-              {config.contact.address && (
-                <div className="flex items-start gap-3 text-gray-900">
-                  <span className="font-bold text-black lg:min-w-[80px] text-lg whitespace-nowrap">Adres:</span>
-                  <span className="font-medium leading-relaxed text-left">{config.contact.address}</span>
+              <div className="flex items-start gap-3 text-gray-900">
+                <span className="font-bold text-black lg:min-w-[80px] text-lg whitespace-nowrap">Adres:</span>
+                <div className="font-medium leading-relaxed text-left">
+                  <span className="block">Ankara Tunus Dünya Göz Hastanesi</span>
+                  <span className="block">Tunus Caddesi No:28 Kavaklıdere Ankara</span>
                 </div>
-              )}
+              </div>
               {config.contact.email && (
                 <div className="flex items-center gap-3 text-gray-900 lg:mb-0 mb-5">
                   <span className="font-bold text-black min-w-[80px] text-lg whitespace-nowrap">E-Posta:</span>

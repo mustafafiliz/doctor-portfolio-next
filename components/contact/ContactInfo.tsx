@@ -53,12 +53,17 @@ export function ContactInfo() {
     {
       icon: MapPin,
       title: t("address"),
-      content: config.contact.address,
+      content: (
+        <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+          <p className="font-medium text-foreground/90">Ankara Tunus Dünya Göz Hastanesi</p>
+          <p>Tunus Caddesi No:28 Kavaklıdere Ankara</p>
+        </div>
+      ),
       link: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-        config.contact.address
+        "Ankara Tunus Dünya Göz Hastanesi, Tunus Caddesi No:28 Kavaklıdere Ankara"
       )}`,
       isLink: true,
-      show: !!config.contact.address
+      show: true
     },
     {
       icon: Phone,
