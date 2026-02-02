@@ -55,13 +55,8 @@ export function PopularContents({
       <div className="container mx-auto px-4 sm:px-6">
         {/* Section Header - Top Right */}
         <div className="flex flex-col items-start text-left mb-12">
-          <h2 className="text-3xl md:text-3xl font-bold text-gray-900 mb-4">
-            Uzmanlık Yazılarım
-          </h2>
           <p className="text-gray-600 max-w-2xl">
-            Göz sağlığı, hastalıkları ve tedavi yöntemleri hakkında merak
-            ettiğiniz tüm konuları, güncel bilimsel veriler ışığında
-            hazırladığım yazılımı da bulabilirsiniz.
+            Uzmanlık konularımla ilgili güncel bilimsel gelişmeler ve deneyimlerim ışığında hazırladığım yazılarımı aşağıda bulabilirsiniz.
           </p>
         </div>
 
@@ -124,7 +119,7 @@ export function PopularContents({
         </div>
 
         {/* View All Button */}
-        <div className="mt-8 md:mt-12 text-center flex justify-center">
+        <div className="mt-8 md:mt-12 lg:mb-10 text-center flex justify-center">
           <Link
             href={`/${currentLocale}${getRoute("specialties", currentLocale)}`}
             className="inline-flex items-center justify-center px-8 py-3 text-base font-medium text-white bg-primary hover:bg-primary/90 rounded-sm transition-colors duration-200 shadow-sm hover:shadow-md"
