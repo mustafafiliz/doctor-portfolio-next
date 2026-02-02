@@ -189,7 +189,10 @@ export function Footer() {
                 <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center border border-gray-200">
                   <Phone className="h-6 w-6 text-primary" />
                 </div>
-                <span className="font-bold text-xl">{formatPhone(config.contact.phone).replace(' 90', '').replace('+90', '')}</span>
+                <div className="flex flex-col justify-center">
+                  <span className="font-bold text-xl leading-none">{formatPhone(config.contact.phone).replace(' 90', '').replace('+90', '')}</span>
+                  <span className="text-xs md:text-sm font-medium opacity-90 mt-1">Dünya Göz Hastanesi</span>
+                </div>
               </a>
             )}
           </div>
@@ -224,9 +227,9 @@ export function Footer() {
             </Link>
 
             {/* Contact Info */}
-            <div className="space-y-5 text-base">
+            <div className="space-y-5 text-sm">
               <div className="flex items-start gap-3 text-gray-900">
-                <span className="font-bold text-black lg:min-w-[80px] text-lg whitespace-nowrap">Adres:</span>
+                <span className="font-bold text-black lg:min-w-[80px] text-base whitespace-nowrap">Adres:</span>
                 <div className="font-medium leading-relaxed text-left">
                   <span className="block">Ankara Tunus Dünya Göz Hastanesi</span>
                   <span className="block">Tunus Caddesi No:28 Kavaklıdere Ankara</span>
@@ -234,7 +237,7 @@ export function Footer() {
               </div>
               {config.contact.email && (
                 <div className="flex items-center gap-3 text-gray-900 lg:mb-0 mb-5">
-                  <span className="font-bold text-black min-w-[80px] text-lg whitespace-nowrap">E-Posta:</span>
+                  <span className="font-bold text-black min-w-[80px] text-base whitespace-nowrap">E-Posta:</span>
                   <a href={`mailto:${config.contact.email}`} className="hover:text-primary transition-colors font-medium">
                     {config.contact.email}
                   </a>
@@ -242,19 +245,25 @@ export function Footer() {
               )}
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-3 text-gray-900">
-                  <span className="font-bold text-black min-w-[80px] text-lg whitespace-nowrap">Telefon :</span>
-                  <a href="tel:03124167000" className="hover:text-primary transition-colors font-medium">
-                    0312 416 70 00
-                  </a>
+                  <span className="font-bold text-black min-w-[80px] text-base whitespace-nowrap">Telefon :</span>
+                  <div className="flex flex-col sm:flex-row sm:gap-2">
+                    <a href="tel:03124167000" className="hover:text-primary transition-colors font-medium whitespace-nowrap">
+                      0312 416 70 00
+                    </a>
+                    <span className="text-gray-600 font-medium whitespace-nowrap">- Dünya Göz Hastanesi Randevu</span>
+                  </div>
                 </div>
                 <div className="flex items-center gap-3 text-gray-900">
-                  <span className="font-bold text-black min-w-[80px] text-lg whitespace-nowrap">Telefon :</span>
-                  <a href="tel:4444469" className="hover:text-primary transition-colors font-medium">
-                    444 4 469
-                  </a>
+                  <span className="font-bold text-black min-w-[80px] text-base whitespace-nowrap">Telefon :</span>
+                  <div className="flex flex-col sm:flex-row sm:gap-2">
+                    <a href="tel:4444469" className="hover:text-primary transition-colors font-medium whitespace-nowrap">
+                      444 4 469
+                    </a>
+                    <span className="text-gray-600 font-medium whitespace-nowrap">- Dünya Göz Hastanesi</span>
+                  </div>
                 </div>
                 <div className="flex items-center gap-3 text-gray-900">
-                  <span className="font-bold text-black min-w-[80px] text-lg whitespace-nowrap">Gsm:</span>
+                  <span className="font-bold text-black min-w-[80px] text-base whitespace-nowrap">Gsm:</span>
                   <a href="tel:05441565755" className="hover:text-primary transition-colors font-medium">
                     0544 156 57 55
                   </a>
@@ -271,7 +280,7 @@ export function Footer() {
                 <div key={category._id}>
                   <Link
                     href={`/${currentLocale}/uzmanlik/${category.slug}`}
-                    className="text-base md:text-lg font-extrabold text-black hover:text-primary transition-colors block mb-3 md:mb-5 uppercase tracking-wide"
+                    className="text-sm md:text-base font-bold text-black hover:text-primary transition-colors block mb-3 md:mb-5 uppercase tracking-wide"
                   >
                     {category.title || category.name}
                   </Link>
@@ -281,7 +290,7 @@ export function Footer() {
                         <li key={specialty._id}>
                           <Link
                             href={`/${currentLocale}/${specialty.slug}`}
-                            className="text-sm md:text-base text-gray-800 hover:text-primary transition-colors block leading-relaxed font-semibold"
+                            className="text-xs md:text-sm text-gray-800 hover:text-primary transition-colors block leading-relaxed font-medium"
                           >
                             {specialty.title}
                           </Link>
@@ -296,7 +305,7 @@ export function Footer() {
               <div>
                 <Link
                   href={`/${currentLocale}/hakkimda`}
-                  className="text-base md:text-lg font-extrabold text-black hover:text-primary transition-colors block mb-3 md:mb-5 uppercase tracking-wide"
+                  className="text-sm md:text-base font-bold text-black hover:text-primary transition-colors block mb-3 md:mb-5 uppercase tracking-wide"
                 >
                   Hakkımda
                 </Link>
@@ -304,7 +313,7 @@ export function Footer() {
                   <li>
                     <Link
                       href={`/${currentLocale}/hakkimda`}
-                      className="text-sm md:text-base text-gray-800 hover:text-primary transition-colors block leading-relaxed font-semibold"
+                      className="text-xs md:text-sm text-gray-800 hover:text-primary transition-colors block leading-relaxed font-medium"
                     >
                       {config.site?.name || 'Hakkımda'}
                     </Link>
@@ -313,7 +322,7 @@ export function Footer() {
                   <li>
                     <Link
                       href={`/${currentLocale}/sik-sorulan-sorular`}
-                      className="text-sm md:text-base text-gray-800 hover:text-primary transition-colors block leading-relaxed font-semibold"
+                      className="text-xs md:text-sm text-gray-800 hover:text-primary transition-colors block leading-relaxed font-medium"
                     >
                       S.S.S.
                     </Link>
@@ -321,7 +330,7 @@ export function Footer() {
                   <li>
                     <Link
                       href={`/${currentLocale}/iletisim`}
-                      className="text-sm md:text-base text-gray-800 hover:text-primary transition-colors block leading-relaxed font-semibold"
+                      className="text-xs md:text-sm text-gray-800 hover:text-primary transition-colors block leading-relaxed font-medium"
                     >
                       İletişim
                     </Link>
