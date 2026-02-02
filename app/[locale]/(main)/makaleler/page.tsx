@@ -44,7 +44,7 @@ export default function MakalelerPage() {
     {
       id: "international-articles",
       title: "Uluslararası Hakemli Dergilerde Yayımlanan Makaleler",
-      count: 84,
+      count: 88,
       icon: FileText,
     },
     {
@@ -1634,18 +1634,18 @@ export default function MakalelerPage() {
           <p className="text-xl text-gray-600 mb-2">
             Prof. Dr. Kadriye Ufuk Elgin
           </p>
-          <div className="mt-6 flex items-center justify-center gap-6 text-sm text-gray-500">
+          <div className="mt-6 flex items-center justify-center gap-6 text-base text-gray-700">
             <div className="flex items-center gap-2">
-              <FileText className="w-4 h-4" />
-              <span>159 Makale</span>
+              <FileText className="w-5 h-5 text-primary" />
+              <span className="font-bold text-gray-900">163 Makale</span>
             </div>
             <div className="flex items-center gap-2">
-              <Presentation className="w-4 h-4" />
-              <span>129 Bildiri</span>
+              <Presentation className="w-5 h-5 text-primary" />
+              <span className="font-bold text-gray-900">129 Bildiri</span>
             </div>
             <div className="flex items-center gap-2">
-              <Award className="w-4 h-4" />
-              <span>52 Panel/Kurs</span>
+              <Award className="w-5 h-5 text-primary" />
+              <span className="font-bold text-gray-900">52 Panel/Kurs</span>
             </div>
           </div>
         </div>
@@ -1684,7 +1684,7 @@ export default function MakalelerPage() {
                             </span>
                           </div>
                           <span
-                            className={`text-xs font-bold shrink-0 ${selectedCategory === category.id ? "text-white" : "text-gray-500"}`}
+                            className={`text-base font-bold shrink-0 ${selectedCategory === category.id ? "text-white" : "text-gray-900"}`}
                           >
                             {category.count}
                           </span>
@@ -1724,7 +1724,7 @@ export default function MakalelerPage() {
                             </span>
                           </div>
                           <span
-                            className={`text-xs font-bold shrink-0 ${selectedCategory === category.id ? "text-white" : "text-gray-500"}`}
+                            className={`text-base font-bold shrink-0 ${selectedCategory === category.id ? "text-white" : "text-gray-900"}`}
                           >
                             {category.count}
                           </span>
@@ -1764,7 +1764,7 @@ export default function MakalelerPage() {
                             </span>
                           </div>
                           <span
-                            className={`text-xs font-bold ml-2 shrink-0 ${selectedCategory === category.id ? "text-white" : "text-gray-500"}`}
+                            className={`text-base font-bold ml-2 shrink-0 ${selectedCategory === category.id ? "text-white" : "text-gray-900"}`}
                           >
                             {category.count}
                           </span>
@@ -1796,43 +1796,43 @@ export default function MakalelerPage() {
           {/* Right Content Area */}
           <div className="flex-1 min-w-0">
             {/* Category Header */}
-            <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-lg p-6 mb-6 shadow-sm">
-              <div className="flex items-center gap-3 mb-2">
-                {currentCategory && (
-                  <>
-                    <div className="p-2 bg-primary/10 rounded-lg">
-                      <currentCategory.icon className="w-5 h-5 text-primary" />
+            {currentCategory && (
+              <div className="bg-white rounded-2xl border border-gray-100 p-4 md:p-6 mb-6 shadow-[0_2px_20px_rgba(0,0,0,0.04)] relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-gradient-to-br from-primary/5 to-transparent rounded-full -mr-32 -mt-32 pointer-events-none" />
+
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
+                  <div className="flex items-center gap-4 flex-1">
+                    <div className="p-2.5 bg-primary/5 rounded-xl shrink-0 text-primary">
+                      <currentCategory.icon className="w-7 h-7" />
                     </div>
-                    <div className="flex-1">
-                      <h2 className="text-2xl font-bold text-gray-900">
-                        {currentCategory.title}
-                      </h2>
-                      <p className="text-gray-600 text-sm mt-1">
-                        Toplam{" "}
-                        <span className="font-bold text-primary">
+                    <h2 className="text-lg md:text-xl font-bold text-gray-900 leading-tight">
+                      {currentCategory.title}
+                    </h2>
+                  </div>
+
+                  <div className="flex items-center justify-center bg-gray-50/80 px-6 py-3 rounded-xl border border-gray-100 shrink-0 backdrop-blur-sm min-w-[140px]">
+                    <div className="text-center w-full flex flex-col items-center justify-center">
+                      <div className="flex items-center gap-2 justify-center">
+                        <span className="text-4xl font-black text-primary tracking-tight leading-none">
                           {currentCategory.count}
-                        </span>{" "}
-                        {currentCategory.title.toLowerCase().includes("makale")
-                          ? "makale"
-                          : currentCategory.title
-                            .toLowerCase()
-                            .includes("bildiri")
-                            ? "bildiri"
-                            : currentCategory.title
-                              .toLowerCase()
-                              .includes("üyelik")
-                              ? "kuruluş"
-                              : currentCategory.title
-                                .toLowerCase()
-                                .includes("editör")
-                                ? "dergi"
-                                : "kayıt"}
-                      </p>
+                        </span>
+                        <span className="text-sm font-bold text-gray-600 uppercase tracking-wide">
+                          {currentCategory.title.toLowerCase().includes("makale")
+                            ? "Makale"
+                            : currentCategory.title.toLowerCase().includes("bildiri")
+                              ? "Bildiri"
+                              : currentCategory.title.toLowerCase().includes("üyelik")
+                                ? "Kuruluş"
+                                : currentCategory.title.toLowerCase().includes("editör")
+                                  ? "Dergi"
+                                  : "Kayıt"}
+                        </span>
+                      </div>
                     </div>
-                  </>
-                )}
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Year Filter (sadece makaleler için) */}
             {(selectedCategory === "international-articles" ||
