@@ -114,7 +114,9 @@ export function QuickLinks({ currentLocale: propLocale }: QuickLinksProps) {
                     <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
                       <div className="p-2 space-y-1">
                         <Link
-                          href={`/${currentLocale}/iletisim`}
+                          href="https://www.dunyagoz.com/tr/islemler/randevu-doktor?DoctorId=16594"
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="flex items-center gap-3 p-4 rounded-lg hover:bg-primary/5 transition-colors group/item"
                           onClick={() => setIsDropdownOpen(false)}
                         >
@@ -122,7 +124,7 @@ export function QuickLinks({ currentLocale: propLocale }: QuickLinksProps) {
                             <Phone className="w-5 h-5 text-primary" />
                           </div>
                           <span className="text-base font-semibold text-gray-900 group-hover/item:text-primary leading-tight">
-                            Randevu ve İletişim Bilgileri
+                            Dünya Göz Hastanesi Randevu
                           </span>
                         </Link>
 
