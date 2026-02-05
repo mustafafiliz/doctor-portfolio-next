@@ -260,7 +260,7 @@ export function Footer() {
                     <a href="tel:4444469" className="hover:text-primary transition-colors font-medium whitespace-nowrap">
                       444 4 469
                     </a>
-                    <span className="text-gray-600 font-medium whitespace-nowrap">- Dünya Göz Hastanesi</span>
+                    <span className="text-gray-600 font-medium whitespace-nowrap">- Dünya Göz Hastanesi Randevu</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 text-gray-900 lg:mt-3">
