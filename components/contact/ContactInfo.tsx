@@ -53,24 +53,47 @@ export function ContactInfo() {
     {
       icon: MapPin,
       title: t("address"),
-      content: (
-        <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-          <p className="font-medium text-foreground/90">Ankara Tunus Dünya Göz Hastanesi</p>
-          <p>Tunus Caddesi No:28 Kavaklıdere Ankara</p>
-        </div>
-      ),
+      content: config.contact.address,
       link: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-        "Ankara Tunus Dünya Göz Hastanesi, Tunus Caddesi No:28 Kavaklıdere Ankara"
+        config.contact.address
       )}`,
       isLink: true,
+      show: !!config.contact.address
+    },
+    {
+      icon: Mail,
+      title: t("email"),
+      content: config.contact.email,
+      link: `mailto:${config.contact.email}`,
+      isLink: true,
+      show: !!config.contact.email
+    },
+    {
+      icon: Phone,
+      title: t("phone"),
+      content: (
+        <a
+          href="tel:03124167000"
+          className="hover:text-primary transition-colors block text-xs sm:text-sm text-muted-foreground"
+        >
+          03124167000
+        </a>
+      ),
+      isLink: false,
       show: true
     },
     {
       icon: Phone,
       title: t("phone"),
-      content: formatPhoneNumber(config.contact.phone).replace(' 90', '').replace('+90', ''),
-      link: `tel:${config.contact.phone?.replace(/\D/g, '').replace('+90', '').replace(' 90', '')}`,
-      isLink: true,
+      content: (
+        <a
+          href={`tel:${config.contact.phone?.replace(/\D/g, '').replace('+90', '').replace(' 90', '')}`}
+          className="hover:text-primary transition-colors block text-xs sm:text-sm text-muted-foreground"
+        >
+          {formatPhoneNumber(config.contact.phone).replace('+90', '').replace(/\s/g, '').replace('90', "")}
+        </a>
+      ),
+      isLink: false,
       show: !!config.contact.phone
     },
     {
@@ -80,14 +103,6 @@ export function ContactInfo() {
       link: `tel:${config.contact.mobile?.replace(/\D/g, '').replace(' 90', '')}`,
       isLink: true,
       show: !!config.contact.mobile
-    },
-    {
-      icon: Mail,
-      title: t("email"),
-      content: config.contact.email,
-      link: `mailto:${config.contact.email}`,
-      isLink: true,
-      show: !!config.contact.email
     },
     {
       icon: Clock,

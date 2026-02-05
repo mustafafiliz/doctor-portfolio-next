@@ -11,6 +11,7 @@ import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin, Twitter, Youtube, G
 import { useEffect, useState } from 'react';
 import { getPublicSpecialties } from '@/lib/config';
 import type { SpecialtyCategory, Specialty } from '@/lib/types';
+import { pressData } from '@/lib/pressData';
 
 interface CategoryWithSpecialties extends SpecialtyCategory {
   specialties?: Specialty[];
@@ -236,7 +237,7 @@ export function Footer() {
                 </div>
               </div>
               {config.contact.email && (
-                <div className="flex items-center gap-3 text-gray-900 lg:mb-0 mb-5">
+                <div className="flex items-center gap-3 text-gray-900">
                   <span className="font-bold text-black min-w-[80px] text-base whitespace-nowrap">E-Posta:</span>
                   <a href={`mailto:${config.contact.email}`} className="hover:text-primary transition-colors font-medium">
                     {config.contact.email}
@@ -253,7 +254,7 @@ export function Footer() {
                     <span className="text-gray-600 font-medium whitespace-nowrap">- Dünya Göz Hastanesi Randevu</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 text-gray-900">
+                <div className="flex items-center gap-3 text-gray-900 lg:mt-3">
                   <span className="font-bold text-black min-w-[80px] text-base whitespace-nowrap">Telefon :</span>
                   <div className="flex flex-col sm:flex-row sm:gap-2">
                     <a href="tel:4444469" className="hover:text-primary transition-colors font-medium whitespace-nowrap">
@@ -262,11 +263,12 @@ export function Footer() {
                     <span className="text-gray-600 font-medium whitespace-nowrap">- Dünya Göz Hastanesi</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 text-gray-900">
+                <div className="flex items-center gap-3 text-gray-900 lg:mt-3">
                   <span className="font-bold text-black min-w-[80px] text-base whitespace-nowrap">Gsm:</span>
                   <a href="tel:05441565755" className="hover:text-primary transition-colors font-medium">
                     0544 156 57 55
                   </a>
+                  <span className="text-gray-600 font-medium whitespace-nowrap">- Prof. Dr Kadriye Ufuk Elgin</span>
                 </div>
               </div>
             </div>
@@ -301,7 +303,40 @@ export function Footer() {
                 </div>
               ))}
 
-              {/* Hakkımda Section */}
+              {/* Blog Section */}
+              <div>
+                <Link
+                  href={`/${currentLocale}/basin`}
+                  className="text-sm md:text-base font-bold text-black hover:text-primary transition-colors block mb-3 md:mb-5 uppercase tracking-wide"
+                >
+                  Blog
+                </Link>
+                <ul className="space-y-2 md:space-y-3">
+                  {pressData.slice(0, 4).map((item) => (
+                    <li key={item.id}>
+                      {item.externalLink ? (
+                        <a
+                          href={item.externalLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs md:text-sm text-gray-800 hover:text-primary transition-colors block leading-relaxed font-medium line-clamp-2"
+                        >
+                          {item.title}
+                        </a>
+                      ) : (
+                        <Link
+                          href={`/${currentLocale}/basin/${item.slug}`}
+                          className="text-xs md:text-sm text-gray-800 hover:text-primary transition-colors block leading-relaxed font-medium line-clamp-2"
+                        >
+                          {item.title}
+                        </Link>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Hakkımda bölümü */}
               <div>
                 <Link
                   href={`/${currentLocale}/hakkimda`}
