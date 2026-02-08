@@ -202,7 +202,7 @@ export function Footer() {
 
       {/* Main Footer Content */}
       <div className="container mx-auto px-4 sm:px-6 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-32">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-20">
 
           {/* Brand & Contact Section */}
           <div className="lg:col-span-4 flex flex-col-reverse lg:flex-col gap-6 md:gap-8 order-last lg:order-first text-center lg:text-left items-center lg:items-start">
@@ -237,7 +237,7 @@ export function Footer() {
                 </div>
               </div>
               {config.contact.email && (
-                <div className="flex items-center gap-3 text-gray-900">
+                <div className="flex items-center gap-3 text-gray-900 -ml-2 lg:ml-0">
                   <span className="font-bold text-black min-w-[80px] text-base whitespace-nowrap">E-Posta:</span>
                   <a href={`mailto:${config.contact.email}`} className="hover:text-primary transition-colors font-medium">
                     {config.contact.email}
@@ -245,25 +245,25 @@ export function Footer() {
                 </div>
               )}
               <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-3 text-gray-900">
+                <div className="flex items-center gap-3 text-gray-900 -ml-2 lg:ml-0">
                   <span className="font-bold text-black min-w-[80px] text-base whitespace-nowrap">Telefon :</span>
                   <div className="flex flex-col sm:flex-row sm:gap-2">
                     <a href="tel:03124167000" className="hover:text-primary transition-colors font-medium whitespace-nowrap">
                       0312 416 70 00
                     </a>
-                    <span className="text-gray-600 font-medium whitespace-nowrap">- Dünya Göz Hastanesi Randevu</span>
+                    <span className="text-gray-600 font-medium whitespace-nowrap"><span className='hidden lg:flex'>-</span> Dünya Göz Hastanesi Randevu</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 text-gray-900 lg:mt-3">
+                <div className="flex items-center gap-3 text-gray-900 lg:mt-3 -ml-2 lg:ml-0">
                   <span className="font-bold text-black min-w-[80px] text-base whitespace-nowrap">Telefon :</span>
                   <div className="flex flex-col sm:flex-row sm:gap-2">
                     <a href="tel:4444469" className="hover:text-primary transition-colors font-medium whitespace-nowrap">
                       444 4 469
                     </a>
-                    <span className="text-gray-600 font-medium whitespace-nowrap">- Dünya Göz Hastanesi Randevu</span>
+                    <span className="text-gray-600 font-medium whitespace-nowrap"><span className='hidden lg:flex'>-</span> Dünya Göz Hastanesi Randevu</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 text-gray-900 lg:mt-3">
+                <div className="flex items-center gap-3 text-gray-900 lg:mt-3 -ml-2 lg:ml-0">
                   <span className="font-bold text-black min-w-[80px] text-base whitespace-nowrap">Gsm:</span>
                   <a href="tel:05441565755" className="hover:text-primary transition-colors font-medium">
                     0544 156 57 55
@@ -275,8 +275,8 @@ export function Footer() {
           </div>
 
           {/* Categories & Specialties Links */}
-          <div className="lg:col-span-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
+          <div className="lg:col-span-8 lg:ml-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-10">
               {/* Dynamic Categories */}
               {categories.slice(0, 2).map((category) => (
                 <div key={category._id}>
@@ -292,7 +292,7 @@ export function Footer() {
                         <li key={specialty._id}>
                           <Link
                             href={`/${currentLocale}/${specialty.slug}`}
-                            className="text-xs md:text-sm text-gray-800 hover:text-primary transition-colors block leading-relaxed font-medium"
+                            className="max-w-[320px] text-xs md:text-sm text-gray-800 hover:text-primary transition-colors block leading-relaxed font-medium"
                           >
                             {specialty.title}
                           </Link>
@@ -319,14 +319,14 @@ export function Footer() {
                           href={item.externalLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-xs md:text-sm text-gray-800 hover:text-primary transition-colors block leading-relaxed font-medium line-clamp-2"
+                          className="max-w-[320px] text-xs md:text-sm text-gray-800 hover:text-primary transition-colors block leading-relaxed font-medium line-clamp-2"
                         >
                           {item.title}
                         </a>
                       ) : (
                         <Link
                           href={`/${currentLocale}/basin/${item.slug}`}
-                          className="text-xs md:text-sm text-gray-800 hover:text-primary transition-colors block leading-relaxed font-medium line-clamp-2"
+                          className="max-w-[320px] text-xs md:text-sm text-gray-800 hover:text-primary transition-colors block leading-relaxed font-medium line-clamp-2"
                         >
                           {item.title}
                         </Link>
@@ -344,7 +344,7 @@ export function Footer() {
                 >
                   Hakkımda
                 </Link>
-                <ul className="space-y-2 md:space-y-3">
+                <ul className="space-y-2 md:space-y-3 max-w-[320px]">
                   <li>
                     <Link
                       href={`/${currentLocale}/hakkimda`}
